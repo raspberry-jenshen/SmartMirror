@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "444276978162",
+    "firebase_url": "https://smartwindow-83fd6.firebaseio.com",
+    "project_id": "smartwindow-83fd6",
+    "storage_bucket": "smartwindow-83fd6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444276978162:android:cef2f258606f007d",
+        "android_client_info": {
+          "package_name": "com.jenshen.smartmirror"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444276978162-itkrh0ggghjbh343uebj2aj8p5d2918n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jenshen.smartmirror",
+            "certificate_hash": "B5A82F3F132BD00776ED9FF5D8ACE81BD6F718B1"
+          }
+        },
+        {
+          "client_id": "444276978162-8uvm64vppqaocfb1fu9q833ktrv7l8he.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jenshen.smartmirror",
+            "certificate_hash": "640CA6A7FDFADFC2C7802ADE6E6E5583056A88C8"
+          }
+        },
+        {
+          "client_id": "444276978162-0qun4m0iij8lbh7j3pf851hht5um5pnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVsitWSyKTQdAiEHBl8nxqNL02CnqoUxY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444276978162-0qun4m0iij8lbh7j3pf851hht5um5pnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

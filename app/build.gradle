@@ -1,0 +1,133 @@
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+def conf = rootProject.ext.configuration
+def lib = rootProject.ext.libraries;
+def testLib = rootProject.ext.testingLibraries;
+def kotlin_version = rootProject.ext.kotlin_version;
+
+android {
+
+    compileSdkVersion conf.compileSdkVersion
+    buildToolsVersion conf.buildToolsVersion
+
+    /* http://genius.engineering/blog/2016/6/9/a-smaller-sleeker-apk-using-the-package-analyzer */
+
+    splits {
+
+        /*density {
+            enable true
+            exclude "ldpi", "tvdpi", "xxxhdpi"
+            compatibleScreens 'small', 'normal', 'large', 'xlarge'
+        }
+
+        abi {
+            enable true
+            reset()
+            include 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips'
+            universalApk false
+        }*/
+    }
+
+    lintOptions {
+        warningsAsErrors = true;
+        checkReleaseBuilds true
+        abortOnError true
+        enable 'DefaultLocale'
+        check 'DefaultLocale'
+        error 'DefaultLocale'
+    }
+
+    signingConfigs {
+        release {
+            try {
+                storeFile file(project.property("smartMirror.signing") + "/smartmirror.jks")
+                storePassword KEYSTORE_PASSWORD
+                keyAlias KEY_ALIAS
+                keyPassword KEY_PASSWORD
+            }
+            catch (ignored) {
+                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.jenshen.smartmirror"
+        minSdkVersion conf.minSdkVersion
+        targetSdkVersion conf.targetSdkVersion
+        versionCode conf.versionCode
+        versionName conf.versionName
+
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    kapt {
+        generateStubs = true
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile "junit:junit:${testLib.junit}"
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    //Support
+    compile "com.android.support:appcompat-v7:${lib.support_version}"
+    compile "com.android.support:support-annotations:${lib.support_version}"
+    compile "com.android.support:design:${lib.support_version}"
+    compile "com.android.support:recyclerview-v7:${lib.support_version}"
+
+    //Google Services
+    compile "com.google.firebase:firebase-core:${lib.google_play_version}"
+
+    //Kotlin
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //Dagger
+    compile "com.google.dagger:dagger:${lib.dagger_version}"
+    kapt "com.google.dagger:dagger-compiler:${lib.dagger_version}"
+
+    //Constraint Layout
+    compile "com.android.support.constraint:constraint-layout:${lib.contraint_layout_version}"
+
+    //EventBus
+    compile "org.greenrobot:eventbus:${lib.event_bus_version}"
+
+    //Mosby
+    compile "com.hannesdorfmann.mosby:mvp:${lib.mosby_version}"
+
+    //Gson
+    compile "com.google.code.gson:gson:${lib.gson_version}"
+
+    //RxJava
+    compile "io.reactivex.rxjava2:rxandroid:${lib.rx_android_version}"
+    compile "io.reactivex.rxjava2:rxjava:${lib.rx_java_version}"
+
+    //fabric
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+        transitive = true;
+    }
+
+    //Canary Leak
+    debugCompile "com.squareup.leakcanary:leakcanary-android:${lib.canary_leak_version}"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${lib.canary_leak_version}"
+
+    //stetho
+    debugCompile 'com.facebook.stetho:stetho:1.4.1'
+    debugCompile 'com.uphyca:stetho_realm:2.0.0'
+}
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'realm-android'
