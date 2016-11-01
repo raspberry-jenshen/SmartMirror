@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="preference_key_user" translatable="false">preference_key_user</string>
+    <string name="preference_key_session" translatable="false">preference_key_session</string>
+</resources>

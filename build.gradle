@@ -25,6 +25,7 @@ allprojects {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
         maven { url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo' }
+        maven { url 'https://dl.bintray.com/jenshen1992/ua.jenshensoft/' }
     }
 }
 

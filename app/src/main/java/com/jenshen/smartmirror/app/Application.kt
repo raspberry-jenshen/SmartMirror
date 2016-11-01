@@ -5,17 +5,27 @@ import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.jenshen.smartmirror.BuildConfig
+import com.jenshen.smartmirror.di.component.AppComponent
+import com.jenshen.smartmirror.di.component.DaggerAppComponent
+import com.jenshen.smartmirror.di.component.UserComponent
+import com.jenshen.smartmirror.di.module.AppModule
+import com.jenshen.smartmirror.util.delegate.lazyValue
 import com.squareup.leakcanary.LeakCanary
 import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig
+import uk.co.chrisjenx.calligraphy.R
 
 open class Application : Application() {
 
-    /*companion object {
-        private val BASE_URL: String = "http://52.212.146.33/api/"
+    companion object {
 
         @JvmStatic lateinit var appComponent: AppComponent
+
+        @JvmStatic val fabricManager by lazy {
+            appComponent.provideFabricManager()
+        }
 
         @JvmStatic var userComponent: UserComponent? by lazyValue {
             val userComponent = appComponent.userComponentBuilder().build()
@@ -27,11 +37,7 @@ open class Application : Application() {
             userComponent = null
             fabricManager.releaseLogUser()
         }
-
-        @JvmStatic val fabricManager by lazy {
-            appComponent.provideFabricManager()
-        }
-    }*/
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -45,25 +51,20 @@ open class Application : Application() {
                 .build())
 
         val configuration = RealmConfiguration.Builder()
-                .name("parlor.realm")
+                .name("smartMirror.realm")
                 .deleteRealmIfMigrationNeeded()
                 .build()
         Realm.setDefaultConfiguration(configuration)
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
-       /* CalligraphyConfig.initDefault(CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/dinpro-medium.ttf")
+        CalligraphyConfig.initDefault(CalligraphyConfig.Builder()
+                //.setDefaultFontPath("fonts/dinpro-medium.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build())
 
-        RxFcm.Notifications.init(this, FcmReceiverData(), FcmReceiverBackground())
-
-
-
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
-                .apiModule(ApiModule(BASE_URL))
-                .build()*/
+                .build()
     }
 }
