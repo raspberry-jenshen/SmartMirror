@@ -49,7 +49,7 @@ ext {
             rx_android_version          : '2.0.0',
             google_play_version         : '9.8.0',
             dagger_version              : '2.7',
-            contraint_layout_version    : "1.0.0-beta2",
+            contraint_layout_version    : "1.0.0-beta3",
             mosby_version               : "2.0.1",
             gson_version                : "2.4",
             glide_version               : "3.7.0",
