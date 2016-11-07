@@ -1,5 +1,30 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- offsets -->
+
+    <dimen name="offset_small4">1dp</dimen>
+    <dimen name="offset_small3">2dp</dimen>
+    <dimen name="offset_small2">4dp</dimen>
+    <dimen name="offset_small1">8dp</dimen>
+    <dimen name="offset_small1_plus_small2">12dp</dimen>
+    <dimen name="offset_normal">16dp</dimen>
+    <dimen name="offset_small1_plus_normal">24dp</dimen>
+    <dimen name="offset_big1">32dp</dimen>
+    <dimen name="offset_small1_plus_big1">40dp</dimen>
+    <dimen name="offset_normal_plus_big1">48dp</dimen>
+    <dimen name="offset_big2">64dp</dimen>
+    <dimen name="offset_big2_plus_normal">80dp</dimen>
+    <dimen name="offset_big1_plus_big2">94dp</dimen>
+    <dimen name="offset_big3">128dp</dimen>
+    <dimen name="offset_big2_plus_big3">192dp</dimen>
+    <dimen name="offset_big4">272dp</dimen>
+    <dimen name="offset_big2_plus_big4">336dp</dimen>
+
+    <!-- textSizes -->
+
+    <dimen name="textSize_small3">10sp</dimen>
+    <dimen name="textSize_small2">12sp</dimen>
+    <dimen name="textSize_small1">13sp</dimen>
+    <dimen name="textSize_normal">15sp</dimen>
+    <dimen name="textSize_large1">20sp</dimen>
+    <dimen name="textSize_large2">25sp</dimen>
 </resources>

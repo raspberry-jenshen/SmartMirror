@@ -85,7 +85,7 @@ dependencies {
     })
 
     //JenshenSoft
-    compile 'ua.jenshensoft:compat:0.16'
+    compile "ua.jenshensoft:compat:${lib.jenshenSoftCompatVersion}"
 
     //Support
     compile "com.android.support:appcompat-v7:${lib.support_version}"

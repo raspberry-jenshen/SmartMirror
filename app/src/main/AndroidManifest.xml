@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jenshen.smartmirror">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,7 @@
         android:supportsRtl="true"
         android:name=".app.Application"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.activity.start.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,6 +22,4 @@
             android:name="io.fabric.ApiKey"
             android:value="3b1adbe3949cfd0e01ca89038fa1a880df54aa38" />
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

@@ -1,5 +1,6 @@
 package com.jenshen.smartmirror.di.component
 
+import com.jenshen.smartmirror.di.component.activity.StartComponent
 import com.jenshen.smartmirror.di.module.AppModule
 import com.jenshen.smartmirror.manager.fabric.FabricManager
 import dagger.Component
@@ -13,4 +14,6 @@ interface AppComponent {
     fun userComponentBuilder(): UserComponent.Builder
 
     fun provideFabricManager(): FabricManager
+
+    fun plusStartComponent(): StartComponent
 }

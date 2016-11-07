@@ -57,7 +57,8 @@ ext {
             glide_transformation_version: "2.0.1",
             event_bus_version           : "3.0.0",
             /* https://github.com/chrisjenx/Calligraphy */
-            calligraphy_version         : "2.2.0"
+            calligraphy_version         : "2.2.0",
+            jenshenSoftCompatVersion    : "0.2"
     ]
 
     testingLibraries = [

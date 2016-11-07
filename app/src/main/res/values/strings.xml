@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SmartMirror</string>
+    <string name="mirror_tuner">Mirror tuner</string>
+    <string name="mirror">Mirror</string>
 </resources>
