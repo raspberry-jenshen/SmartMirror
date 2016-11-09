@@ -1,8 +1,8 @@
-package ua.regin.pocket.manager.preference
+package com.jenshen.smartmirror.manager.preference
 
+import com.jenshen.smartmirror.model.User
 import io.reactivex.Completable
 import io.reactivex.Single
-import com.jenshen.smartmirror.model.User
 
 interface PreferencesManager {
 
@@ -15,4 +15,6 @@ interface PreferencesManager {
     fun getSession(): String?
 
     fun getUser(): User
+
+    fun isMirror(): Boolean
 }

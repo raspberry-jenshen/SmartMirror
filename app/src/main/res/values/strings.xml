@@ -2,4 +2,11 @@
     <string name="app_name">SmartMirror</string>
     <string name="mirror_tuner">Mirror tuner</string>
     <string name="mirror">Mirror</string>
+
+    <string name="login.email.hint">email</string>
+    <string name="login.password.hint">password</string>
+    <string name="login.button.text">Login</string>
+    <string name="login.restore_password">Restore password</string>
+    <string name="login.error.invalid_email">Your email address is invalid</string>
+    <string name="login.error.invalid_password">Your password must contains at least 6 symbols</string>
 </resources>

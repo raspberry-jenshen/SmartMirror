@@ -1,9 +1,11 @@
 package com.jenshen.smartmirror.app
 
-import android.app.Application
+import android.app.Activity
 import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
+import com.jenshen.compat.base.app.BaseApp
+import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
 import com.jenshen.smartmirror.BuildConfig
 import com.jenshen.smartmirror.di.component.AppComponent
 import com.jenshen.smartmirror.di.component.DaggerAppComponent
@@ -17,18 +19,20 @@ import io.realm.RealmConfiguration
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 import uk.co.chrisjenx.calligraphy.R
 
-open class Application : Application() {
+open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
 
     companion object {
 
-        @JvmStatic lateinit var appComponent: AppComponent
+        @JvmStatic lateinit var rootComponent: AppComponent
+
+        @JvmStatic lateinit var activityComponentBuilders: Map<Class<out Activity>, ActivityComponentBuilder<*>>
 
         @JvmStatic val fabricManager by lazy {
-            appComponent.provideFabricManager()
+            rootComponent.provideFabricManager()
         }
 
         @JvmStatic var userComponent: UserComponent? by lazyValue {
-            val userComponent = appComponent.userComponentBuilder().build()
+            val userComponent = rootComponent.userComponentBuilder().build()
             fabricManager.setLogUser(userComponent.provideUser())
             return@lazyValue userComponent
         }
@@ -38,6 +42,20 @@ open class Application : Application() {
             fabricManager.releaseLogUser()
         }
     }
+
+    /* inject */
+
+    override fun provideDaggerAppComponent(): AppComponent = DaggerAppComponent
+            .builder()
+            .appModule(AppModule(this))
+            .build()
+
+    override fun injectMembers(instance: AppComponent) {
+        rootComponent = instance
+        activityComponentBuilders = rootComponent.provideMultiBuildersForActivities()
+    }
+
+    /* lifecycle */
 
     override fun onCreate() {
         super.onCreate()
@@ -63,8 +81,5 @@ open class Application : Application() {
                 .setFontAttrId(R.attr.fontPath)
                 .build())
 
-        appComponent = DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
     }
 }

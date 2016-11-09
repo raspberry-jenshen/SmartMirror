@@ -9,7 +9,7 @@ import com.google.gson.JsonDeserializer
 import com.jenshen.smartmirror.manager.preference.SharedPreferencesManager
 import dagger.Module
 import dagger.Provides
-import ua.regin.pocket.manager.preference.PreferencesManager
+import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import java.util.*
 import javax.inject.Singleton
 

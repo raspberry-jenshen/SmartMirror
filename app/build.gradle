@@ -95,6 +95,7 @@ dependencies {
 
     //Google Services
     compile "com.google.firebase:firebase-core:${lib.google_play_version}"
+    compile "com.google.firebase:firebase-auth:${lib.google_play_version}"
 
     //Kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

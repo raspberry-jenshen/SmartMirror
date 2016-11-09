@@ -1,10 +1,9 @@
 package com.jenshen.smartmirror.app;
 
 import com.facebook.stetho.Stetho;
-import com.jenshen.smartmirror.app.Application;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
-public class MyDebugApplication extends Application {
+public class MyDebugSmartMirrorApp extends SmartMirrorApp {
 
     @Override
     public void onCreate() {

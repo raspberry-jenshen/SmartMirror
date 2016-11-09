@@ -7,7 +7,6 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.model.User
 import io.reactivex.Completable
 import io.reactivex.Single
-import ua.regin.pocket.manager.preference.PreferencesManager
 
 class SharedPreferencesManager : PreferencesManager {
 
@@ -24,6 +23,7 @@ class SharedPreferencesManager : PreferencesManager {
     override fun logout(): Completable = Completable.fromCallable {
         val editor = mSharedPreferences.edit()
         editor.remove(mContext.getString(R.string.preference_key_user))
+        editor.remove(mContext.getString(R.string.preference_key_is_mirror))
         editor.remove(mContext.getString(R.string.preference_key_session))
         editor.apply()
     }
@@ -42,16 +42,27 @@ class SharedPreferencesManager : PreferencesManager {
         getSession() != null
     }
 
+    override fun isMirror(): Boolean {
+        return mSharedPreferences.getBoolean(mContext.getString(R.string.preference_key_is_mirror), false)
+    }
+
+    override fun getSession(): String? {
+        return mSharedPreferences.getString(mContext.getString(R.string.preference_key_session), null)
+    }
+
+
+    /* private methods */
+
     private fun saveUser(user: User) {
         val stringValue = mGson.toJson(user)
         mSharedPreferences.edit().putString(mContext.getString(R.string.preference_key_user), stringValue).apply()
     }
 
-    private fun saveSession(session: String) {
-        mSharedPreferences.edit().putString(mContext.getString(R.string.preference_key_session), session).apply()
+    private fun setIsMirror(isMirror: Boolean) {
+        mSharedPreferences.edit().putBoolean(mContext.getString(R.string.preference_key_is_mirror), isMirror).apply()
     }
 
-    override fun getSession(): String? {
-        return mSharedPreferences.getString(mContext.getString(R.string.preference_key_session), null)
+    private fun saveSession(session: String) {
+        mSharedPreferences.edit().putString(mContext.getString(R.string.preference_key_session), session).apply()
     }
 }
