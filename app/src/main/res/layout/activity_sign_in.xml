@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
-    tools:context=".ui.activity.login.LoginActivity">
+    tools:context=".ui.activity.signUp.SignUpActivity">
 
-    <include layout="@layout/partial_login" />
+    <include layout="@layout/partial_sign_in" />
 
 </ScrollView>

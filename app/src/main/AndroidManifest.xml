@@ -32,8 +32,12 @@
             android:theme="@style/App.Theme.Start.Activity" />
 
         <activity
-            android:name=".ui.activity.login.LoginActivity"
-            android:theme="@style/App.Theme.Login.Activity"
+            android:name=".ui.activity.signIn.SignInActivity"
+            android:theme="@style/App.Theme.SignIn.Activity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.activity.signUp.SignUpActivity"
+            android:theme="@style/App.Theme.SignIn.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
     </application>
 </manifest>

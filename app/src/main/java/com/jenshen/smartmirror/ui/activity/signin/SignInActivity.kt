@@ -1,5 +1,6 @@
-package com.jenshen.smartmirror.ui.activity.login
+package com.jenshen.smartmirror.ui.activity.signIn
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.widget.EditText
@@ -8,48 +9,28 @@ import android.widget.Toast
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.di.component.activity.login.LoginComponent
-import com.jenshen.smartmirror.ui.mvp.presenter.login.LoginPresenter
-import com.jenshen.smartmirror.ui.mvp.view.login.LoginView
+import com.jenshen.smartmirror.di.component.activity.signIn.SignInComponent
+import com.jenshen.smartmirror.ui.activity.signUp.SignUpActivity
+import com.jenshen.smartmirror.ui.mvp.presenter.signIn.SignInPresenter
+import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
 import com.jenshen.smartmirror.util.reactive.onEditorAction
 import com.jenshen.smartmirror.util.reactive.onTextChanged
 import com.jenshen.smartmirror.util.validation.ValidationResult
-import kotlinx.android.synthetic.main.partial_login.*
+import kotlinx.android.synthetic.main.partial_sign_in.*
 
 
-class LoginActivity : BaseDiMvpActivity<LoginComponent, LoginView, LoginPresenter>(), LoginView {
+class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPresenter>(), SignInView {
 
-    override fun onEmailValidated(result: ValidationResult<String>) {
-        if (!result.isValid) {
-            email.error = getString(result.reasonStringRes)
-        } else if (email.isErrorEnabled) {
-            email.isErrorEnabled = result.isValid
-        }
-    }
-
-    override fun onPasswordValidated(result: ValidationResult<String>) {
-        if (!result.isValid) {
-            password.error = getString(result.reasonStringRes)
-        } else if (email.isErrorEnabled) {
-            password.isErrorEnabled = result.isValid
-        }
-    }
-
-    override fun onLoginSuccess() {
-       /* val intent = Intent(getContext(), DashboardActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)*/
-    }
 
 
     /* inject */
 
-    override fun createComponent(): LoginComponent {
+    override fun createComponent(): SignInComponent {
         return SmartMirrorApp
-                .activityComponentBuilders[LoginActivity::class.java]?.build() as LoginComponent
+                .activityComponentBuilders[SignInActivity::class.java]?.build() as SignInComponent
     }
 
-    override fun injectMembers(instance: LoginComponent) {
+    override fun injectMembers(instance: SignInComponent) {
         instance.injectMembers(this)
     }
 
@@ -58,13 +39,18 @@ class LoginActivity : BaseDiMvpActivity<LoginComponent, LoginView, LoginPresente
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_sign_in)
 
         presenter.initLoginButtonStateListener(emailEdit.onTextChanged(), passwordEdit.onTextChanged())
 
         presenter.initEditableAction(passwordEdit.onEditorAction())
 
         login.setOnClickListener { onLoginClicked() }
+        createAccount.setOnClickListener {
+            val intent = Intent(context, SignUpActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        }
 
         restorePassword.setOnClickListener {
             val editText = EditText(context)
@@ -84,7 +70,7 @@ class LoginActivity : BaseDiMvpActivity<LoginComponent, LoginView, LoginPresente
                     presenter.restorePassword(editText.text.toString())
                     dialog.dismiss()
                 } else {
-                    Toast.makeText(context, R.string.login_error_invalid_email, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.error_invalid_email, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -92,6 +78,28 @@ class LoginActivity : BaseDiMvpActivity<LoginComponent, LoginView, LoginPresente
 
 
     /* callbacks */
+
+    override fun onEmailValidated(result: ValidationResult<String>) {
+        if (!result.isValid) {
+            email.error = getString(result.reasonStringRes)
+        } else if (email.isErrorEnabled) {
+            email.isErrorEnabled = result.isValid
+        }
+    }
+
+    override fun onPasswordValidated(result: ValidationResult<String>) {
+        if (!result.isValid) {
+            password.error = getString(result.reasonStringRes)
+        } else if (email.isErrorEnabled) {
+            password.isErrorEnabled = result.isValid
+        }
+    }
+
+    override fun onLoginSuccess() {
+        /* val intent = Intent(getContext(), DashboardActivity::class.java)
+         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+         startActivity(intent)*/
+    }
 
     override fun setLoginButtonState(isEnabled: Boolean) {
         login.isEnabled = isEnabled

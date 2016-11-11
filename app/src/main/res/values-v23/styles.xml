@@ -12,7 +12,13 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="App.Theme.Login.Activity">
+    <style name="App.Theme.SignIn.Activity">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="App.Theme.SignUp.Activity">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowLightStatusBar">true</item>

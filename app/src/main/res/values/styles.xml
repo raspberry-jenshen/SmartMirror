@@ -18,9 +18,13 @@
 
     <style name="App.Theme.Start.Activity"/>
 
-    <style name="App.Theme.Login"/>
+    <style name="App.Theme.SignIn"/>
 
-    <style name="App.Theme.Login.Activity"/>
+    <style name="App.Theme.SignIn.Activity"/>
+
+    <style name="App.Theme.SignUp"/>
+
+    <style name="App.Theme.SignUp.Activity"/>
 
     <!-- Widget -->
 

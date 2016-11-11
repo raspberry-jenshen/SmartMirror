@@ -1,9 +1,9 @@
-package com.jenshen.smartmirror.ui.mvp.view.login
+package com.jenshen.smartmirror.ui.mvp.view.signIn
 
 import com.jenshen.compat.base.view.BaseMvpView
 import com.jenshen.smartmirror.util.validation.ValidationResult
 
-interface LoginView : BaseMvpView {
+interface SignInView : BaseMvpView {
     fun onEmailValidated(result: ValidationResult<String>)
     fun onPasswordValidated(result: ValidationResult<String>)
     fun setLoginButtonState(isEnabled: Boolean)

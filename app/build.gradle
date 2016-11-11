@@ -120,10 +120,17 @@ dependencies {
     compile "io.reactivex.rxjava2:rxandroid:${lib.rx_android_version}"
     compile "io.reactivex.rxjava2:rxjava:${lib.rx_java_version}"
 
+    //RxPermissions
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.8.2@aar'
+
     //fabric
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
+
+    //Glide
+    compile "com.github.bumptech.glide:glide:${lib.glide_version}"
+    compile "jp.wasabeef:glide-transformations:${lib.glide_transformation_version}"
 
     //Caligraphy
     compile "uk.co.chrisjenx:calligraphy:${lib.calligraphy_version}"

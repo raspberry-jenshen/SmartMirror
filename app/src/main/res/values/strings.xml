@@ -3,10 +3,26 @@
     <string name="mirror_tuner">Mirror tuner</string>
     <string name="mirror">Mirror</string>
 
+    <!--errors-->
+    <string name="error.invalid_username">Your user name must contains at least 4 symbols</string>
+    <string name="error.invalid_email">Your email address is invalid</string>
+    <string name="error.invalid_password">Your password must contains at least 6 symbols</string>
+    <string name="error.invalid_confirm_password">The confirm password mast be the same with the password</string>
+
+    <!--sign in-->
     <string name="login.email.hint">email</string>
     <string name="login.password.hint">password</string>
     <string name="login.button.text">Login</string>
     <string name="login.restore_password">Restore password</string>
-    <string name="login.error.invalid_email">Your email address is invalid</string>
-    <string name="login.error.invalid_password">Your password must contains at least 6 symbols</string>
+    <string name="login.create.account">Don\'t have account? Create it.</string>
+     <!--sign up-->
+    <string name="signUp.name.hint">name</string>
+    <string name="signUp.email.hint">email</string>
+    <string name="signUp.password.hint">password</string>
+    <string name="signUp.confirm.password.hint">confirm password</string>
+    <string name="signUp.createAccount">Create account</string>
+    <string name="signUp.choose_photo">Choose a photo:</string>
+    <string name="signUp.from_camera">From Camera</string>
+    <string name="signUp.from_gallery">From Gallery</string>
+
 </resources>

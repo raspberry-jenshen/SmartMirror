@@ -1,10 +1,10 @@
-package com.jenshen.smartmirror.ui.mvp.presenter.login
+package com.jenshen.smartmirror.ui.mvp.presenter.signIn
 
 import android.view.inputmethod.EditorInfo
 import com.jenshen.compat.base.presenter.MvpRxPresenter
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
-import com.jenshen.smartmirror.ui.mvp.view.login.LoginView
+import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import com.jenshen.smartmirror.util.validation.isValidEmail
 import com.jenshen.smartmirror.util.validation.isValidPassword
@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class LoginPresenter : MvpRxPresenter<LoginView> {
+class SignInPresenter : MvpRxPresenter<SignInView> {
 
     private val preferencesManager: PreferencesManager
     private val authInteractor: FirebaseAuthInteractor
