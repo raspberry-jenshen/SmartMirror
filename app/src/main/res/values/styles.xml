@@ -14,6 +14,12 @@
 
     <!-- Activity -->
 
+    <style name="App.Theme.Splash">
+        <item name="android:windowBackground">@drawable/background_splash_screen</item>
+    </style>
+
+    <style name="App.Theme.Splash.Activity"/>
+
     <style name="App.Theme.Start"/>
 
     <style name="App.Theme.Start.Activity"/>

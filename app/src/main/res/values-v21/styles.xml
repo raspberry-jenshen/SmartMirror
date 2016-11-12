@@ -5,6 +5,11 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="App.Theme.Splash.Activity">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
     <style name="App.Theme.Start.Activity">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>

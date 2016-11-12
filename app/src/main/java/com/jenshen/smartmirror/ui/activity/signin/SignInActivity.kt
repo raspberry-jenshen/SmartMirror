@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.partial_sign_in.*
 class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPresenter>(), SignInView {
 
 
-
     /* inject */
 
     override fun createComponent(): SignInComponent {
@@ -42,7 +41,6 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
         setContentView(R.layout.activity_sign_in)
 
         presenter.initLoginButtonStateListener(emailEdit.onTextChanged(), passwordEdit.onTextChanged())
-
         presenter.initEditableAction(passwordEdit.onEditorAction())
 
         login.setOnClickListener { onLoginClicked() }
@@ -83,7 +81,7 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
         if (!result.isValid) {
             email.error = getString(result.reasonStringRes)
         } else if (email.isErrorEnabled) {
-            email.isErrorEnabled = result.isValid
+            email.isErrorEnabled = false
         }
     }
 
@@ -91,7 +89,7 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
         if (!result.isValid) {
             password.error = getString(result.reasonStringRes)
         } else if (email.isErrorEnabled) {
-            password.isErrorEnabled = result.isValid
+            password.isErrorEnabled = false
         }
     }
 

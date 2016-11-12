@@ -6,4 +6,5 @@ import io.reactivex.Single
 
 interface AuthInteractor {
     fun signIn(email: String, password: String): Single<SignInResponse>
+    fun createNewUser(email: String, password: String): Single<SignInResponse>
 }

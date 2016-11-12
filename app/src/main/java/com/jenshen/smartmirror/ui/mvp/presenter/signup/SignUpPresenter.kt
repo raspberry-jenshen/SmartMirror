@@ -2,9 +2,9 @@ package com.jenshen.smartmirror.ui.mvp.presenter.signUp
 
 import android.Manifest
 import android.support.v7.app.AlertDialog
+import android.view.inputmethod.EditorInfo
 import com.jenshen.compat.base.presenter.MvpRxPresenter
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
-import com.jenshen.smartmirror.manager.photo.IPhotoPresenter
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.ui.mvp.view.signUp.SignUpView
 import com.jenshen.smartmirror.util.reactive.applySchedulers
@@ -13,6 +13,9 @@ import com.jenshen.smartmirror.util.validation.isValidEmail
 import com.jenshen.smartmirror.util.validation.isValidPassword
 import com.jenshen.smartmirror.util.validation.isValidUserName
 import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
 import java.util.*
@@ -64,5 +67,37 @@ class SignUpPresenter : MvpRxPresenter<SignUpView> {
         val validateConfirmPassword = isValidConfirmPassword(password, confirmPassword)
                 .doOnSuccess { view?.onConfirmPasswordValidated(it) }
                 .map { it.isValid }
+
+        Single.zip(validateName, validateEmail,validatePassword, validateConfirmPassword,
+                Function4 { isValidUserName: Boolean, isValidEmail: Boolean, isValidPassword: Boolean, isValidConfirmPassword: Boolean
+                    -> isValidUserName && isValidEmail && isValidPassword && isValidConfirmPassword})
+                .doOnSuccess { view?.showProgress() }
+                .observeOn(Schedulers.io())
+                .flatMap { isValid ->
+                    if (isValid) {
+                        authInteractor.createNewUser(email, password)
+                                .map { true }
+                    } else {
+                        Single.fromCallable { false }
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({
+                    if (it) {
+                        //view?.onCreateUserSuccess()
+                    }
+                    view?.hideProgress()
+                }, {
+                    view?.handleError(it)
+                    view?.hideProgress()
+                })
+    }
+
+    fun initEditableAction(editorAction: Observable<Int>) {
+        editorAction
+                .filter { it == EditorInfo.IME_ACTION_DONE }
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({ view?.onCreateAccountClicked() }, { view?.handleError(it) })
     }
 }

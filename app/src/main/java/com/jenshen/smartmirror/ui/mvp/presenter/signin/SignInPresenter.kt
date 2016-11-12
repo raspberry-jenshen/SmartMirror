@@ -55,6 +55,7 @@ class SignInPresenter : MvpRxPresenter<SignInView> {
 
         Single.zip(validateEmail, validatePassword, BiFunction { isValidEmail: Boolean, isValidPassword: Boolean -> isValidEmail && isValidPassword })
                 .doOnSuccess { view?.showProgress() }
+                .observeOn(Schedulers.io())
                 .flatMap { isValid ->
                     if (isValid) {
                         authInteractor.signIn(email, password)

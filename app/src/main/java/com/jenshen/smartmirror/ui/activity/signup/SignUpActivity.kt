@@ -1,5 +1,6 @@
 package com.jenshen.smartmirror.ui.activity.signUp
 
+import android.app.Activity
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
@@ -8,26 +9,38 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.di.component.activity.signUp.SignUpComponent
-import com.jenshen.smartmirror.manager.photo.IPhotoManager
-import com.jenshen.smartmirror.manager.photo.IPhotoManager.PhotoMode.PHOTO_FROM_CAMERA
-import com.jenshen.smartmirror.manager.photo.IPhotoManager.PhotoMode.PHOTO_FROM_GALLERY
 import com.jenshen.smartmirror.ui.mvp.presenter.signUp.SignUpPresenter
 import com.jenshen.smartmirror.ui.mvp.view.signUp.SignUpView
 import com.jenshen.smartmirror.util.reactive.onTextChanged
 import com.jenshen.smartmirror.util.validation.ValidationResult
+import com.nguyenhoanglam.imagepicker.activity.ImagePicker
 import kotlinx.android.synthetic.main.partial_sign_up.*
 import java.util.*
-import javax.inject.Inject
+import android.content.Intent
+import com.bumptech.glide.Glide
+import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES
+import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity
+import jp.wasabeef.glide.transformations.CropCircleTransformation
+import android.content.ContentResolver.SCHEME_ANDROID_RESOURCE
+import android.content.ContentResolver
+import android.net.Uri
+import android.util.Log
+import com.jenshen.smartmirror.data.model.UserModel
+import com.jenshen.smartmirror.util.asCircleBitmap
+import com.jenshen.smartmirror.util.getBitmap
+import com.jenshen.smartmirror.util.reactive.onEditorAction
+import com.nguyenhoanglam.imagepicker.model.Image
+import io.fabric.sdk.android.services.common.CommonUtils.getResourcePackageName
+import kotlinx.android.synthetic.main.partial_sign_up.*
+import java.io.File
 
 
 class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPresenter>(), SignUpView {
 
     companion object {
-        const val KEY_USER_MODEL: String = "KEY_USER_MODEL"
+        const val KEY_USER_MODEL = "KEY_USER_MODEL"
+        const val REQUEST_CODE_PICKER = 0
     }
-
-    @Inject
-     lateinit var photoManager : IPhotoManager
 
     private lateinit var userModel: UserModel
 
@@ -47,16 +60,21 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-        userModel = savedInstanceState?.getParcelable(KEY_USER_MODEL) ?: UserModel(null, null, null)
+        userModel = savedInstanceState?.getParcelable(KEY_USER_MODEL) ?: UserModel()
+        loadAvatar(userModel.avatarImage)
 
-        addAvatar.setOnClickListener { showChoosePhotoAlertDialog() }
+        avatar.setOnClickListener {
+            ImagePicker.create(this)
+                    .folderMode(true) // folder mode (false by default)
+                    .folderTitle(getString(R.string.signUp_choose_photo)) // folder selection title
+                    .imageTitle(getString(R.string.signUp_Tap_to_select)) // image selection title
+                    .single() // single mode
+                    .showCamera(true) // show camera or not (true by default)
+                    .start(REQUEST_CODE_PICKER);
+        }
 
         createAccount.setOnClickListener {
-            presenter.createAccount(
-                    nameEdit.text.toString(),
-                    emailEdit.text.toString(),
-                    passwordEdit.text.toString(),
-                    confirmPasswordEdit.text.toString())
+            onCreateAccountClicked()
         }
 
         presenter.initCreateAccountButtonStateListener(
@@ -64,6 +82,7 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
                 emailEdit.onTextChanged(),
                 passwordEdit.onTextChanged(),
                 confirmPasswordEdit.onTextChanged())
+        presenter.initEditableAction(confirmPasswordEdit.onEditorAction())
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -73,11 +92,26 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
 
     /* callbacks */
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_CODE_PICKER && resultCode == Activity.RESULT_OK && data != null) {
+            val images = data.getParcelableArrayListExtra<Parcelable>(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES)
+            val iterator = images.iterator()
+            if (iterator.hasNext()) {
+                val image = iterator.next() as Image;
+                userModel.avatarImage = image
+                loadAvatar(image)
+            } else {
+                Log.e("SmartMirror", "Can't load an image");
+            }
+        }
+    }
+
     override fun onUsernameValidated(result: ValidationResult<String>) {
         if (!result.isValid) {
             name.error = getString(result.reasonStringRes)
+            email.isErrorEnabled = !result.isValid
         } else if (email.isErrorEnabled) {
-            name.isErrorEnabled = result.isValid
+            name.isErrorEnabled = false
         }
     }
 
@@ -85,7 +119,7 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
         if (!result.isValid) {
             email.error = getString(result.reasonStringRes)
         } else if (email.isErrorEnabled) {
-            email.isErrorEnabled = result.isValid
+            email.isErrorEnabled = false
         }
     }
 
@@ -93,7 +127,7 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
         if (!result.isValid) {
             password.error = getString(result.reasonStringRes)
         } else if (email.isErrorEnabled) {
-            password.isErrorEnabled = result.isValid
+            password.isErrorEnabled = false
         }
     }
 
@@ -101,52 +135,32 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
         if (!result.isValid) {
             confirmPassword.error = getString(result.reasonStringRes)
         } else if (email.isErrorEnabled) {
-            confirmPassword.isErrorEnabled = result.isValid
+            confirmPassword.isErrorEnabled = false
         }
     }
 
     override fun setCreateAccountButtonState(isEnabled: Boolean) {
-        createAccount.isEnabled = isEnabled
+        createAccount.isEnabled = true
     }
 
-    data class UserModel(var email: String?,
-                         var password: String?,
-                         var name: String?,
-                         var avatarUrl: String = "http://www.lovemarks.com/wp-content/uploads/profile-avatars/default-avatar-plaid-shirt-guy.png") : Parcelable {
-        companion object {
-            @JvmField val CREATOR: Parcelable.Creator<UserModel> = object : Parcelable.Creator<UserModel> {
-                override fun createFromParcel(source: Parcel): UserModel = UserModel(source)
-                override fun newArray(size: Int): Array<UserModel?> = arrayOfNulls(size)
-            }
-        }
-
-        constructor(source: Parcel) : this(source.readString(), source.readString(), source.readString(), source.readString())
-
-        override fun describeContents() = 0
-
-        override fun writeToParcel(dest: Parcel?, flags: Int) {
-            dest?.writeString(email)
-            dest?.writeString(password)
-            dest?.writeString(name)
-            dest?.writeString(avatarUrl)
-        }
+    override fun onCreateAccountClicked() {
+        presenter.createAccount(
+                nameEdit.text.toString().trim(),
+                emailEdit.text.toString(),
+                passwordEdit.text.toString(),
+                confirmPasswordEdit.text.toString())
     }
 
-    fun showChoosePhotoAlertDialog() {
-        val ACTION_CAMERA = 0
-        val ACTION_GALLERY = 1
-        val actions = ArrayList<String>()
+    /* private methods */
 
-        actions.add(getString(R.string.signUp_from_camera))
-        actions.add(getString(R.string.signUp_from_gallery))
-
-        AlertDialog.Builder(context)
-                .setTitle(getString(R.string.signUp_choose_photo))
-                .setItems(actions.toTypedArray()) { dialog, which ->
-                    when (which) {
-                        ACTION_CAMERA -> photoManager.takePhoto(PHOTO_FROM_CAMERA)
-                        ACTION_GALLERY -> photoManager.takePhoto(PHOTO_FROM_GALLERY)
-                    }
-                }.create().show()
+    private fun loadAvatar(image: Image?) {
+        if (image == null) {
+            avatar.setImageBitmap(getBitmap(context, R.drawable.ic_demo_avatar).asCircleBitmap());
+        } else {
+            Glide.with(context)
+                    .load(File(image.path))
+                    .bitmapTransform(CropCircleTransformation(context))
+                    .into(avatar);
+        }
     }
 }

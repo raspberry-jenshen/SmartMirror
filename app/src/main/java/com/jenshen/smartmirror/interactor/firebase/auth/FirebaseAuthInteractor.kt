@@ -18,6 +18,11 @@ class FirebaseAuthInteractor : AuthInteractor {
     }
 
     override fun signIn(email: String, password: String): Single<SignInResponse> {
+        return Single.zip(authManager.signInWithEmailAndPassword(email, password).toSingle { 0 }, authManager.fetchFirebaseUser(),
+                BiFunction { t1: Int, firebaseUser: FirebaseUser -> SignInResponse(firebaseUser) })
+    }
+
+    override fun createNewUser(email: String, password: String): Single<SignInResponse> {
         return Single.zip(authManager.createNewUser(email, password).toSingle { 0 }, authManager.fetchFirebaseUser(),
                 BiFunction { t1: Int, firebaseUser: FirebaseUser -> SignInResponse(firebaseUser) })
     }

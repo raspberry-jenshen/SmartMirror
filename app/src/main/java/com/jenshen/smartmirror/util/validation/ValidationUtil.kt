@@ -22,7 +22,7 @@ fun isValidConfirmPassword(password: String, confirmPassword :String): Single<Va
 }
 
 fun validateUserName(name: String): ValidationResult<String> {
-    if (!TextUtils.isEmpty(name) && name.length > 5) {
+    if (!TextUtils.isEmpty(name) && name.length > 3) {
         return ValidationResult.success(name)
     } else {
         return ValidationResult.failure(R.string.error_invalid_username, name)

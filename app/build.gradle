@@ -127,6 +127,8 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
+    //ImagePicker
+    compile 'com.github.JenshenSoft:ImagePicker:c7ad237457'
 
     //Glide
     compile "com.github.bumptech.glide:glide:${lib.glide_version}"

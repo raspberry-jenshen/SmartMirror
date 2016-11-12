@@ -21,8 +21,8 @@
     <string name="signUp.password.hint">password</string>
     <string name="signUp.confirm.password.hint">confirm password</string>
     <string name="signUp.createAccount">Create account</string>
-    <string name="signUp.choose_photo">Choose a photo:</string>
-    <string name="signUp.from_camera">From Camera</string>
-    <string name="signUp.from_gallery">From Gallery</string>
+    <string name="signUp.choose_photo">Choose a photo</string>
+    <string name="signUp.Tap_to_select">Tap to select</string>
+
 
 </resources>
