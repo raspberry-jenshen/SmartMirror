@@ -10,6 +10,8 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.di.component.activity.signIn.SignInComponent
+import com.jenshen.smartmirror.model.User
+import com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerActivity
 import com.jenshen.smartmirror.ui.activity.signUp.SignUpActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.signIn.SignInPresenter
 import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
@@ -20,6 +22,7 @@ import kotlinx.android.synthetic.main.partial_sign_in.*
 
 
 class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPresenter>(), SignInView {
+
 
 
     /* inject */
@@ -40,6 +43,7 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
+        presenter.loadPreviousUserData();
         presenter.initLoginButtonStateListener(emailEdit.onTextChanged(), passwordEdit.onTextChanged())
         presenter.initEditableAction(passwordEdit.onEditorAction())
 
@@ -77,6 +81,10 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
 
     /* callbacks */
 
+    override fun onUserPreviousLoaded(user: User?) {
+        emailEdit.setText(user?.email)
+    }
+
     override fun onEmailValidated(result: ValidationResult<String>) {
         if (!result.isValid) {
             email.error = getString(result.reasonStringRes)
@@ -94,9 +102,9 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
     }
 
     override fun onLoginSuccess() {
-        /* val intent = Intent(getContext(), DashboardActivity::class.java)
-         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-         startActivity(intent)*/
+        val intent = Intent(context, TunerActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
     }
 
     override fun setLoginButtonState(isEnabled: Boolean) {

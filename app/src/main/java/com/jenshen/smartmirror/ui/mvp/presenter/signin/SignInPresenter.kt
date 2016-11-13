@@ -8,6 +8,7 @@ import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import com.jenshen.smartmirror.util.validation.isValidEmail
 import com.jenshen.smartmirror.util.validation.isValidPassword
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -59,7 +60,6 @@ class SignInPresenter : MvpRxPresenter<SignInView> {
                 .flatMap { isValid ->
                     if (isValid) {
                         authInteractor.signIn(email, password)
-                                .map { true }
                     } else {
                         Single.fromCallable { false }
                     }
@@ -79,6 +79,12 @@ class SignInPresenter : MvpRxPresenter<SignInView> {
 
     fun validateEmail(email: String): Boolean {
         return com.jenshen.smartmirror.util.validation.validateEmail(email).isValid
+    }
+
+    fun loadPreviousUserData() {
+        Maybe.fromCallable { preferencesManager.getUser() }
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({ view?.onUserPreviousLoaded(it) },{ view?.onLoginClicked() })
     }
 
     fun restorePassword(email: String) {

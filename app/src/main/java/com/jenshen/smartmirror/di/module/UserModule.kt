@@ -13,6 +13,6 @@ class UserModule {
     @Provides
     @UserScope
     fun provideUser(preferencesManager: PreferencesManager): User {
-        return preferencesManager.getUser()
+        return preferencesManager.getUser()!!
     }
 }

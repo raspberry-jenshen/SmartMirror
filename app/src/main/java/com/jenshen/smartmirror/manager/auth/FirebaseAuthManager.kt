@@ -3,60 +3,36 @@ package com.jenshen.smartmirror.manager.auth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.functions.Consumer
 import javax.inject.Inject
 
-class FirebaseAuthManager : AuthManager {
+class FirebaseAuthManager @Inject constructor(private val fireBaseAuth: FirebaseAuth) : AuthManager {
 
-    private val fireBaseAuth: FirebaseAuth
-    private val authState: BehaviorSubject<String>
-    private val isAuthenticated: Boolean
+    override val isUserExists: Boolean
         get() = fireBaseAuth.currentUser != null
-    private var connectionState: String
 
-    init {
-        this.connectionState = AuthManager.UNCONNECTED
-        this.authState = BehaviorSubject.createDefault(connectionState)
-    }
-
-    @Inject constructor(fireBaseAuth: FirebaseAuth) {
-        this.fireBaseAuth = fireBaseAuth
-    }
-/*
-    override fun auth(): Completable {
-        setConnectionState(CONNECTING)
-        return Completable.create {
-            fireBaseAuth.s
+    override fun fetchFirebaseUser(): Observable<FirebaseUser> {
+        return Observable.create { source ->
+            val authStateListener = FirebaseAuth.AuthStateListener {
+                val currentUser = it.currentUser
+                source.onNext(currentUser)
+            }
+            fireBaseAuth.addAuthStateListener(authStateListener)
+            source.setCancellable { fireBaseAuth.removeAuthStateListener(authStateListener) }
         }
-    }*/
-
-    fun fetchConnectionState(): Observable<String> {
-        return authState
     }
 
-    @AuthManager.ConnectionState
-    fun getConnectionState(): String {
-        if (connectionState == AuthManager.CONNECTION_SUCCESS && !isAuthenticated) {
-            connectionState = AuthManager.UNCONNECTED
-        }
-        return connectionState
-    }
-
-    protected fun setConnectionState(@AuthManager.ConnectionState connectionState: String) {
-        this.connectionState = connectionState
-        authState.onNext(connectionState)
-    }
-
-    override fun fetchFirebaseUser(): Single<FirebaseUser> {
-        return Single.create { source ->
+    override fun makeRequestFirebaseUser(): Maybe<FirebaseUser> {
+        fetchFirebaseUser().subscribe(Consumer {  })
+        return Maybe.create { source ->
             val authStateListener = FirebaseAuth.AuthStateListener {
                 val currentUser = it.currentUser
                 if (currentUser != null) {
                     source.onSuccess(currentUser)
                 } else {
-                    source.onError(RuntimeException("User can't be null"))
+                    source.onComplete()
                 }
             }
             fireBaseAuth.addAuthStateListener(authStateListener)

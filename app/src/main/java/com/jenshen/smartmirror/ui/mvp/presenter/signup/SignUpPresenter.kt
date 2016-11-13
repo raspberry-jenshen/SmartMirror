@@ -76,7 +76,6 @@ class SignUpPresenter : MvpRxPresenter<SignUpView> {
                 .flatMap { isValid ->
                     if (isValid) {
                         authInteractor.createNewUser(email, password)
-                                .map { true }
                     } else {
                         Single.fromCallable { false }
                     }

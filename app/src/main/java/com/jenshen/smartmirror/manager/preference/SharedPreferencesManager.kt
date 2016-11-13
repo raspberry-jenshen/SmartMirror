@@ -20,34 +20,25 @@ class SharedPreferencesManager : PreferencesManager {
         mGson = gson
     }
 
+    override fun sighIn(user: User, isMirror : Boolean) {
+        saveUser(user)
+        setIsMirror(isMirror)
+    }
+
     override fun logout(): Completable = Completable.fromCallable {
         val editor = mSharedPreferences.edit()
-        editor.remove(mContext.getString(R.string.preference_key_user))
+        //remove it if needed editor.remove(mContext.getString(R.string.preference_key_user))
         editor.remove(mContext.getString(R.string.preference_key_is_mirror))
-        editor.remove(mContext.getString(R.string.preference_key_session))
         editor.apply()
     }
 
-    override fun getUser(): User {
-        val json = mSharedPreferences.getString(mContext.getString(R.string.preference_key_user), null)
+    override fun getUser(): User? {
+        val json = mSharedPreferences.getString(mContext.getString(R.string.preference_key_user), null) ?: return null
         return mGson.fromJson(json, User::class.java)
-    }
-
-    override fun login(user: User, token: String) {
-        saveUser(user)
-        saveSession(token)
-    }
-
-    override fun isSessionExist(): Single<Boolean> = Single.fromCallable {
-        getSession() != null
     }
 
     override fun isMirror(): Boolean {
         return mSharedPreferences.getBoolean(mContext.getString(R.string.preference_key_is_mirror), false)
-    }
-
-    override fun getSession(): String? {
-        return mSharedPreferences.getString(mContext.getString(R.string.preference_key_session), null)
     }
 
 
@@ -60,9 +51,5 @@ class SharedPreferencesManager : PreferencesManager {
 
     private fun setIsMirror(isMirror: Boolean) {
         mSharedPreferences.edit().putBoolean(mContext.getString(R.string.preference_key_is_mirror), isMirror).apply()
-    }
-
-    private fun saveSession(session: String) {
-        mSharedPreferences.edit().putString(mContext.getString(R.string.preference_key_session), session).apply()
     }
 }

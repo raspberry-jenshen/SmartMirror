@@ -1,26 +1,17 @@
 package com.jenshen.smartmirror.manager.auth
 
-import android.support.annotation.StringDef
 import com.google.firebase.auth.FirebaseUser
 import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.Maybe
+import io.reactivex.Observable
 
 interface AuthManager {
 
-    /* inner types */
+    val isUserExists: Boolean
 
-    @StringDef(UNCONNECTED, CONNECTING, CONNECTION_SUCCESS, CONNECTION_FAILED)
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class ConnectionState
-
-    companion object {
-        const val UNCONNECTED = "UNCONNECTED"
-        const val CONNECTION_SUCCESS = "CONNECTION_SUCCESS"
-        const val CONNECTION_FAILED = "CONNECTION_FAILED"
-        const val CONNECTING = "CONNECTING"
-    }
+    fun fetchFirebaseUser(): Observable<FirebaseUser>
+    fun makeRequestFirebaseUser(): Maybe<FirebaseUser>
 
     fun createNewUser(email: String, password: String): Completable
     fun signInWithEmailAndPassword(email: String, password: String): Completable
-    fun fetchFirebaseUser(): Single<FirebaseUser>
 }

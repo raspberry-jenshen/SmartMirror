@@ -19,8 +19,7 @@ import javax.inject.Singleton
         DatabaseModule::class,
         ActivityBindingModule::class,
         FirebaseModule::class,
-        AuthInteractorModule::class,
-        AuthManagerModule::class))
+        AuthInteractorModule::class))
 interface AppComponent : BaseAppComponent<SmartMirrorApp> {
 
     fun userComponentBuilder(): UserComponent.Builder

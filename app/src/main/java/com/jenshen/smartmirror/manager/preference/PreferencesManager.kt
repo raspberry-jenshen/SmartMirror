@@ -6,15 +6,11 @@ import io.reactivex.Single
 
 interface PreferencesManager {
 
-    fun login(user: User, token: String)
+    fun sighIn(user: User, isMirror: Boolean)
 
     fun logout(): Completable
 
-    fun isSessionExist(): Single<Boolean>
-
-    fun getSession(): String?
-
-    fun getUser(): User
+    fun getUser(): User?
 
     fun isMirror(): Boolean
 }

@@ -15,13 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Module
-class AppModule {
-
-    private var context: Context
-
-    constructor(context: Context) {
-        this.context = context
-    }
+class AppModule(private var context: Context) {
 
     @Singleton
     @Provides

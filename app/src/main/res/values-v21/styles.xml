@@ -25,4 +25,14 @@
         <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
+    <style name="App.Theme.Tuner.Activity">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+    <style name="App.Theme.Settings.Activity">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
 </resources>

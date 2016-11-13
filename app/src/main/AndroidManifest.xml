@@ -14,9 +14,9 @@
         android:theme="@style/App.Theme"
         tools:replace="theme">
         <activity
-            android:name=".ui.activity.splash.SplashActivity"
-            android:theme="@style/App.Theme.Splash.Activity"
-            android:noHistory="true">
+            android:name=".ui.EmailPasswordActivity"
+            android:noHistory="true"
+            android:theme="@style/App.Theme.Splash.Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +31,6 @@
         <activity
             android:name=".ui.activity.start.StartActivity"
             android:theme="@style/App.Theme.Start.Activity" />
-
         <activity
             android:name=".ui.activity.signIn.SignInActivity"
             android:theme="@style/App.Theme.SignIn.Activity"
@@ -40,5 +39,12 @@
             android:name=".ui.activity.signUp.SignUpActivity"
             android:theme="@style/App.Theme.SignIn.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.activity.dashboard.tuner.TunerActivity"
+            android:theme="@style/App.Theme.Tuner.Activity" />
+        <activity
+            android:name=".ui.activity.settings.SettingsActivity"
+            android:theme="@style/App.Theme.Settings.Activity" />
     </application>
+
 </manifest>
