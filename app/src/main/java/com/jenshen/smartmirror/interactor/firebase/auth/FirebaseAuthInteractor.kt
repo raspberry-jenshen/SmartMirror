@@ -1,29 +1,27 @@
 package com.jenshen.smartmirror.interactor.firebase.auth
 
+import com.google.firebase.auth.FirebaseUser
 import com.jenshen.smartmirror.manager.auth.AuthManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.model.User
-import io.reactivex.Single
-import io.reactivex.functions.BiFunction
+import io.reactivex.Completable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 
 class FirebaseAuthInteractor @Inject constructor(private var authManager: AuthManager,
                                                  private var preferencesManager: PreferencesManager) : AuthInteractor {
 
-    override fun signIn(email: String, password: String): Single<Boolean> {
-        return Single.zip(authManager.makeRequestFirebaseUser()
-                .doOnSuccess { preferencesManager.sighIn(User(it.uid,it.email), false) }
-                .isEmpty,
-                authManager.signInWithEmailAndPassword(email, password).toSingle { true },
-                BiFunction { isUserEmpty: Boolean, ignored: Boolean -> !isUserEmpty })
+    override fun fetchAuth(): Observable<FirebaseUser> {
+        return authManager.fetchFirebaseUser()
+                .doOnNext { preferencesManager.sighIn(User(it.uid, it.email), false) }
     }
 
-    override fun createNewUser(email: String, password: String): Single<Boolean> {
-        return Single.zip(authManager.makeRequestFirebaseUser()
-                .doOnSuccess { preferencesManager.sighIn(User(it.uid,it.email), false) }
-                .isEmpty,
-                authManager.createNewUser(email, password).toSingle { true },
-                BiFunction { isUserEmpty: Boolean, ignored: Boolean -> !isUserEmpty })
+    override fun signIn(email: String, password: String): Completable {
+        return authManager.signInWithEmailAndPassword(email, password)
+    }
+
+    override fun createNewUser(email: String, password: String): Completable {
+        return authManager.createNewUser(email, password)
     }
 }

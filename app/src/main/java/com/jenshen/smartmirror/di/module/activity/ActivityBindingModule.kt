@@ -6,7 +6,7 @@ import com.jenshen.smartmirror.di.component.activity.signUp.SignUpComponent
 import com.jenshen.smartmirror.di.component.activity.splash.SplashComponent
 import com.jenshen.smartmirror.di.multibuildings.ActivityKey
 import com.jenshen.smartmirror.ui.activity.signIn.SignInActivity
-import com.jenshen.smartmirror.ui.activity.signUp.SignUpActivity
+import com.jenshen.smartmirror.ui.activity.signup.SignUpActivity
 import com.jenshen.smartmirror.ui.activity.splash.SplashActivity
 import dagger.Binds
 import dagger.Module

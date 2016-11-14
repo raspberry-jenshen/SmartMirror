@@ -1,36 +1,27 @@
-package com.jenshen.smartmirror.ui.activity.signUp
+package com.jenshen.smartmirror.ui.activity.signup
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.os.Parcel
 import android.os.Parcelable
-import android.support.v7.app.AlertDialog
+import android.util.Log
+import com.bumptech.glide.Glide
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.di.component.activity.signUp.SignUpComponent
-import com.jenshen.smartmirror.ui.mvp.presenter.signUp.SignUpPresenter
-import com.jenshen.smartmirror.ui.mvp.view.signUp.SignUpView
-import com.jenshen.smartmirror.util.reactive.onTextChanged
-import com.jenshen.smartmirror.util.validation.ValidationResult
-import com.nguyenhoanglam.imagepicker.activity.ImagePicker
-import kotlinx.android.synthetic.main.partial_sign_up.*
-import java.util.*
-import android.content.Intent
-import com.bumptech.glide.Glide
-import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES
-import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity
-import jp.wasabeef.glide.transformations.CropCircleTransformation
-import android.content.ContentResolver.SCHEME_ANDROID_RESOURCE
-import android.content.ContentResolver
-import android.net.Uri
-import android.util.Log
 import com.jenshen.smartmirror.data.model.UserModel
+import com.jenshen.smartmirror.di.component.activity.signUp.SignUpComponent
+import com.jenshen.smartmirror.ui.mvp.presenter.signup.SignUpPresenter
+import com.jenshen.smartmirror.ui.mvp.view.signup.SignUpView
 import com.jenshen.smartmirror.util.asCircleBitmap
 import com.jenshen.smartmirror.util.getBitmap
 import com.jenshen.smartmirror.util.reactive.onEditorAction
+import com.jenshen.smartmirror.util.reactive.onTextChanged
+import com.jenshen.smartmirror.util.validation.ValidationResult
+import com.nguyenhoanglam.imagepicker.activity.ImagePicker
+import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES
 import com.nguyenhoanglam.imagepicker.model.Image
-import io.fabric.sdk.android.services.common.CommonUtils.getResourcePackageName
+import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.partial_sign_up.*
 import java.io.File
 
@@ -70,7 +61,7 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
                     .imageTitle(getString(R.string.signUp_Tap_to_select)) // image selection title
                     .single() // single mode
                     .showCamera(true) // show camera or not (true by default)
-                    .start(REQUEST_CODE_PICKER);
+                    .start(REQUEST_CODE_PICKER)
         }
 
         createAccount.setOnClickListener {
@@ -94,14 +85,14 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE_PICKER && resultCode == Activity.RESULT_OK && data != null) {
-            val images = data.getParcelableArrayListExtra<Parcelable>(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES)
+            val images = data.getParcelableArrayListExtra<Parcelable>(INTENT_EXTRA_SELECTED_IMAGES)
             val iterator = images.iterator()
             if (iterator.hasNext()) {
-                val image = iterator.next() as Image;
+                val image = iterator.next() as Image
                 userModel.avatarImage = image
                 loadAvatar(image)
             } else {
-                Log.e("SmartMirror", "Can't load an image");
+                Log.e("SmartMirror", "Can't load an image")
             }
         }
     }
@@ -151,16 +142,20 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
                 confirmPasswordEdit.text.toString())
     }
 
+    override fun onCreateAccountSuccess() {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     /* private methods */
 
     private fun loadAvatar(image: Image?) {
         if (image == null) {
-            avatar.setImageBitmap(getBitmap(context, R.drawable.ic_demo_avatar).asCircleBitmap());
+            avatar.setImageBitmap(getBitmap(context, R.drawable.ic_demo_avatar).asCircleBitmap())
         } else {
             Glide.with(context)
                     .load(File(image.path))
                     .bitmapTransform(CropCircleTransformation(context))
-                    .into(avatar);
+                    .into(avatar)
         }
     }
 }

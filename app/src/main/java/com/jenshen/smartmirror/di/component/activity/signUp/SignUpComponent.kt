@@ -5,9 +5,9 @@ import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
 import com.jenshen.compat.base.component.presenter.PresenterComponent
 import com.jenshen.smartmirror.di.module.activity.signUp.SignUpModule
 import com.jenshen.smartmirror.di.scope.ActivityScope
-import com.jenshen.smartmirror.ui.activity.signUp.SignUpActivity
-import com.jenshen.smartmirror.ui.mvp.presenter.signUp.SignUpPresenter
-import com.jenshen.smartmirror.ui.mvp.view.signUp.SignUpView
+import com.jenshen.smartmirror.ui.activity.signup.SignUpActivity
+import com.jenshen.smartmirror.ui.mvp.presenter.signup.SignUpPresenter
+import com.jenshen.smartmirror.ui.mvp.view.signup.SignUpView
 import dagger.Subcomponent
 
 @ActivityScope

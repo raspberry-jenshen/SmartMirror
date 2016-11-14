@@ -1,24 +1,21 @@
-package com.jenshen.smartmirror.ui.mvp.presenter.signUp
+package com.jenshen.smartmirror.ui.mvp.presenter.signup
 
-import android.Manifest
-import android.support.v7.app.AlertDialog
 import android.view.inputmethod.EditorInfo
 import com.jenshen.compat.base.presenter.MvpRxPresenter
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
-import com.jenshen.smartmirror.ui.mvp.view.signUp.SignUpView
+import com.jenshen.smartmirror.ui.mvp.view.signup.SignUpView
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import com.jenshen.smartmirror.util.validation.isValidConfirmPassword
 import com.jenshen.smartmirror.util.validation.isValidEmail
 import com.jenshen.smartmirror.util.validation.isValidPassword
 import com.jenshen.smartmirror.util.validation.isValidUserName
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -30,6 +27,14 @@ class SignUpPresenter : MvpRxPresenter<SignUpView> {
     @Inject constructor(preferencesManager: PreferencesManager, authInteractor: FirebaseAuthInteractor) : super() {
         this.preferencesManager = preferencesManager
         this.authInteractor = authInteractor
+    }
+
+    override fun attachView(view: SignUpView?) {
+        super.attachView(view)
+        authInteractor.fetchAuth()
+                .applySchedulers(Schedulers.io())
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({ view?.onCreateAccountSuccess() }, { view?.handleError(it) })
     }
 
     fun initCreateAccountButtonStateListener(nameEdit: Observable<String>,
@@ -68,24 +73,22 @@ class SignUpPresenter : MvpRxPresenter<SignUpView> {
                 .doOnSuccess { view?.onConfirmPasswordValidated(it) }
                 .map { it.isValid }
 
-        Single.zip(validateName, validateEmail,validatePassword, validateConfirmPassword,
-                Function4 { isValidUserName: Boolean, isValidEmail: Boolean, isValidPassword: Boolean, isValidConfirmPassword: Boolean
-                    -> isValidUserName && isValidEmail && isValidPassword && isValidConfirmPassword})
+        Single.zip(validateName, validateEmail, validatePassword, validateConfirmPassword,
+                Function4 { isValidUserName: Boolean, isValidEmail: Boolean, isValidPassword: Boolean, isValidConfirmPassword: Boolean ->
+                    isValidUserName && isValidEmail && isValidPassword && isValidConfirmPassword
+                })
                 .doOnSuccess { view?.showProgress() }
                 .observeOn(Schedulers.io())
-                .flatMap { isValid ->
+                .flatMapCompletable { isValid ->
                     if (isValid) {
                         authInteractor.createNewUser(email, password)
                     } else {
-                        Single.fromCallable { false }
+                        Completable.complete()
                     }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({
-                    if (it) {
-                        //view?.onCreateUserSuccess()
-                    }
                     view?.hideProgress()
                 }, {
                     view?.handleError(it)

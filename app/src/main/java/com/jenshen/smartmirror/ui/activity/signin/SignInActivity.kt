@@ -12,8 +12,8 @@ import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.di.component.activity.signIn.SignInComponent
 import com.jenshen.smartmirror.model.User
 import com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerActivity
-import com.jenshen.smartmirror.ui.activity.signUp.SignUpActivity
-import com.jenshen.smartmirror.ui.mvp.presenter.signIn.SignInPresenter
+import com.jenshen.smartmirror.ui.activity.signup.SignUpActivity
+import com.jenshen.smartmirror.ui.mvp.presenter.signin.SignInPresenter
 import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
 import com.jenshen.smartmirror.util.reactive.onEditorAction
 import com.jenshen.smartmirror.util.reactive.onTextChanged

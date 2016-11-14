@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.ui.mvp.presenter.signIn
+package com.jenshen.smartmirror.ui.mvp.presenter.signin
 
 import android.view.inputmethod.EditorInfo
 import com.jenshen.compat.base.presenter.MvpRxPresenter
@@ -8,6 +8,7 @@ import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import com.jenshen.smartmirror.util.validation.isValidEmail
 import com.jenshen.smartmirror.util.validation.isValidPassword
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -25,6 +26,14 @@ class SignInPresenter : MvpRxPresenter<SignInView> {
     @Inject constructor(preferencesManager: PreferencesManager, authInteractor: FirebaseAuthInteractor) : super() {
         this.preferencesManager = preferencesManager
         this.authInteractor = authInteractor
+    }
+
+    override fun attachView(view: SignInView?) {
+        super.attachView(view)
+        authInteractor.fetchAuth()
+                .applySchedulers(Schedulers.io())
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({ view?.onLoginSuccess() }, { view?.handleError(it) })
     }
 
     fun initLoginButtonStateListener(onTextChangedEmail: Observable<String>, onTextChangedPassword: Observable<String>) {
@@ -57,19 +66,16 @@ class SignInPresenter : MvpRxPresenter<SignInView> {
         Single.zip(validateEmail, validatePassword, BiFunction { isValidEmail: Boolean, isValidPassword: Boolean -> isValidEmail && isValidPassword })
                 .doOnSuccess { view?.showProgress() }
                 .observeOn(Schedulers.io())
-                .flatMap { isValid ->
+                .flatMapCompletable { isValid ->
                     if (isValid) {
                         authInteractor.signIn(email, password)
                     } else {
-                        Single.fromCallable { false }
+                        Completable.complete()
                     }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({
-                    if (it) {
-                        view?.onLoginSuccess()
-                    }
                     view?.hideProgress()
                 }, {
                     view?.handleError(it)
@@ -84,7 +90,7 @@ class SignInPresenter : MvpRxPresenter<SignInView> {
     fun loadPreviousUserData() {
         Maybe.fromCallable { preferencesManager.getUser() }
                 .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({ view?.onUserPreviousLoaded(it) },{ view?.onLoginClicked() })
+                .subscribe({ view?.onUserPreviousLoaded(it) }, { view?.onLoginClicked() })
     }
 
     fun restorePassword(email: String) {

@@ -1,7 +1,8 @@
-package ua.regin.pocket.manager.db
+package com.jenshen.smartmirror.manager.db
 
 import io.reactivex.Maybe
 import io.realm.*
+import ua.regin.pocket.manager.db.Database
 import javax.inject.Inject
 import javax.inject.Singleton
 
