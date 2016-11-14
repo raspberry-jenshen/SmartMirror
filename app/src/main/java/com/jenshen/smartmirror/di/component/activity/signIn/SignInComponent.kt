@@ -5,7 +5,7 @@ import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
 import com.jenshen.compat.base.component.presenter.PresenterComponent
 import com.jenshen.smartmirror.di.module.activity.qrcode.QRCodeModule
 import com.jenshen.smartmirror.di.scope.ActivityScope
-import com.jenshen.smartmirror.ui.activity.SignInActivity
+import com.jenshen.smartmirror.ui.activity.signIn.SignInActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.signin.SignInPresenter
 import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
 import dagger.Subcomponent

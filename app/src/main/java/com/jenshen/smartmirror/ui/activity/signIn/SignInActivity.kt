@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.ui.activity
+package com.jenshen.smartmirror.ui.activity.signIn
 
 import android.content.Intent
 import android.os.Bundle

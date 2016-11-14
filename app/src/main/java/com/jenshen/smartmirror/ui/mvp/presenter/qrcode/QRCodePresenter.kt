@@ -10,8 +10,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
-class QRCodePresenter @Inject constructor(private val sessionManager: SessionManager,
-                                          private val authInteractor: FirebaseAuthInteractor) : MvpRxPresenter<QRCodeView>() {
+class QRCodePresenter @Inject constructor(private val authInteractor: FirebaseAuthInteractor) : MvpRxPresenter<QRCodeView>() {
 
     override fun attachView(view: QRCodeView?) {
         super.attachView(view)

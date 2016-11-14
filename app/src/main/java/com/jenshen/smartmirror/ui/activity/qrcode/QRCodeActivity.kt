@@ -10,7 +10,7 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.di.component.activity.qrcode.QRCodeComponent
 import com.jenshen.smartmirror.di.component.activity.signIn.SignInComponent
-import com.jenshen.smartmirror.ui.activity.SignInActivity
+import com.jenshen.smartmirror.ui.activity.signIn.SignInActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.qrcode.QRCodePresenter
 import com.jenshen.smartmirror.ui.mvp.view.qrcode.QRCodeView
 
