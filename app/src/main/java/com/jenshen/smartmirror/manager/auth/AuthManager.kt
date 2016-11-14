@@ -12,4 +12,5 @@ interface AuthManager {
 
     fun createNewUser(email: String, password: String): Completable
     fun signInWithEmailAndPassword(email: String, password: String): Completable
+    fun signInAnonymously(): Completable
 }

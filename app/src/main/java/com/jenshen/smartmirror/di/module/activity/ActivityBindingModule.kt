@@ -1,11 +1,13 @@
 package com.jenshen.smartmirror.di.module.activity
 
 import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
+import com.jenshen.smartmirror.di.component.activity.qrcode.QRCodeComponent
 import com.jenshen.smartmirror.di.component.activity.signIn.SignInComponent
 import com.jenshen.smartmirror.di.component.activity.signUp.SignUpComponent
 import com.jenshen.smartmirror.di.component.activity.splash.SplashComponent
 import com.jenshen.smartmirror.di.multibuildings.ActivityKey
-import com.jenshen.smartmirror.ui.activity.signIn.SignInActivity
+import com.jenshen.smartmirror.ui.activity.qrcode.QRCodeActivity
+import com.jenshen.smartmirror.ui.activity.SignInActivity
 import com.jenshen.smartmirror.ui.activity.signup.SignUpActivity
 import com.jenshen.smartmirror.ui.activity.splash.SplashActivity
 import dagger.Binds
@@ -16,7 +18,8 @@ import dagger.multibindings.IntoMap
 @Module(subcomponents = arrayOf(
         SplashComponent::class,
         SignInComponent::class,
-        SignUpComponent::class))
+        SignUpComponent::class,
+        QRCodeComponent::class))
 abstract class  ActivityBindingModule {
 
     @Binds
@@ -33,4 +36,9 @@ abstract class  ActivityBindingModule {
     @IntoMap
     @ActivityKey(SignUpActivity::class)
     abstract fun signUpActivityComponentBuilder(impl: SignUpComponent.Builder): ActivityComponentBuilder<*>
+
+    @Binds
+    @IntoMap
+    @ActivityKey(QRCodeActivity::class)
+    abstract fun qrCodeActivityComponentBuilder(impl: QRCodeComponent.Builder): ActivityComponentBuilder<*>
 }

@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.ui.activity.signIn
+package com.jenshen.smartmirror.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -22,8 +22,6 @@ import kotlinx.android.synthetic.main.partial_sign_in.*
 
 
 class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPresenter>(), SignInView {
-
-
 
     /* inject */
 

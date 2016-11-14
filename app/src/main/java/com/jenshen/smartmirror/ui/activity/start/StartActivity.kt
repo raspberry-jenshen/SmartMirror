@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import com.jenshen.compat.base.view.impl.BaseActivity
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.ui.activity.signIn.SignInActivity
-import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorActivity
+import com.jenshen.smartmirror.ui.activity.SignInActivity
+import com.jenshen.smartmirror.ui.activity.qrcode.MirrorActivity
 import kotlinx.android.synthetic.main.activity_start.*
 
 class StartActivity: BaseActivity() {

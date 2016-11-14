@@ -14,11 +14,15 @@ class FirebaseAuthInteractor @Inject constructor(private var authManager: AuthMa
 
     override fun fetchAuth(): Observable<FirebaseUser> {
         return authManager.fetchFirebaseUser()
-                .doOnNext { preferencesManager.sighIn(User(it.uid, it.email), false) }
+                .doOnNext { preferencesManager.sighIn(User(it.uid, it.email), it.isAnonymous) }
     }
 
-    override fun signIn(email: String, password: String): Completable {
+    override fun signInMirrorTuner(email: String, password: String): Completable {
         return authManager.signInWithEmailAndPassword(email, password)
+    }
+
+    override fun signInMirror(): Completable {
+        return authManager.signInAnonymously()
     }
 
     override fun createNewUser(email: String, password: String): Completable {

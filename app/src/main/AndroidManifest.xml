@@ -4,6 +4,7 @@
     package="com.jenshen.smartmirror">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
         android:name=".app.SmartMirrorApp"
@@ -32,7 +33,7 @@
             android:name=".ui.activity.start.StartActivity"
             android:theme="@style/App.Theme.Start.Activity" />
         <activity
-            android:name=".ui.activity.signIn.SignInActivity"
+            android:name=".ui.activity.SignInActivity"
             android:theme="@style/App.Theme.SignIn.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
@@ -44,6 +45,9 @@
             android:theme="@style/App.Theme.Tuner.Activity" />
         <activity
             android:name=".ui.activity.settings.SettingsActivity"
+            android:theme="@style/App.Theme.Settings.Activity" />
+        <activity
+            android:name=".ui.activity.qrcode.QRCodeActivity"
             android:theme="@style/App.Theme.Settings.Activity" />
     </application>
 

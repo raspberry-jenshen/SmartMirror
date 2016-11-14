@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.di.component.activity.splash.SplashComponent
-import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorActivity
+import com.jenshen.smartmirror.ui.activity.qrcode.MirrorActivity
 import com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerActivity
 import com.jenshen.smartmirror.ui.activity.start.StartActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.splash.SplashPresenter

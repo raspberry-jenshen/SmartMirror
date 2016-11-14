@@ -22,6 +22,19 @@ class FirebaseAuthManager @Inject constructor(private val fireBaseAuth: Firebase
         }
     }
 
+    override fun signInAnonymously(): Completable {
+        return Completable.create { emitter ->
+            fireBaseAuth.signInAnonymously()
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            emitter.onComplete()
+                        } else {
+                            emitter.onError(it.exception)
+                        }
+                    }
+        }
+    }
+
     override fun signInWithEmailAndPassword(email: String, password: String): Completable {
         return Completable.create { emitter ->
             fireBaseAuth.signInWithEmailAndPassword(email, password)

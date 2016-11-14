@@ -18,15 +18,8 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SignInPresenter : MvpRxPresenter<SignInView> {
-
-    private val preferencesManager: PreferencesManager
-    private val authInteractor: FirebaseAuthInteractor
-
-    @Inject constructor(preferencesManager: PreferencesManager, authInteractor: FirebaseAuthInteractor) : super() {
-        this.preferencesManager = preferencesManager
-        this.authInteractor = authInteractor
-    }
+class SignInPresenter @Inject constructor(private val preferencesManager: PreferencesManager,
+                                          private val authInteractor: FirebaseAuthInteractor) : MvpRxPresenter<SignInView>() {
 
     override fun attachView(view: SignInView?) {
         super.attachView(view)
@@ -68,7 +61,7 @@ class SignInPresenter : MvpRxPresenter<SignInView> {
                 .observeOn(Schedulers.io())
                 .flatMapCompletable { isValid ->
                     if (isValid) {
-                        authInteractor.signIn(email, password)
+                        authInteractor.signInMirrorTuner(email, password)
                     } else {
                         Completable.complete()
                     }
@@ -89,6 +82,7 @@ class SignInPresenter : MvpRxPresenter<SignInView> {
 
     fun loadPreviousUserData() {
         Maybe.fromCallable { preferencesManager.getUser() }
+                .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({ view?.onUserPreviousLoaded(it) }, { view?.onLoginClicked() })
     }
