@@ -34,8 +34,6 @@ class QRCodeActivity : BaseDiMvpActivity<QRCodeComponent, QRCodeView, QRCodePres
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter.signInMirror()
-        val manager = getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val info = manager.connectionInfo
-        val address = info.macAddress
+
     }
 }
