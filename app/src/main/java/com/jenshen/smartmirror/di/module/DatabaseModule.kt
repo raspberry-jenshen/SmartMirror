@@ -1,9 +1,9 @@
-package ua.regin.pocket.di.module
+package com.jenshen.smartmirror.di.module
 
+import com.jenshen.smartmirror.manager.db.RealmDatabase
 import dagger.Binds
 import dagger.Module
 import ua.regin.pocket.manager.db.Database
-import com.jenshen.smartmirror.manager.db.RealmDatabase
 import javax.inject.Singleton
 
 @Singleton

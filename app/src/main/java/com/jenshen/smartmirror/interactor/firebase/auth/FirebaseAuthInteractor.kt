@@ -1,7 +1,7 @@
 package com.jenshen.smartmirror.interactor.firebase.auth
 
 import com.google.firebase.auth.FirebaseUser
-import com.jenshen.smartmirror.manager.auth.AuthManager
+import com.jenshen.smartmirror.manager.firebase.auth.AuthManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.model.User
 import io.reactivex.Completable

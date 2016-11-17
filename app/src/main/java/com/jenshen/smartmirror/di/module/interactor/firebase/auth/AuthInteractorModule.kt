@@ -1,6 +1,6 @@
-package com.jenshen.smartmirror.di.module.interactor
+package com.jenshen.smartmirror.di.module.interactor.firebase.auth
 
-import com.jenshen.smartmirror.di.module.manager.AuthManagerModule
+import com.jenshen.smartmirror.di.module.manager.firebase.auth.AuthManagerModule
 import com.jenshen.smartmirror.interactor.firebase.auth.AuthInteractor
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import dagger.Binds

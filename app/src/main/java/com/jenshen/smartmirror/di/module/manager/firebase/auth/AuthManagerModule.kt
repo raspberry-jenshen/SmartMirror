@@ -1,7 +1,7 @@
-package com.jenshen.smartmirror.di.module.manager
+package com.jenshen.smartmirror.di.module.manager.firebase.auth
 
-import com.jenshen.smartmirror.manager.auth.AuthManager
-import com.jenshen.smartmirror.manager.auth.FirebaseAuthManager
+import com.jenshen.smartmirror.manager.firebase.auth.AuthManager
+import com.jenshen.smartmirror.manager.firebase.auth.FirebaseAuthManager
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton

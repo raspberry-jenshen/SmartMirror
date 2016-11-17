@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.manager.auth
+package com.jenshen.smartmirror.manager.firebase.auth
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
