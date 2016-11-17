@@ -29,14 +29,9 @@ class QRCodeActivity : BaseDiMvpActivity<QRCodeComponent, QRCodeView, QRCodePres
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter.signInMirror()
-
     }
 
     /* callbacks */
-
-    override fun onLoginSuccess() {
-        presenter.signInMirror()
-    }
 
     override fun onMirrorCreated(mirror: Mirror) {
 

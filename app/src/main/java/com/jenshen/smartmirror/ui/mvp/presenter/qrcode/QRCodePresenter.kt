@@ -1,14 +1,13 @@
 package com.jenshen.smartmirror.ui.mvp.presenter.qrcode
 
 import android.content.Context
-import android.net.wifi.WifiManager
+import android.provider.Settings.Secure
 import com.jenshen.compat.base.presenter.MvpRxPresenter
 import com.jenshen.smartmirror.interactor.firebase.api.ApiInteractor
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.ui.mvp.view.qrcode.QRCodeView
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import javax.inject.Inject
 
 
@@ -20,24 +19,31 @@ class QRCodePresenter @Inject constructor(private val authInteractor: FirebaseAu
         authInteractor.fetchAuth()
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({ view?.onLoginSuccess() }, { view?.handleError(it) })
+                .subscribe({
+                    if (view != null) {
+                        createMirrorAccount(view.context)
+                    }
+                }, { view?.handleError(it) })
     }
 
     fun signInMirror() {
         authInteractor.signInMirror()
-                .andThen(apiInteractor.createOrGetMirror(getUUID()))
+                .applySchedulers(Schedulers.io())
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({
+                    view?.hideProgress()
+                }, {
+                    view?.handleError(it)
+                    view?.hideProgress()
+                })
+    }
+
+    private fun createMirrorAccount(context: Context) {
+        apiInteractor.createOrGetMirror(getDeviceUniqueID(context))
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({ view?.onMirrorCreated(it) }, { view?.handleError(it) })
     }
 
-    private fun getMacAddress(context: Context): String {
-        val manager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val info = manager.connectionInfo
-        return info.macAddress
-    }
-
-    private fun getUUID(): String {
-        return UUID.randomUUID().toString()
-    }
+    private fun getDeviceUniqueID(activity: Context) = Secure.getString(activity.contentResolver, Secure.ANDROID_ID)
 }

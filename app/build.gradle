@@ -13,11 +13,10 @@ android {
     compileSdkVersion conf.compileSdkVersion
     buildToolsVersion conf.buildToolsVersion
 
-    /* http://genius.engineering/blog/2016/6/9/a-smaller-sleeker-apk-using-the-package-analyzer */
+    /* http://genius.engineering/blog/2016/6/9/a-smaller-sleeker-apk-using-the-package-analyzer
 
     splits {
-
-        /*density {
+        density {
             enable true
             exclude "ldpi", "tvdpi", "xxxhdpi"
             compatibleScreens 'small', 'normal', 'large', 'xlarge'
@@ -28,8 +27,8 @@ android {
             reset()
             include 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips'
             universalApk false
-        }*/
-    }
+        }
+    }*/
 
     lintOptions {
         warningsAsErrors = true;
@@ -135,6 +134,8 @@ dependencies {
     //Glide
     compile "com.github.bumptech.glide:glide:${lib.glide_version}"
     compile "jp.wasabeef:glide-transformations:${lib.glide_transformation_version}"
+
+    //barcode
 
     //Caligraphy
     compile "uk.co.chrisjenx:calligraphy:${lib.calligraphy_version}"

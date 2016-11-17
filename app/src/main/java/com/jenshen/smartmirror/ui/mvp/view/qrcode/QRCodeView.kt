@@ -4,6 +4,5 @@ import com.jenshen.compat.base.view.BaseMvpView
 import com.jenshen.smartmirror.data.firebase.Mirror
 
 interface QRCodeView : BaseMvpView {
-    fun onLoginSuccess()
     fun onMirrorCreated(mirror: Mirror)
 }
