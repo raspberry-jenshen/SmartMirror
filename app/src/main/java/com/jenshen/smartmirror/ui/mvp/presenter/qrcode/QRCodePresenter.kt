@@ -32,10 +32,10 @@ class QRCodePresenter @Inject constructor(private val authInteractor: FirebaseAu
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({
-                    view?.hideProgress()
+                   // view?.hideProgress()
                 }, {
                     view?.handleError(it)
-                    view?.hideProgress()
+                   // view?.hideProgress()
                 })
     }
 
@@ -46,10 +46,10 @@ class QRCodePresenter @Inject constructor(private val authInteractor: FirebaseAu
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({
                     view?.onMirrorCreated(it)
-                    view?.hideProgress()
+                    //view?.hideProgress()
                 }, {
                     view?.handleError(it)
-                    view?.hideProgress()
+                   // view?.hideProgress()
                 })
     }
 
