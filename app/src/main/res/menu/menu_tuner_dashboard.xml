@@ -2,6 +2,11 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:title="@string/dashboard.tuner.scanQRCode"
+        android:id="@+id/scan_QrCode_item_menu"
+        android:icon="@drawable/ic_qr_code"
+        app:showAsAction="ifRoom" />
+
     <item android:title="@string/settings"
         android:id="@+id/settings_item_menu"
         android:icon="@drawable/ic_settings"

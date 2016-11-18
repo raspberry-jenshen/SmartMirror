@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.ui.activity.signup
+package com.jenshen.smartmirror.ui.activity.signup.tuner
 
 import android.app.Activity
 import android.content.Intent
@@ -10,9 +10,10 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.model.UserModel
-import com.jenshen.smartmirror.di.component.activity.signUp.SignUpComponent
-import com.jenshen.smartmirror.ui.mvp.presenter.signup.SignUpPresenter
-import com.jenshen.smartmirror.ui.mvp.view.signup.SignUpView
+import com.jenshen.smartmirror.di.component.activity.signUp.tuner.SignUpTunerComponent
+import com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerActivity
+import com.jenshen.smartmirror.ui.mvp.presenter.signup.tuner.SignUpTunerPresenter
+import com.jenshen.smartmirror.ui.mvp.view.signup.tuner.SignUpTunerView
 import com.jenshen.smartmirror.util.asCircleBitmap
 import com.jenshen.smartmirror.util.getBitmap
 import com.jenshen.smartmirror.util.reactive.onEditorAction
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.partial_sign_up.*
 import java.io.File
 
 
-class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPresenter>(), SignUpView {
+class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerView, SignUpTunerPresenter>(), SignUpTunerView {
 
     companion object {
         const val KEY_USER_MODEL = "KEY_USER_MODEL"
@@ -37,12 +38,12 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
 
     /* inject */
 
-    override fun createComponent(): SignUpComponent {
+    override fun createComponent(): SignUpTunerComponent {
         return SmartMirrorApp
-                .activityComponentBuilders[SignUpActivity::class.java]?.build() as SignUpComponent
+                .activityComponentBuilders[SignUpTunerActivity::class.java]?.build() as SignUpTunerComponent
     }
 
-    override fun injectMembers(instance: SignUpComponent) {
+    override fun injectMembers(instance: SignUpTunerComponent) {
         instance.injectMembers(this)
     }
 
@@ -143,7 +144,9 @@ class SignUpActivity : BaseDiMvpActivity<SignUpComponent, SignUpView, SignUpPres
     }
 
     override fun onCreateAccountSuccess() {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val intent = Intent(context, TunerActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
     }
 
     /* private methods */

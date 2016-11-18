@@ -15,11 +15,21 @@ class FirebaseRealtimeDatabaseManager : RealtimeDatabaseManager {
         this.fireBaseDatabase = fireBaseDatabase
     }
 
+    override fun getTunersRef(): Single<DatabaseReference> {
+        return Single.fromCallable { fireBaseDatabase.reference }
+                .map { it.child(FirebaseConstant.TUNERS) }
+    }
+
+    override fun getTunerRef(id: String): Single<DatabaseReference> {
+        return Single.fromCallable { fireBaseDatabase.reference }
+                .map { it.child(FirebaseConstant.TUNERS) }
+                .map { it.child(id) }
+    }
+
     override fun getMirrorsRef(): Single<DatabaseReference> {
         return Single.fromCallable { fireBaseDatabase.reference }
                 .map { it.child(FirebaseConstant.MIRRORS) }
     }
-
 
     override fun getMirrorRef(id: String): Single<DatabaseReference> {
         return Single.fromCallable { fireBaseDatabase.reference }

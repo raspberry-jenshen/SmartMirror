@@ -1,10 +1,12 @@
-package com.jenshen.smartmirror.ui.mvp.presenter.signup
+package com.jenshen.smartmirror.ui.mvp.presenter.signup.tuner
 
 import android.view.inputmethod.EditorInfo
 import com.jenshen.compat.base.presenter.MvpRxPresenter
+import com.jenshen.smartmirror.data.entity.session.TunerSession
+import com.jenshen.smartmirror.interactor.firebase.api.FirebaseApiInteractor
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
-import com.jenshen.smartmirror.ui.mvp.view.signup.SignUpView
+import com.jenshen.smartmirror.ui.mvp.view.signup.tuner.SignUpTunerView
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import com.jenshen.smartmirror.util.validation.isValidConfirmPassword
 import com.jenshen.smartmirror.util.validation.isValidEmail
@@ -19,22 +21,18 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SignUpPresenter : MvpRxPresenter<SignUpView> {
+class SignUpTunerPresenter @Inject constructor(private val apiInteractor: FirebaseApiInteractor,
+                                               private val preferencesManager: PreferencesManager,
+                                               private val authInteractor: FirebaseAuthInteractor) : MvpRxPresenter<SignUpTunerView>() {
 
-    private val preferencesManager: PreferencesManager
-    private val authInteractor: FirebaseAuthInteractor
+    private var isTaskFinished = true
 
-    @Inject constructor(preferencesManager: PreferencesManager, authInteractor: FirebaseAuthInteractor) : super() {
-        this.preferencesManager = preferencesManager
-        this.authInteractor = authInteractor
-    }
-
-    override fun attachView(view: SignUpView?) {
+    override fun attachView(view: SignUpTunerView?) {
         super.attachView(view)
         authInteractor.fetchAuth()
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({ view?.onCreateAccountSuccess() }, { view?.handleError(it) })
+                .subscribe({ onCreateTunerAccount() }, { view?.handleError(it) })
     }
 
     fun initCreateAccountButtonStateListener(nameEdit: Observable<String>,
@@ -77,11 +75,14 @@ class SignUpPresenter : MvpRxPresenter<SignUpView> {
                 Function4 { isValidUserName: Boolean, isValidEmail: Boolean, isValidPassword: Boolean, isValidConfirmPassword: Boolean ->
                     isValidUserName && isValidEmail && isValidPassword && isValidConfirmPassword
                 })
-                .doOnSuccess { view?.showProgress() }
+                .doOnSuccess {
+                    view?.showProgress()
+                    isTaskFinished = false
+                }
                 .observeOn(Schedulers.io())
                 .flatMapCompletable { isValid ->
                     if (isValid) {
-                        authInteractor.createNewUser(email, password)
+                        authInteractor.createNewTuner(email, password)
                     } else {
                         Completable.complete()
                     }
@@ -89,10 +90,13 @@ class SignUpPresenter : MvpRxPresenter<SignUpView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({
-                    view?.hideProgress()
+                    if (isTaskFinished) {
+                        view?.hideProgress()
+                    }
                 }, {
                     view?.handleError(it)
                     view?.hideProgress()
+                    isTaskFinished = true
                 })
     }
 
@@ -101,5 +105,26 @@ class SignUpPresenter : MvpRxPresenter<SignUpView> {
                 .filter { it == EditorInfo.IME_ACTION_DONE }
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({ view?.onCreateAccountClicked() }, { view?.handleError(it) })
+    }
+
+    fun onCreateTunerAccount() {
+        if (isTaskFinished) {
+            view?.showProgress()
+            isTaskFinished = false
+        }
+        Single.fromCallable { preferencesManager.getSession()!! }
+                .cast(TunerSession::class.java)
+                .flatMap { apiInteractor.createOrGetTuner(it) }
+                .applySchedulers(Schedulers.io())
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({
+                    view?.onCreateAccountSuccess()
+                    view?.hideProgress()
+                    isTaskFinished = true
+                }, {
+                    view?.handleError(it)
+                    view?.hideProgress()
+                    isTaskFinished = true
+                })
     }
 }

@@ -4,9 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.model.User
+import com.jenshen.smartmirror.data.entity.session.MirrorSession
+import com.jenshen.smartmirror.data.entity.session.Session
+import com.jenshen.smartmirror.data.entity.session.TunerSession
 import io.reactivex.Completable
-import io.reactivex.Single
 
 class SharedPreferencesManager : PreferencesManager {
 
@@ -20,8 +21,8 @@ class SharedPreferencesManager : PreferencesManager {
         mGson = gson
     }
 
-    override fun sighIn(user: User, isMirror : Boolean) {
-        saveUser(user)
+    override fun sighIn(session: Session, isMirror : Boolean) {
+        saveSession(session)
         setIsMirror(isMirror)
     }
 
@@ -32,9 +33,13 @@ class SharedPreferencesManager : PreferencesManager {
         editor.apply()
     }
 
-    override fun getUser(): User? {
+    override fun getSession(): Session? {
         val json = mSharedPreferences.getString(mContext.getString(R.string.preference_key_user), null) ?: return null
-        return mGson.fromJson(json, User::class.java)
+        if (isMirror()) {
+            return mGson.fromJson(json, MirrorSession::class.java)
+        } else{
+            return mGson.fromJson(json, TunerSession::class.java)
+        }
     }
 
     override fun isMirror(): Boolean {
@@ -44,8 +49,8 @@ class SharedPreferencesManager : PreferencesManager {
 
     /* private methods */
 
-    private fun saveUser(user: User) {
-        val stringValue = mGson.toJson(user)
+    private fun saveSession(session: Session) {
+        val stringValue = mGson.toJson(session)
         mSharedPreferences.edit().putString(mContext.getString(R.string.preference_key_user), stringValue).apply()
     }
 

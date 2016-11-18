@@ -1,8 +1,12 @@
 package com.jenshen.smartmirror.interactor.firebase.api
 
+import com.jenshen.smartmirror.data.entity.session.MirrorSession
+import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.Mirror
+import com.jenshen.smartmirror.data.firebase.Tuner
 import io.reactivex.Single
 
 interface ApiInteractor {
-    fun createOrGetMirror(id: String): Single<Mirror>
+    fun createOrGetTuner(tunerSession: TunerSession): Single<Tuner>
+    fun createOrGetMirror(mirrorSession: MirrorSession): Single<Mirror>
 }

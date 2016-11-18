@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
-    tools:context=".ui.activity.signup.SignUpActivity">
+    tools:context=".ui.activity.signup.tuner.SignUpTunerActivity">
 
     <include layout="@layout/partial_sign_up" />
 

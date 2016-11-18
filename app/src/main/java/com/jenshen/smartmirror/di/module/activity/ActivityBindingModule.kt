@@ -1,14 +1,14 @@
 package com.jenshen.smartmirror.di.module.activity
 
 import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
-import com.jenshen.smartmirror.di.component.activity.qrcode.QRCodeComponent
+import com.jenshen.smartmirror.di.component.activity.signUp.mirror.SignUpMirrorComponent
 import com.jenshen.smartmirror.di.component.activity.signIn.SignInComponent
-import com.jenshen.smartmirror.di.component.activity.signUp.SignUpComponent
+import com.jenshen.smartmirror.di.component.activity.signUp.tuner.SignUpTunerComponent
 import com.jenshen.smartmirror.di.component.activity.splash.SplashComponent
 import com.jenshen.smartmirror.di.multibuildings.ActivityKey
-import com.jenshen.smartmirror.ui.activity.qrcode.QRCodeActivity
+import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
 import com.jenshen.smartmirror.ui.activity.signIn.SignInActivity
-import com.jenshen.smartmirror.ui.activity.signup.SignUpActivity
+import com.jenshen.smartmirror.ui.activity.signup.tuner.SignUpTunerActivity
 import com.jenshen.smartmirror.ui.activity.splash.SplashActivity
 import dagger.Binds
 import dagger.Module
@@ -18,8 +18,8 @@ import dagger.multibindings.IntoMap
 @Module(subcomponents = arrayOf(
         SplashComponent::class,
         SignInComponent::class,
-        SignUpComponent::class,
-        QRCodeComponent::class))
+        SignUpTunerComponent::class,
+        SignUpMirrorComponent::class))
 abstract class  ActivityBindingModule {
 
     @Binds
@@ -34,11 +34,11 @@ abstract class  ActivityBindingModule {
 
     @Binds
     @IntoMap
-    @ActivityKey(SignUpActivity::class)
-    abstract fun signUpActivityComponentBuilder(impl: SignUpComponent.Builder): ActivityComponentBuilder<*>
+    @ActivityKey(SignUpTunerActivity::class)
+    abstract fun signUpActivityComponentBuilder(impl: SignUpTunerComponent.Builder): ActivityComponentBuilder<*>
 
     @Binds
     @IntoMap
-    @ActivityKey(QRCodeActivity::class)
-    abstract fun qrCodeActivityComponentBuilder(impl: QRCodeComponent.Builder): ActivityComponentBuilder<*>
+    @ActivityKey(SignUpMirrorActivity::class)
+    abstract fun qrCodeActivityComponentBuilder(impl: SignUpMirrorComponent.Builder): ActivityComponentBuilder<*>
 }

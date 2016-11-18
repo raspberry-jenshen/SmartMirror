@@ -8,7 +8,7 @@ import io.reactivex.Observable
 interface AuthInteractor {
     fun fetchAuth(): Observable<FirebaseUser>
 
-    fun createNewUser(email: String, password: String): Completable
-    fun signInMirrorTuner(email: String, password: String): Completable
+    fun createNewTuner(email: String, password: String): Completable
+    fun signInTuner(email: String, password: String): Completable
     fun signInMirror(): Completable
 }

@@ -37,7 +37,7 @@
             android:theme="@style/App.Theme.SignIn.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.activity.signup.SignUpActivity"
+            android:name=".ui.activity.signup.tuner.SignUpTunerActivity"
             android:theme="@style/App.Theme.SignIn.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
@@ -47,8 +47,14 @@
             android:name=".ui.activity.settings.SettingsActivity"
             android:theme="@style/App.Theme.Settings.Activity" />
         <activity
-            android:name=".ui.activity.qrcode.QRCodeActivity"
+            android:name=".ui.activity.signup.mirror.SignUpMirrorActivity"
             android:theme="@style/App.Theme.Settings.Activity" />
+        <activity
+            android:name=".ui.activity.dashboard.mirror.MirrorActivity"
+            android:theme="@style/App.Theme.Settings.Activity" />
+        <activity
+            android:name=".ui.activity.qrScan.QRCodeScanActivity"
+            android:theme="@style/App.Theme.QRCodeScanner.Activity" />
     </application>
 
 </manifest>

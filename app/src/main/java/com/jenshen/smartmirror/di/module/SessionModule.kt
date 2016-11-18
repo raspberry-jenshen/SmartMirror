@@ -1,18 +1,18 @@
 package com.jenshen.smartmirror.di.module
 
+import com.jenshen.smartmirror.data.entity.session.Session
 import com.jenshen.smartmirror.di.scope.SessionScope
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
-import com.jenshen.smartmirror.model.User
 import dagger.Module
 import dagger.Provides
 
 @SessionScope
 @Module
-class UserModule {
+class SessionModule {
 
     @Provides
     @SessionScope
-    fun provideUser(preferencesManager: PreferencesManager): User {
-        return preferencesManager.getUser()!!
+    fun provideUser(preferencesManager: PreferencesManager): Session {
+        return preferencesManager.getSession()!!
     }
 }

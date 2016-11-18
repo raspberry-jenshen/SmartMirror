@@ -9,10 +9,10 @@ import android.widget.Toast
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
+import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.di.component.activity.signIn.SignInComponent
-import com.jenshen.smartmirror.model.User
 import com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerActivity
-import com.jenshen.smartmirror.ui.activity.signup.SignUpActivity
+import com.jenshen.smartmirror.ui.activity.signup.tuner.SignUpTunerActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.signin.SignInPresenter
 import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
 import com.jenshen.smartmirror.util.reactive.onEditorAction
@@ -47,7 +47,7 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
 
         login.setOnClickListener { onLoginClicked() }
         createAccount.setOnClickListener {
-            val intent = Intent(context, SignUpActivity::class.java)
+            val intent = Intent(context, SignUpTunerActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
@@ -79,8 +79,8 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
 
     /* callbacks */
 
-    override fun onUserPreviousLoaded(user: User?) {
-        emailEdit.setText(user?.email)
+    override fun onPreviousTunerSessionLoaded(session: TunerSession) {
+        emailEdit.setText(session?.email)
     }
 
     override fun onEmailValidated(result: ValidationResult<String>) {

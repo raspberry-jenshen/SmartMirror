@@ -2,6 +2,7 @@ package com.jenshen.smartmirror.ui.mvp.presenter.signin
 
 import android.view.inputmethod.EditorInfo
 import com.jenshen.compat.base.presenter.MvpRxPresenter
+import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
@@ -61,7 +62,7 @@ class SignInPresenter @Inject constructor(private val preferencesManager: Prefer
                 .observeOn(Schedulers.io())
                 .flatMapCompletable { isValid ->
                     if (isValid) {
-                        authInteractor.signInMirrorTuner(email, password)
+                        authInteractor.signInTuner(email, password)
                     } else {
                         Completable.complete()
                     }
@@ -81,10 +82,11 @@ class SignInPresenter @Inject constructor(private val preferencesManager: Prefer
     }
 
     fun loadPreviousUserData() {
-        Maybe.fromCallable { preferencesManager.getUser() }
+        Maybe.fromCallable { preferencesManager.getSession() }
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({ view?.onUserPreviousLoaded(it) }, { view?.onLoginClicked() })
+                .cast(TunerSession::class.java)
+                .subscribe({ view?.onPreviousTunerSessionLoaded(it) }, { view?.onLoginClicked() })
     }
 
     fun restorePassword(email: String) {

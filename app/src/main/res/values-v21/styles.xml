@@ -35,4 +35,9 @@
         <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
+    <style name="App.Theme.QRCodeScanner.Activity">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
 </resources>

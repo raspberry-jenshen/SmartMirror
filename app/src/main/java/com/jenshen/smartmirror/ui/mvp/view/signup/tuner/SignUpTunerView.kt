@@ -1,9 +1,9 @@
-package com.jenshen.smartmirror.ui.mvp.view.signup
+package com.jenshen.smartmirror.ui.mvp.view.signup.tuner
 
 import com.jenshen.compat.base.view.BaseMvpView
 import com.jenshen.smartmirror.util.validation.ValidationResult
 
-interface SignUpView : BaseMvpView {
+interface SignUpTunerView : BaseMvpView {
 
     fun setCreateAccountButtonState(isEnabled: Boolean)
     fun onCreateAccountClicked()

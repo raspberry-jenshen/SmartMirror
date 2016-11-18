@@ -4,7 +4,7 @@
     <string name="mirror">Mirror</string>
 
     <!--errors-->
-    <string name="error.invalid_username">Your user name must contains at least 4 symbols</string>
+    <string name="error.invalid_username">Your session name must contains at least 4 symbols</string>
     <string name="error.invalid_email">Your email address is invalid</string>
     <string name="error.invalid_password">Your password must contains at least 6 symbols</string>
     <string name="error.invalid_confirm_password">The confirm password mast be the same with the password</string>
@@ -24,11 +24,19 @@
     <string name="signUp.choose_photo">Choose a photo</string>
     <string name="signUp.Tap_to_select">Tap to select</string>
 
+    <!--dashboard-->
+    <!--tuner-->
+    <string name="dashboard.tuner.scanQRCode">Scan QR code</string>
+
+    <!-- qr code scanner-->
+    <string name="scanner.turn.flashLight">Turn flashlight</string>
+    <string name="scanner.switch.camera">Switch camera</string>
+
     <!-- preference_settings -->
     <string name="settings">Settings</string>
-    <string name="settings.user_account.category">Manage user account</string>
+    <string name="settings.user_account.category">Manage session account</string>
     <string name="settings.logout">Logout</string>
-    <string name="settings.logout.summary">Logout user from the app</string>
+    <string name="settings.logout.summary">Logout session from the app</string>
 
     <!--tuner -->
     <string name="tuner">Tuner</string>

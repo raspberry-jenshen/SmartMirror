@@ -1,35 +1,35 @@
-package com.jenshen.smartmirror.ui.activity.qrcode
+package com.jenshen.smartmirror.ui.activity.signup.mirror
 
-import android.os.Bundle
-import com.google.zxing.BarcodeFormat
-import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
-import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.data.firebase.Mirror
-import com.jenshen.smartmirror.di.component.activity.qrcode.QRCodeComponent
-import com.jenshen.smartmirror.ui.mvp.presenter.qrcode.QRCodePresenter
-import com.jenshen.smartmirror.ui.mvp.view.qrcode.QRCodeView
 import android.graphics.Bitmap
 import android.graphics.Color
-import com.google.zxing.WriterException
+import android.os.Bundle
+import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
+import com.jenshen.smartmirror.app.SmartMirrorApp
+import com.jenshen.smartmirror.data.firebase.Mirror
+import com.jenshen.smartmirror.di.component.activity.signUp.mirror.SignUpMirrorComponent
+import com.jenshen.smartmirror.ui.mvp.presenter.signup.mirror.SignUpMirrorPresenter
+import com.jenshen.smartmirror.ui.mvp.view.signup.mirror.SignUpMirrorView
 import kotlinx.android.synthetic.main.activity_qr_code.*
 import java.util.*
 
 
-class QRCodeActivity : BaseDiMvpActivity<QRCodeComponent, QRCodeView, QRCodePresenter>(), QRCodeView {
+class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirrorView, SignUpMirrorPresenter>(), SignUpMirrorView {
 
 
     /* inject */
 
-    override fun createComponent(): QRCodeComponent {
+    override fun createComponent(): SignUpMirrorComponent {
         return SmartMirrorApp
-                .activityComponentBuilders[QRCodeActivity::class.java]?.build() as QRCodeComponent
+                .activityComponentBuilders[SignUpMirrorActivity::class.java]?.build() as SignUpMirrorComponent
     }
 
-    override fun injectMembers(instance: QRCodeComponent) {
+    override fun injectMembers(instance: SignUpMirrorComponent) {
         instance.injectMembers(this)
     }
 

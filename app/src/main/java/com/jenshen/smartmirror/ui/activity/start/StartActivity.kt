@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.jenshen.compat.base.view.impl.BaseActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.ui.activity.signIn.SignInActivity
-import com.jenshen.smartmirror.ui.activity.qrcode.QRCodeActivity
+import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
 import kotlinx.android.synthetic.main.activity_start.*
 
 class StartActivity: BaseActivity() {
@@ -15,7 +15,7 @@ class StartActivity: BaseActivity() {
         setContentView(R.layout.activity_start)
 
         mirror_button.setOnClickListener {
-            startActivity(Intent(this, QRCodeActivity::class.java))
+            startActivity(Intent(this, SignUpMirrorActivity::class.java))
         }
 
         mirrorTuner_button.setOnClickListener {
