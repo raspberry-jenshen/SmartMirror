@@ -62,12 +62,29 @@ android {
 
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // Enabling multidex support.
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        production {
+            buildConfigField 'boolean', 'IS_PRODUCTION_VERSION', 'true'
+        }
+        development {
+            versionName "0.5"
+            // dev utilizes minSDKVersion = 21 to allow the Android gradle plugin
+            // to pre-dex each module and produce an APK that can be tested on
+            // Android Lollipop without time consuming dex merging processes.
+            minSdkVersion 21
+            buildConfigField 'boolean', 'IS_PRODUCTION_VERSION', 'false'
         }
     }
 
@@ -92,6 +109,8 @@ dependencies {
     compile "com.android.support:design:${lib.support_version}"
     compile "com.android.support:recyclerview-v7:${lib.support_version}"
     compile "com.android.support:preference-v7:${lib.support_version}"
+
+    compile 'com.android.support:multidex:1.0.1'
 
     //Google Services
     compile "com.google.firebase:firebase-core:${lib.google_play_version}"
@@ -121,9 +140,6 @@ dependencies {
     compile "io.reactivex.rxjava2:rxandroid:${lib.rx_android_version}"
     compile "io.reactivex.rxjava2:rxjava:${lib.rx_java_version}"
 
-    //RxPermissions
-    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.8.2@aar'
-
     //fabric
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
@@ -136,6 +152,7 @@ dependencies {
     compile "jp.wasabeef:glide-transformations:${lib.glide_transformation_version}"
 
     //barcode
+    compile 'me.dm7.barcodescanner:zxing:1.9'
 
     //Caligraphy
     compile "uk.co.chrisjenx:calligraphy:${lib.calligraphy_version}"

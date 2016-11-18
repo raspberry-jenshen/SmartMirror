@@ -27,6 +27,7 @@ class QRCodePresenter @Inject constructor(private val authInteractor: FirebaseAu
     }
 
     fun signInMirror() {
+        view?.showProgress()
         authInteractor.signInMirror()
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
@@ -39,10 +40,17 @@ class QRCodePresenter @Inject constructor(private val authInteractor: FirebaseAu
     }
 
     private fun createMirrorAccount(context: Context) {
+        view?.showProgress()
         apiInteractor.createOrGetMirror(getDeviceUniqueID(context))
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({ view?.onMirrorCreated(it) }, { view?.handleError(it) })
+                .subscribe({
+                    view?.onMirrorCreated(it)
+                    view?.hideProgress()
+                }, {
+                    view?.handleError(it)
+                    view?.hideProgress()
+                })
     }
 
     private fun getDeviceUniqueID(activity: Context) = Secure.getString(activity.contentResolver, Secure.ANDROID_ID)

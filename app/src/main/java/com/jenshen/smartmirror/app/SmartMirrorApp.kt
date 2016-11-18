@@ -1,6 +1,8 @@
 package com.jenshen.smartmirror.app
 
 import android.app.Activity
+import android.content.Context
+import android.support.multidex.MultiDex
 import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
@@ -56,6 +58,11 @@ open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
     }
 
     /* lifecycle */
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
 
     override fun onCreate() {
         super.onCreate()
