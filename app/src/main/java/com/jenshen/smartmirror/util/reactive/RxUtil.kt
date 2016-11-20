@@ -7,6 +7,10 @@ fun <T> Observable<T>.applySchedulers(scheduler: Scheduler): Observable<T> {
     return this.subscribeOn(scheduler).observeOn(AndroidSchedulers.mainThread())
 }
 
+fun <T> Flowable<T>.applySchedulers(scheduler: Scheduler): Flowable<T> {
+    return this.subscribeOn(scheduler).observeOn(AndroidSchedulers.mainThread())
+}
+
 fun <T> Single<T>.applySchedulers(scheduler: Scheduler): Single<T> {
     return this.subscribeOn(scheduler).observeOn(AndroidSchedulers.mainThread())
 }

@@ -2,6 +2,7 @@ package com.jenshen.smartmirror.ui.mvp.presenter.signup.mirror
 
 import com.jenshen.compat.base.presenter.MvpRxPresenter
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
+import com.jenshen.smartmirror.data.firebase.Mirror
 import com.jenshen.smartmirror.interactor.firebase.api.ApiInteractor
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
@@ -24,6 +25,16 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({ createMirrorAccount() }, { view?.handleError(it) })
+    }
+
+    fun fetchIsTunerConnected(id: String) {
+        compositeDisposable.add(apiInteractor.isTunerConnected(id)
+                .applySchedulers(Schedulers.io())
+                .subscribe({
+                    view?.onTunerConnected()
+                }, {
+                    view?.handleError(it)
+                }))
     }
 
     fun signInMirror() {
@@ -50,11 +61,12 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
         }
         Single.fromCallable { preferencesManager.getSession()!! }
                 .cast(MirrorSession::class.java)
-                .flatMap { apiInteractor.createOrGetMirror(it) }
+                .flatMap { session ->  apiInteractor.createOrGetMirror(session)
+                        .map { MirrorInfo(it, session) }}
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({
-                    view?.onMirrorCreated(it)
+                    view?.onMirrorCreated(it.mirror, it.mirrorSession)
                     view?.hideProgress()
                     isTaskFinished = true
                 }, {
@@ -62,5 +74,9 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
                     view?.hideProgress()
                     isTaskFinished = true
                 })
+    }
+
+    private data class MirrorInfo(var mirror: Mirror, var mirrorSession: MirrorSession) {
+
     }
 }

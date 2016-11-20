@@ -25,7 +25,7 @@ import javax.inject.Singleton
         ActivityBindingModule::class))
 interface AppComponent : BaseAppComponent<SmartMirrorApp> {
 
-    fun userComponentBuilder(): UserComponent.Builder
+    fun userComponentBuilder(): SessionComponent.Builder
 
     fun provideFabricManager(): FabricManager
 

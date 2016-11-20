@@ -4,6 +4,7 @@ import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.Mirror
 import com.jenshen.smartmirror.data.firebase.Tuner
+import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Single
 
@@ -16,4 +17,5 @@ interface ApiManager {
     fun getMirror(id: String): Maybe<Mirror>
     fun createMirror(mirrorSession: MirrorSession): Single<Mirror>
 
+    fun observeIsWaitingForTuner(id: String): Flowable<Boolean>
 }

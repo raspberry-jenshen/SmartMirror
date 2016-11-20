@@ -11,7 +11,7 @@ import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
 import com.jenshen.smartmirror.BuildConfig
 import com.jenshen.smartmirror.di.component.AppComponent
 import com.jenshen.smartmirror.di.component.DaggerAppComponent
-import com.jenshen.smartmirror.di.component.UserComponent
+import com.jenshen.smartmirror.di.component.SessionComponent
 import com.jenshen.smartmirror.di.module.AppModule
 import com.jenshen.smartmirror.util.delegate.lazyValue
 import com.squareup.leakcanary.LeakCanary
@@ -33,7 +33,7 @@ open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
             rootComponent.provideFabricManager()
         }
 
-        @JvmStatic var userComponent: UserComponent? by lazyValue {
+        @JvmStatic var userComponent: SessionComponent? by lazyValue {
             val userComponent = rootComponent.userComponentBuilder().build()
             fabricManager.setLogUser(userComponent.provideUser())
             return@lazyValue userComponent

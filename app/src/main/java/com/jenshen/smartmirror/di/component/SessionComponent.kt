@@ -1,10 +1,10 @@
 package com.jenshen.smartmirror.di.component
 
+import com.jenshen.smartmirror.data.entity.session.Session
 import com.jenshen.smartmirror.di.module.SessionModule
 import com.jenshen.smartmirror.di.module.interactor.firebase.api.mirror.MirrorApiInteractorModule
 import com.jenshen.smartmirror.di.module.manager.UserSessionModule
 import com.jenshen.smartmirror.di.scope.SessionScope
-import com.jenshen.smartmirror.data.entity.session.Session
 import com.jenshen.smartmirror.ui.fragment.SettingsFragment
 import dagger.Subcomponent
 
@@ -13,12 +13,12 @@ import dagger.Subcomponent
         SessionModule::class,
         UserSessionModule::class,
         MirrorApiInteractorModule::class))
-interface UserComponent {
+interface SessionComponent {
 
     @Subcomponent.Builder
     interface Builder {
 
-        fun build(): UserComponent
+        fun build(): SessionComponent
     }
 
     fun provideUser(): Session

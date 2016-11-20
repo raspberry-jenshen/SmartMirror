@@ -2,11 +2,14 @@ package com.jenshen.smartmirror.manager.firebase.api
 
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.entity.session.TunerSession
+import com.jenshen.smartmirror.data.firebase.FirebaseConstant
 import com.jenshen.smartmirror.data.firebase.Mirror
 import com.jenshen.smartmirror.data.firebase.Tuner
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
-import com.jenshen.smartmirror.util.reactive.firebase.asRxGetValueEvent
-import com.jenshen.smartmirror.util.reactive.firebase.asRxSetValue
+import com.jenshen.smartmirror.util.reactive.firebase.loadValue
+import com.jenshen.smartmirror.util.reactive.firebase.observeValue
+import com.jenshen.smartmirror.util.reactive.firebase.uploadValue
+import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import javax.inject.Inject
@@ -21,7 +24,7 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
                 .flatMap { reference ->
                     Single.fromCallable { Tuner(tunerSession.email) }
                             .flatMap { tuner ->
-                                reference.asRxSetValue(tuner)
+                                reference.uploadValue(tuner)
                                         .toSingle { tuner }
                             }
                 }
@@ -29,7 +32,7 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
 
     override fun getTuner(id: String): Maybe<Tuner> {
         return fireBaseDatabase.getTunerRef(id)
-                .flatMap { it.asRxGetValueEvent() }
+                .flatMap { it.loadValue() }
                 .flatMapMaybe { data ->
                     Maybe.create<Tuner> {
                         if (data.exists()) {
@@ -46,7 +49,7 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
                 .flatMap { reference ->
                     Single.fromCallable { Mirror() }
                             .flatMap { mirror ->
-                                reference.asRxSetValue(mirror)
+                                reference.uploadValue(mirror)
                                         .toSingle { mirror }
                             }
                 }
@@ -54,7 +57,7 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
 
     override fun getMirror(id: String): Maybe<Mirror> {
         return fireBaseDatabase.getMirrorRef(id)
-                .flatMap { it.asRxGetValueEvent() }
+                .flatMap { it.loadValue() }
                 .flatMapMaybe { data ->
                     Maybe.create<Mirror> {
                         if (data.exists()) {
@@ -64,5 +67,12 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
                         }
                     }
                 }
+    }
+
+    override fun observeIsWaitingForTuner(id: String): Flowable<Boolean> {
+        return fireBaseDatabase.getMirrorRef(id)
+                .map { it.child(FirebaseConstant.Mirrors.IS_WAITING_FOR_TUNER) }
+                .flatMapPublisher { it.observeValue() }
+                .map { it.getValue(Boolean::class.java) }
     }
 }

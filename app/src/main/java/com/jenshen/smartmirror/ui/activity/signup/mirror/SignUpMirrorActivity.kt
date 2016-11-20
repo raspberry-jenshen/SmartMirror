@@ -1,5 +1,6 @@
 package com.jenshen.smartmirror.ui.activity.signup.mirror
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
@@ -11,8 +12,10 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
+import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.firebase.Mirror
 import com.jenshen.smartmirror.di.component.activity.signUp.mirror.SignUpMirrorComponent
+import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.signup.mirror.SignUpMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.signup.mirror.SignUpMirrorView
 import kotlinx.android.synthetic.main.activity_qr_code.*
@@ -44,8 +47,19 @@ class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirr
 
     /* callbacks */
 
-    override fun onMirrorCreated(mirror: Mirror) {
-        qr_code_imageView.setImageBitmap(generateQrCode("test test test"))
+    override fun onMirrorCreated(mirror: Mirror, mirrorSession: MirrorSession) {
+        if (mirror.isWaitingForTuner) {
+            qr_code_imageView.setImageBitmap(generateQrCode(mirrorSession.id))
+            presenter.fetchIsTunerConnected(mirrorSession.id)
+        } else {
+            onTunerConnected()
+        }
+    }
+
+    override fun onTunerConnected() {
+        val intent = Intent(context, MirrorActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
     }
 
     @Throws(WriterException::class)
