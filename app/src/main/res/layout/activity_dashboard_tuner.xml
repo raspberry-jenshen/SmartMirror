@@ -5,7 +5,7 @@
     android:id="@+id/activity_tuner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerActivity">
+    tools:context="com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerDashboardActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

@@ -15,10 +15,10 @@ import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.firebase.Mirror
 import com.jenshen.smartmirror.di.component.activity.signUp.mirror.SignUpMirrorComponent
-import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorActivity
+import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorDashboardActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.signup.mirror.SignUpMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.signup.mirror.SignUpMirrorView
-import kotlinx.android.synthetic.main.activity_qr_code.*
+import kotlinx.android.synthetic.main.activity_sign_up_mirror.*
 import java.util.*
 
 
@@ -41,7 +41,7 @@ class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_qr_code)
+        setContentView(R.layout.activity_sign_up_mirror)
         presenter.signInMirror()
     }
 
@@ -57,7 +57,7 @@ class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirr
     }
 
     override fun onTunerConnected() {
-        val intent = Intent(context, MirrorActivity::class.java)
+        val intent = Intent(context, MirrorDashboardActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }

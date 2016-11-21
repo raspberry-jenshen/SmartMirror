@@ -29,18 +29,24 @@ open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
 
         @JvmStatic lateinit var activityComponentBuilders: Map<Class<out Activity>, ActivityComponentBuilder<*>>
 
+        @JvmStatic var sessionActivityComponentBuilders: Map<Class<out Activity>, ActivityComponentBuilder<*>>? by lazyValue {
+            sessionActivityComponentBuilders = userComponent!!.provideMultiBuildersForActivities()
+            return@lazyValue sessionActivityComponentBuilders
+        }
+
         @JvmStatic val fabricManager by lazy {
             rootComponent.provideFabricManager()
         }
 
         @JvmStatic var userComponent: SessionComponent? by lazyValue {
-            val userComponent = rootComponent.userComponentBuilder().build()
-            fabricManager.setLogUser(userComponent.provideUser())
+            userComponent = rootComponent.userComponentBuilder().build()
+            fabricManager.setLogUser(userComponent!!.provideUser())
             return@lazyValue userComponent
         }
 
         @JvmStatic fun releaseUserComponent() {
             userComponent = null
+            sessionActivityComponentBuilders = null
             fabricManager.releaseLogUser()
         }
     }

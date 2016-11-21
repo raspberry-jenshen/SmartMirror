@@ -7,16 +7,30 @@ interface FirebaseConstant {
         const val TUNERS: String = "tuners"
     }
 
-    interface Mirrors {
+    interface Mirror {
         companion object {
             const val IS_WAITING_FOR_TUNER = "is_waiting_for_tuner"
+            const val SUBSCRIBERS = "subscribers"
+        }
+
+        interface MirrorSubscriber {
+            companion object {
+                const val ID = "id"
+                const val LAST_TIME_UPDATE = "last_time_update"
+            }
         }
     }
 
-    interface Tuners {
+    interface Tuner {
         companion object {
-            const val MAC_ADDRESS = "mac_address"
             const val EMAIL = "email"
+            const val SUBSCRIPTIONS = "subscriptions"
+        }
+
+        interface TunerSubscription {
+            companion object {
+                const val ID = "id"
+            }
         }
     }
 }

@@ -6,14 +6,7 @@ import com.jenshen.smartmirror.data.firebase.FirebaseConstant
 import io.reactivex.Single
 import javax.inject.Inject
 
-class FirebaseRealtimeDatabaseManager : RealtimeDatabaseManager {
-
-    private val fireBaseDatabase: FirebaseDatabase
-
-    @Inject
-    constructor(fireBaseDatabase: FirebaseDatabase) {
-        this.fireBaseDatabase = fireBaseDatabase
-    }
+class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDatabase: FirebaseDatabase) : RealtimeDatabaseManager {
 
     override fun getTunersRef(): Single<DatabaseReference> {
         return Single.fromCallable { fireBaseDatabase.reference }
@@ -35,5 +28,20 @@ class FirebaseRealtimeDatabaseManager : RealtimeDatabaseManager {
         return Single.fromCallable { fireBaseDatabase.reference }
                 .map { it.child(FirebaseConstant.MIRRORS) }
                 .map { it.child(id) }
+    }
+
+    override fun getIsWaitingForTunerFlagRef(id: String): Single<DatabaseReference> {
+        return getMirrorRef(id)
+                .map { it.child(FirebaseConstant.Mirror.IS_WAITING_FOR_TUNER)}
+    }
+
+    override fun getMirrorSubscribersRef(id: String): Single<DatabaseReference> {
+        return getMirrorRef(id)
+                .map { it.child(FirebaseConstant.Mirror.SUBSCRIBERS)}
+    }
+
+    override fun getTunerSubscriptionsRef(id: String): Single<DatabaseReference> {
+        return getTunerRef(id)
+                .map { it.child(FirebaseConstant.Tuner.SUBSCRIPTIONS)}
     }
 }

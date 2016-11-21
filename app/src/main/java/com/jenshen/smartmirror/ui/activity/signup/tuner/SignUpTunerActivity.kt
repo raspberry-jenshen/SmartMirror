@@ -11,7 +11,7 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.model.UserModel
 import com.jenshen.smartmirror.di.component.activity.signUp.tuner.SignUpTunerComponent
-import com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerActivity
+import com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerDashboardActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.signup.tuner.SignUpTunerPresenter
 import com.jenshen.smartmirror.ui.mvp.view.signup.tuner.SignUpTunerView
 import com.jenshen.smartmirror.util.asCircleBitmap
@@ -51,7 +51,7 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        setContentView(R.layout.activity_sign_up_tuner)
         userModel = savedInstanceState?.getParcelable(KEY_USER_MODEL) ?: UserModel()
         loadAvatar(userModel.avatarImage)
 
@@ -144,7 +144,7 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
     }
 
     override fun onCreateAccountSuccess() {
-        val intent = Intent(context, TunerActivity::class.java)
+        val intent = Intent(context, TunerDashboardActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }

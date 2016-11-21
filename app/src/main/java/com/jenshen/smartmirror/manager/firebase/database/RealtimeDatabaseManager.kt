@@ -12,4 +12,9 @@ interface RealtimeDatabaseManager {
     fun getMirrorsRef(): Single<DatabaseReference>
     fun getMirrorRef(id: String): Single<DatabaseReference>
 
+    fun getIsWaitingForTunerFlagRef(id: String): Single<DatabaseReference>
+
+    fun getMirrorSubscribersRef(id: String): Single<DatabaseReference>
+    fun getTunerSubscriptionsRef(id: String): Single<DatabaseReference>
+
 }

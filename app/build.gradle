@@ -140,6 +140,8 @@ dependencies {
     compile "io.reactivex.rxjava2:rxandroid:${lib.rx_android_version}"
     compile "io.reactivex.rxjava2:rxjava:${lib.rx_java_version}"
 
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.8.2@aar'
+
     //fabric
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;

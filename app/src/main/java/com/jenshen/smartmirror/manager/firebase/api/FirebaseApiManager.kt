@@ -2,7 +2,6 @@ package com.jenshen.smartmirror.manager.firebase.api
 
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.entity.session.TunerSession
-import com.jenshen.smartmirror.data.firebase.FirebaseConstant
 import com.jenshen.smartmirror.data.firebase.Mirror
 import com.jenshen.smartmirror.data.firebase.Tuner
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
@@ -70,8 +69,7 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
     }
 
     override fun observeIsWaitingForTuner(id: String): Flowable<Boolean> {
-        return fireBaseDatabase.getMirrorRef(id)
-                .map { it.child(FirebaseConstant.Mirrors.IS_WAITING_FOR_TUNER) }
+        return fireBaseDatabase.getIsWaitingForTunerFlagRef(id)
                 .flatMapPublisher { it.observeValue() }
                 .map { it.getValue(Boolean::class.java) }
     }
