@@ -3,10 +3,12 @@ package com.jenshen.smartmirror.interactor.firebase.api.tuner
 import android.content.Context
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
+import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -14,6 +16,10 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                                      private var apiManager: ApiManager,
                                                      private var preferencesManager: PreferencesManager,
                                                      private var tunerApiManager: TunerApiManager) : TunerApiInteractor {
+
+    override fun fetchMirrorsForTuner(): Flowable<MirrorModel> {
+
+    }
 
     override fun subscribeOnMirror(mirrorId: String): Completable {
         return apiManager.getMirror(mirrorId)
