@@ -7,5 +7,5 @@ import io.reactivex.Observable
 
 interface TunerApiInteractor {
     fun subscribeOnMirror(mirrorId: String): Completable
-    fun fetchMirrorsForTuner(): Flowable<MirrorModel>
+    fun fetchTunerSubscriptions(): Flowable<MirrorModel>
 }

@@ -1,10 +1,13 @@
 package com.jenshen.smartmirror.manager.firebase.api.tuner
 
+import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.MirrorSubscriber
 import com.jenshen.smartmirror.data.firebase.TunerSubscription
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
+import com.jenshen.smartmirror.util.reactive.firebase.observeChilds
 import com.jenshen.smartmirror.util.reactive.firebase.uploadValue
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import javax.inject.Inject
 
 class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: RealtimeDatabaseManager) : TunerApiManager {
@@ -27,5 +30,12 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
         return fireBaseDatabase
                 .getIsWaitingForTunerFlagRef(mirrorId)
                 .flatMapCompletable { it.uploadValue(isWaiting) }
+    }
+
+    override fun observeTunerSubscriptions(id: String): Flowable<FirebaseChildEvent> {
+        return fireBaseDatabase
+                .getTunerSubscriptionsRef(id)
+                .flatMapPublisher { it.observeChilds() }
+                .filter { it.dataSnapshot.exists() }
     }
 }

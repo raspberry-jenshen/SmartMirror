@@ -16,6 +16,7 @@ import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.di.component.activity.choose.mirror.ChooseMirrorComponent
 import com.jenshen.smartmirror.ui.activity.qrScan.QRCodeScanActivity
 import com.jenshen.smartmirror.ui.activity.settings.SettingsActivity
+import com.jenshen.smartmirror.ui.adapter.mirrors.MirrorsAdapter
 import com.jenshen.smartmirror.ui.mvp.presenter.choose.mirror.ChooseMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.choose.mirror.ChooseMirrorView
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -23,6 +24,8 @@ import kotlinx.android.synthetic.main.activity_dashboard_tuner.*
 
 
 class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent, RecyclerView,MirrorModel, ChooseMirrorView, ChooseMirrorPresenter>(), ChooseMirrorView {
+
+    private lateinit var adapter :MirrorsAdapter
 
     /* inject */
 
@@ -42,6 +45,9 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent, Recycle
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard_tuner)
         setSupportActionBar(toolbar)
+        adapter = MirrorsAdapter()
+        contentView.adapter = adapter
+        loadData(false)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -87,7 +93,7 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent, Recycle
     /* lce */
 
     override fun loadData(pullToRefresh: Boolean) {
-        presenter.fetchMirrors()
+        presenter.fetchMirrors(pullToRefresh)
     }
 
     override fun setData(data: MirrorModel) {

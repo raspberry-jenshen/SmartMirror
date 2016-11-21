@@ -3,6 +3,8 @@ package com.jenshen.smartmirror.interactor.firebase.api.tuner
 import android.content.Context
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
+import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
+import com.jenshen.smartmirror.data.firebase.TunerSubscription
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
@@ -17,8 +19,11 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                                      private var preferencesManager: PreferencesManager,
                                                      private var tunerApiManager: TunerApiManager) : TunerApiInteractor {
 
-    override fun fetchMirrorsForTuner(): Flowable<MirrorModel> {
-
+    override fun fetchTunerSubscriptions(): Flowable<MirrorModel> {
+        return Single.fromCallable { preferencesManager.getSession() }
+                .cast(TunerSession::class.java)
+                .flatMapPublisher { tunerApiManager.observeTunerSubscriptions(it.id) }
+                .map { MirrorModel(it.dataSnapshot.getValue(TunerSubscription::class.java), it.eventType == FirebaseChildEvent.CHILD_REMOVED) }
     }
 
     override fun subscribeOnMirror(mirrorId: String): Completable {

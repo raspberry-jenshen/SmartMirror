@@ -23,6 +23,6 @@ class ChooseMirrorPresenter @Inject constructor(private val apiInteractor: Tuner
     }
 
     fun fetchMirrors(pullToRefresh: Boolean) {
-        subscribeOnModel(apiInteractor.fetchMirrorsForTuner().toObservable(), pullToRefresh)
+        subscribeOnModel(apiInteractor.fetchTunerSubscriptions().toObservable(), pullToRefresh)
     }
 }
