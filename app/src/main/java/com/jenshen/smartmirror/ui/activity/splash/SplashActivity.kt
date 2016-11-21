@@ -6,7 +6,7 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.di.component.activity.splash.SplashComponent
 import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorDashboardActivity
-import com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerDashboardActivity
+import com.jenshen.smartmirror.ui.activity.choose.mirror.ChooseMirrorActivity
 import com.jenshen.smartmirror.ui.activity.start.StartActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.splash.SplashPresenter
 import com.jenshen.smartmirror.ui.mvp.view.splash.SplashView
@@ -41,7 +41,7 @@ class SplashActivity : BaseDiMvpActivity<SplashComponent, SplashView, SplashPres
     }
 
     override fun openMirrorTunerScreen() {
-        startActivity(Intent(context, TunerDashboardActivity::class.java))
+        startActivity(Intent(context, ChooseMirrorActivity::class.java))
     }
 
     override fun openStartScreen() {

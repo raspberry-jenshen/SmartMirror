@@ -17,17 +17,13 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     override fun subscribeOnMirror(mirrorId: String): Completable {
         return apiManager.getMirror(mirrorId)
-                .isEmpty
-                .flatMapCompletable { isEmpty ->
-                    if (!isEmpty) {
-                        return@flatMapCompletable Single.fromCallable { preferencesManager.getSession()}
-                                .cast(TunerSession::class.java)
-                                .flatMapCompletable { tunerApiManager.addSubscriptionToTuner(it.id, mirrorId)}
-                                .andThen { tunerApiManager.addSubscriberToMirror(mirrorId) }
-                                .andThen { tunerApiManager.setFlagForWaitingSubscribersOnMirror(false, mirrorId) }
-                    } else {
-                        throw RuntimeException(context.getString(R.string.error_cant_find_mirror))
-                    }
+                .switchIfEmpty { throw RuntimeException(context.getString(R.string.error_cant_find_mirror)) }
+                .flatMapCompletable {
+                    Single.fromCallable { preferencesManager.getSession() }
+                            .cast(TunerSession::class.java)
+                            .flatMapCompletable { tunerApiManager.addSubscriptionToTuner(it.id, mirrorId) }
+                            .andThen(tunerApiManager.addSubscriberToMirror(mirrorId))
+                            .andThen(tunerApiManager.setFlagForWaitingSubscribersOnMirror(false, mirrorId))
                 }
     }
 }

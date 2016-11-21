@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_tuner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jenshen.smartmirror.ui.activity.dashboard.tuner.TunerDashboardActivity">
+    android:orientation="vertical"
+    tools:context="com.jenshen.smartmirror.ui.activity.choose.mirror.ChooseMirrorActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -15,4 +16,30 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/tuner" />
 
-</RelativeLayout>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Loading View -->
+        <ProgressBar
+            android:id="@+id/loadingView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
+        <!-- Content View -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/contentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Error view -->
+        <TextView
+            android:id="@+id/errorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+</LinearLayout>

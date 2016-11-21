@@ -1,5 +1,12 @@
 package com.jenshen.smartmirror.ui.mvp.presenter.signup.mirror
 
+import android.graphics.Bitmap
+import android.graphics.Color
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.WriterException
+import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.jenshen.compat.base.presenter.MvpRxPresenter
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.firebase.Mirror
@@ -10,6 +17,7 @@ import com.jenshen.smartmirror.ui.mvp.view.signup.mirror.SignUpMirrorView
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import javax.inject.Inject
 
 
@@ -25,6 +33,26 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({ createMirrorAccount() }, { view?.handleError(it) })
+    }
+
+    @Throws(WriterException::class)
+    fun generateQrCode(myCodeText: String): Bitmap {
+        val hintMap = Hashtable<EncodeHintType, ErrorCorrectionLevel>()
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H) // H = 30% damage
+
+        val qrCodeWriter = QRCodeWriter()
+
+        val size = 1024
+
+        val bitMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size, size, hintMap)
+        val width = bitMatrix.width
+        val bmp = Bitmap.createBitmap(width, width, Bitmap.Config.RGB_565)
+        for (x in 0..width - 1) {
+            for (y in 0..width - 1) {
+                bmp.setPixel(y, x, if (bitMatrix.get(x, y)) Color.BLUE else Color.WHITE)
+            }
+        }
+        return bmp
     }
 
     fun fetchIsTunerConnected(id: String) {

@@ -49,7 +49,7 @@ class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirr
 
     override fun onMirrorCreated(mirror: Mirror, mirrorSession: MirrorSession) {
         if (mirror.isWaitingForTuner) {
-            qr_code_imageView.setImageBitmap(generateQrCode(mirrorSession.id))
+            qr_code_imageView.setImageBitmap(presenter.generateQrCode(mirrorSession.id))
             presenter.fetchIsTunerConnected(mirrorSession.id)
         } else {
             onTunerConnected()
@@ -60,25 +60,5 @@ class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirr
         val intent = Intent(context, MirrorDashboardActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
-    }
-
-    @Throws(WriterException::class)
-    fun generateQrCode(myCodeText: String): Bitmap {
-        val hintMap = Hashtable<EncodeHintType, ErrorCorrectionLevel>()
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H) // H = 30% damage
-
-        val qrCodeWriter = QRCodeWriter()
-
-        val size = 256
-
-        val bitMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size, size, hintMap)
-        val width = bitMatrix.width
-        val bmp = Bitmap.createBitmap(width, width, Bitmap.Config.RGB_565)
-        for (x in 0..width - 1) {
-            for (y in 0..width - 1) {
-                bmp.setPixel(y, x, if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE)
-            }
-        }
-        return bmp
     }
 }

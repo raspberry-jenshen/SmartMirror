@@ -41,7 +41,7 @@
             android:theme="@style/App.Theme.SignIn.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.activity.dashboard.tuner.TunerDashboardActivity"
+            android:name=".ui.activity.choose.mirror.ChooseMirrorActivity"
             android:theme="@style/App.Theme.Tuner.Activity" />
         <activity
             android:name=".ui.activity.settings.SettingsActivity"
