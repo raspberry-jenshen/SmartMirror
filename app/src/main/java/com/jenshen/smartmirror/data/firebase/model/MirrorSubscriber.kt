@@ -15,13 +15,13 @@ data class MirrorSubscriber(@set:PropertyName(FirebaseConstant.Mirror.MirrorSubs
 
     @set:PropertyName(FirebaseConstant.Mirror.MirrorSubscriber.LAST_TIME_UPDATE)
     @get:PropertyName(FirebaseConstant.Mirror.MirrorSubscriber.LAST_TIME_UPDATE)
-    var lastTimeUpdate: String? = null
+    var lastTimeUpdate: Long? = null
 
     constructor() : this("") {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    constructor(id: String, lastTimeUpdate: String) : this(id) {
+    constructor(id: String, lastTimeUpdate: Long) : this(id) {
         this.lastTimeUpdate = lastTimeUpdate
     }
 

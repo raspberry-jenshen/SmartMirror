@@ -35,26 +35,6 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
                 .subscribe({ createMirrorAccount() }, { view?.handleError(it) })
     }
 
-    @Throws(WriterException::class)
-    fun generateQrCode(myCodeText: String): Bitmap {
-        val hintMap = Hashtable<EncodeHintType, ErrorCorrectionLevel>()
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H) // H = 30% damage
-
-        val qrCodeWriter = QRCodeWriter()
-
-        val size = 1024
-
-        val bitMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size, size, hintMap)
-        val width = bitMatrix.width
-        val bmp = Bitmap.createBitmap(width, width, Bitmap.Config.RGB_565)
-        for (x in 0..width - 1) {
-            for (y in 0..width - 1) {
-                bmp.setPixel(y, x, if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE)
-            }
-        }
-        return bmp
-    }
-
     fun fetchIsTunerConnected(id: String) {
         compositeDisposable.add(apiInteractor.isTunerConnected(id)
                 .applySchedulers(Schedulers.io())
@@ -89,12 +69,19 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
         }
         Single.fromCallable { preferencesManager.getSession()!! }
                 .cast(MirrorSession::class.java)
-                .flatMap { session ->  apiInteractor.createOrGetMirror(session)
-                        .map { MirrorInfo(it, session) }}
+                .flatMap { session ->
+                    apiInteractor.createOrGetMirror(session)
+                            .map { MirrorInfo(it, session) }
+                }
+                .doOnSuccess {
+                    if (it.mirror.isWaitingForTuner) {
+                        it.bitmap = generateQrCode(it.mirrorSession.id)
+                    }
+                }
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({
-                    view?.onMirrorCreated(it.mirror, it.mirrorSession)
+                    view?.onMirrorCreated(it.mirror, it.mirrorSession, it.bitmap)
                     view?.hideProgress()
                     isTaskFinished = true
                 }, {
@@ -104,7 +91,27 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
                 })
     }
 
-    private data class MirrorInfo(var mirror: Mirror, var mirrorSession: MirrorSession) {
+    @Throws(WriterException::class)
+    private fun generateQrCode(myCodeText: String): Bitmap {
+        val hintMap = Hashtable<EncodeHintType, ErrorCorrectionLevel>()
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H) // H = 30% damage
 
+        val qrCodeWriter = QRCodeWriter()
+
+        val size = 1024
+
+        val bitMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size, size, hintMap)
+        val width = bitMatrix.width
+        val bmp = Bitmap.createBitmap(width, width, Bitmap.Config.RGB_565)
+        for (x in 0..width - 1) {
+            for (y in 0..width - 1) {
+                bmp.setPixel(y, x, if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE)
+            }
+        }
+        return bmp
+    }
+
+    private data class MirrorInfo(var mirror: Mirror, var mirrorSession: MirrorSession) {
+        var bitmap: Bitmap? = null
     }
 }

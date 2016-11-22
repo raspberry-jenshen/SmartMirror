@@ -49,6 +49,14 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                             .flatMapCompletable {
                                 tunerApiManager.removeSubscriberFromMirror(it.id, mirrorId)
                                         .andThen(tunerApiManager.removeSubscriptionFromTuner(it.id, mirrorId))
+                                        .andThen(Single.fromCallable { mirror }
+                                                .flatMapCompletable {
+                                                    if (it.subscribers != null && it.subscribers!!.size == 1) {
+                                                        tunerApiManager.setFlagForWaitingSubscribersOnMirror(true, mirrorId)
+                                                    } else {
+                                                        Completable.complete()
+                                                    }
+                                                })
                             }
                 }
     }

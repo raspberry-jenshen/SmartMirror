@@ -3,6 +3,7 @@ package com.jenshen.smartmirror.data.firebase.model
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName
 import com.jenshen.smartmirror.data.firebase.FirebaseConstant
+import java.util.*
 
 @IgnoreExtraProperties
 data class Mirror(
@@ -15,13 +16,13 @@ data class Mirror(
 
     @set:PropertyName(FirebaseConstant.Mirror.SUBSCRIBERS)
     @get:PropertyName(FirebaseConstant.Mirror.SUBSCRIBERS)
-    private var subscribers: List<MirrorSubscriber>? = null
+    var subscribers: HashMap<String, MirrorSubscriber>? = null
 
     constructor() : this("") {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    constructor(deviceInfo: String, subscribers: List<MirrorSubscriber>?) : this(deviceInfo) {
+    constructor(deviceInfo: String, subscribers: HashMap<String, MirrorSubscriber>?) : this(deviceInfo) {
         this.subscribers = subscribers
     }
 }

@@ -47,9 +47,9 @@ class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirr
 
     /* callbacks */
 
-    override fun onMirrorCreated(mirror: Mirror, mirrorSession: MirrorSession) {
+    override fun onMirrorCreated(mirror: Mirror, mirrorSession: MirrorSession, bitmap: Bitmap?) {
         if (mirror.isWaitingForTuner) {
-            qr_code_imageView.setImageBitmap(presenter.generateQrCode(mirrorSession.id))
+            qr_code_imageView.setImageBitmap(bitmap)
             presenter.fetchIsTunerConnected(mirrorSession.id)
         } else {
             onTunerConnected()
