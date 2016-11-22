@@ -1,9 +1,10 @@
 package com.jenshen.smartmirror.manager.firebase.api
 
+import android.os.Build
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.entity.session.TunerSession
-import com.jenshen.smartmirror.data.firebase.Mirror
-import com.jenshen.smartmirror.data.firebase.Tuner
+import com.jenshen.smartmirror.data.firebase.model.Mirror
+import com.jenshen.smartmirror.data.firebase.model.Tuner
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
 import com.jenshen.smartmirror.util.reactive.firebase.loadValue
 import com.jenshen.smartmirror.util.reactive.firebase.observeValue
@@ -46,7 +47,11 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
     override fun createMirror(mirrorSession: MirrorSession): Single<Mirror> {
         return fireBaseDatabase.getMirrorRef(mirrorSession.id)
                 .flatMap { reference ->
-                    Single.fromCallable { Mirror() }
+                    Single.fromCallable {
+                        Mirror(Build.DEVICE + " " +
+                                Build.MODEL + " " +
+                                Build.PRODUCT)
+                    }
                             .flatMap { mirror ->
                                 reference.uploadValue(mirror)
                                         .toSingle { mirror }

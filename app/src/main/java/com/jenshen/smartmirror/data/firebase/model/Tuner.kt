@@ -1,7 +1,8 @@
-package com.jenshen.smartmirror.data.firebase
+package com.jenshen.smartmirror.data.firebase.model
 
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName
+import com.jenshen.smartmirror.data.firebase.FirebaseConstant
 
 @IgnoreExtraProperties
 data class Tuner(@set:PropertyName(FirebaseConstant.Tuner.EMAIL)

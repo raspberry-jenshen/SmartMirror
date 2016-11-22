@@ -2,8 +2,8 @@ package com.jenshen.smartmirror.manager.firebase.api
 
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.entity.session.TunerSession
-import com.jenshen.smartmirror.data.firebase.Mirror
-import com.jenshen.smartmirror.data.firebase.Tuner
+import com.jenshen.smartmirror.data.firebase.model.Mirror
+import com.jenshen.smartmirror.data.firebase.model.Tuner
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Single

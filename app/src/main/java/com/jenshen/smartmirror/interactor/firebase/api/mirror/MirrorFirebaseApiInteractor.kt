@@ -1,14 +1,14 @@
 package com.jenshen.smartmirror.interactor.firebase.api.mirror
 
-import com.jenshen.smartmirror.manager.firebase.api.mirror.MirrorApiManager
+import com.jenshen.smartmirror.manager.firebase.api.ApiManager
+import io.reactivex.Flowable
 import javax.inject.Inject
 
-class MirrorFirebaseApiInteractor : MirrorApiInteractor {
+class MirrorFirebaseApiInteractor @Inject constructor(private val apiManager: ApiManager) : MirrorApiInteractor {
 
-    private var apiManager: MirrorApiManager
 
-    @Inject
-    constructor(apiManager: MirrorApiManager) {
-        this.apiManager = apiManager
+    override fun fetchIsNeedToShoQrCode(mirrorId: String): Flowable<Boolean> {
+        return apiManager.observeIsWaitingForTuner(mirrorId)
+                .filter { it == true }
     }
 }

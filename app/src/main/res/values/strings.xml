@@ -42,6 +42,7 @@
 
     <!--tuner -->
     <string name="tuner">Tuner</string>
+    <string name="tuner.home_mirror">Home mirror</string>
 
 
 </resources>

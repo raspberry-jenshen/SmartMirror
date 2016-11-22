@@ -69,15 +69,28 @@ fun DatabaseReference.updateValues(map: Map<String, Any>): Completable {
     }
 }
 
-fun DatabaseReference.observeChilds() : Flowable<FirebaseChildEvent> {
+fun DatabaseReference.clearValue(): Completable {
+    return Completable.create { source ->
+        this.removeValue()
+                .addOnCompleteListener {
+                    if (it.isComplete && it.isSuccessful) {
+                        source.onComplete()
+                    } else {
+                        source.onError(it.exception)
+                    }
+                }
+    }
+}
+
+fun DatabaseReference.observeChildren() : Flowable<FirebaseChildEvent> {
     return Flowable.create<FirebaseChildEvent>({ subscriber ->
         val listener = object : ChildEventListener {
 
-            override fun onChildAdded(dataSnapshot: DataSnapshot, prevName: String) {
+            override fun onChildAdded(dataSnapshot: DataSnapshot, prevName: String?) {
                 subscriber.onNext(FirebaseChildEvent(dataSnapshot, FirebaseChildEvent.CHILD_ADDED, prevName))
             }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot, prevName: String) {
+            override fun onChildChanged(dataSnapshot: DataSnapshot, prevName: String?) {
                 subscriber.onNext(FirebaseChildEvent(dataSnapshot, FirebaseChildEvent.CHILD_CHANGED, prevName))
             }
 
@@ -85,7 +98,7 @@ fun DatabaseReference.observeChilds() : Flowable<FirebaseChildEvent> {
                 subscriber.onNext(FirebaseChildEvent(dataSnapshot, FirebaseChildEvent.CHILD_REMOVED))
             }
 
-            override fun onChildMoved(dataSnapshot: DataSnapshot, prevName: String) {
+            override fun onChildMoved(dataSnapshot: DataSnapshot, prevName: String?) {
                 subscriber.onNext(FirebaseChildEvent(dataSnapshot, FirebaseChildEvent.CHILD_MOVED, prevName))
             }
 

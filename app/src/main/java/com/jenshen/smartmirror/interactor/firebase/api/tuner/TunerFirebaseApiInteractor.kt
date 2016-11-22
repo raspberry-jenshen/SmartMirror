@@ -4,7 +4,7 @@ import android.content.Context
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
-import com.jenshen.smartmirror.data.firebase.TunerSubscription
+import com.jenshen.smartmirror.data.firebase.model.TunerSubscription
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
@@ -29,12 +29,33 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
     override fun subscribeOnMirror(mirrorId: String): Completable {
         return apiManager.getMirror(mirrorId)
                 .switchIfEmpty { throw RuntimeException(context.getString(R.string.error_cant_find_mirror)) }
-                .flatMapCompletable {
+                .flatMapCompletable { mirror ->
                     Single.fromCallable { preferencesManager.getSession() }
                             .cast(TunerSession::class.java)
-                            .flatMapCompletable { tunerApiManager.addSubscriptionToTuner(it.id, mirrorId) }
-                            .andThen(tunerApiManager.addSubscriberToMirror(mirrorId))
+                            .flatMapCompletable {
+                                tunerApiManager.addSubscriberToMirror(it.id, mirrorId)
+                                        .andThen(tunerApiManager.addSubscriptionToTuner(it.id, mirrorId, mirror))
+                            }
                             .andThen(tunerApiManager.setFlagForWaitingSubscribersOnMirror(false, mirrorId))
                 }
+    }
+
+    override fun unsubscribeFromMirror(mirrorId: String): Completable {
+        return apiManager.getMirror(mirrorId)
+                .switchIfEmpty { throw RuntimeException(context.getString(R.string.error_cant_find_mirror)) }
+                .flatMapCompletable { mirror ->
+                    Single.fromCallable { preferencesManager.getSession() }
+                            .cast(TunerSession::class.java)
+                            .flatMapCompletable {
+                                tunerApiManager.removeSubscriberFromMirror(it.id, mirrorId)
+                                        .andThen(tunerApiManager.removeSubscriptionFromTuner(it.id, mirrorId))
+                            }
+                }
+    }
+
+    override fun switchFlagForWaitingTuner(mirrorId: String): Completable {
+        return apiManager.getMirror(mirrorId)
+                .switchIfEmpty { throw RuntimeException(context.getString(R.string.error_cant_find_mirror)) }
+                .flatMapCompletable { tunerApiManager.setFlagForWaitingSubscribersOnMirror(!it.isWaitingForTuner, mirrorId) }
     }
 }

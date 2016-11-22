@@ -9,6 +9,7 @@ interface FirebaseConstant {
 
     interface Mirror {
         companion object {
+            const val DEVICE_INFO = "device_info"
             const val IS_WAITING_FOR_TUNER = "is_waiting_for_tuner"
             const val SUBSCRIBERS = "subscribers"
         }
@@ -30,6 +31,7 @@ interface FirebaseConstant {
         interface TunerSubscription {
             companion object {
                 const val ID = "id"
+                const val DEVICE_INFO = "device_info"
             }
         }
     }

@@ -9,7 +9,7 @@ import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.jenshen.compat.base.presenter.MvpRxPresenter
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
-import com.jenshen.smartmirror.data.firebase.Mirror
+import com.jenshen.smartmirror.data.firebase.model.Mirror
 import com.jenshen.smartmirror.interactor.firebase.api.ApiInteractor
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
@@ -49,7 +49,7 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
         val bmp = Bitmap.createBitmap(width, width, Bitmap.Config.RGB_565)
         for (x in 0..width - 1) {
             for (y in 0..width - 1) {
-                bmp.setPixel(y, x, if (bitMatrix.get(x, y)) Color.BLUE else Color.WHITE)
+                bmp.setPixel(y, x, if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE)
             }
         }
         return bmp

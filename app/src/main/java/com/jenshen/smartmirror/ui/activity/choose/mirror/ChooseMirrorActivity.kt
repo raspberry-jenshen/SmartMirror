@@ -6,9 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuItem
-import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.compat.base.view.impl.mvp.lce.component.lce.BaseDiLceMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
@@ -16,16 +16,24 @@ import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.di.component.activity.choose.mirror.ChooseMirrorComponent
 import com.jenshen.smartmirror.ui.activity.qrScan.QRCodeScanActivity
 import com.jenshen.smartmirror.ui.activity.settings.SettingsActivity
+import com.jenshen.smartmirror.ui.adapter.SwipeToDeleteAdapter
 import com.jenshen.smartmirror.ui.adapter.mirrors.MirrorsAdapter
+import com.jenshen.smartmirror.ui.adapter.touch.SimpleItemTouchHelperCallback
 import com.jenshen.smartmirror.ui.mvp.presenter.choose.mirror.ChooseMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.choose.mirror.ChooseMirrorView
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.activity_dashboard_tuner.*
+import kotlinx.android.synthetic.main.activity_choose_mirror.*
 
 
-class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent, RecyclerView,MirrorModel, ChooseMirrorView, ChooseMirrorPresenter>(), ChooseMirrorView {
+class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
+        RecyclerView,
+        MirrorModel,
+        ChooseMirrorView,
+        ChooseMirrorPresenter>(),
+        ChooseMirrorView, SwipeToDeleteAdapter.OnDeleteItemListener<MirrorModel> {
 
-    private lateinit var adapter :MirrorsAdapter
+
+    private lateinit var adapter: MirrorsAdapter
 
     /* inject */
 
@@ -43,10 +51,16 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent, Recycle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard_tuner)
+        setContentView(R.layout.activity_choose_mirror)
         setSupportActionBar(toolbar)
-        adapter = MirrorsAdapter()
+        adapter = MirrorsAdapter(context, { presenter.setMirrorIsWaitingForSubscriber(it.tunerSubscription.id) },
+                {/*todo edit mirror*/ }, this)
         contentView.adapter = adapter
+
+        val callback = SimpleItemTouchHelperCallback(adapter, context, ItemTouchHelper.LEFT)
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(contentView)
+
         loadData(false)
     }
 
@@ -97,6 +111,13 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent, Recycle
     }
 
     override fun setData(data: MirrorModel) {
+        adapter.addModel(data)
+    }
 
+    /* callbacks */
+
+    override fun onDeleteItem(position: Int, item: MirrorModel) {
+        adapter.deleteModel(position)
+        presenter.deleteSubscription(item.tunerSubscription)
     }
 }
