@@ -32,5 +32,5 @@ abstract class SessionActivityBindingModule {
     @Binds
     @IntoMap
     @ActivityKey(EditMirrorActivity::class)
-    abstract fun editMirrorActivityComponentBuilder(impl: ChooseMirrorComponent.Builder): ActivityComponentBuilder<*>
+    abstract fun editMirrorActivityComponentBuilder(impl: EditMirrorComponent.Builder): ActivityComponentBuilder<*>
 }
