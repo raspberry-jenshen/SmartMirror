@@ -66,6 +66,9 @@
             android:name=".ui.activity.qrScan.QRCodeScanActivity"
             android:permission="android.permission.CAMERA"
             android:theme="@style/App.Theme.QRCodeScanner.Activity" />
+        <activity
+            android:name=".ui.activity.edit.mirror.EditMirrorActivity"
+            android:theme="@style/App.Theme.EditMirror.Activity" />
     </application>
 
 </manifest>

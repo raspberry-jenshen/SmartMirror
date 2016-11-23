@@ -53,6 +53,10 @@
 
     <style name="App.Theme.QRCodeScanner.Activity" />
 
+    <style name="App.Theme.EditMirror" />
+
+    <style name="App.Theme.EditMirror.Activity" />
+
     <!-- Widget -->
 
     <style name="App.Theme.TextView">

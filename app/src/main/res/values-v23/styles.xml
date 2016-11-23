@@ -48,4 +48,10 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="App.Theme.EditMirror.Activity">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
 </resources>

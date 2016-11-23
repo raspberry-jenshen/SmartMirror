@@ -14,6 +14,7 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.di.component.activity.choose.mirror.ChooseMirrorComponent
+import com.jenshen.smartmirror.ui.activity.edit.mirror.EditMirrorActivity
 import com.jenshen.smartmirror.ui.activity.qrScan.QRCodeScanActivity
 import com.jenshen.smartmirror.ui.activity.settings.SettingsActivity
 import com.jenshen.smartmirror.ui.adapter.SwipeToDeleteAdapter
@@ -53,9 +54,12 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_mirror)
         setSupportActionBar(toolbar)
-        adapter = MirrorsAdapter(context, { presenter.setMirrorIsWaitingForSubscriber(it.tunerSubscription.id) },
-                {/*todo edit mirror*/ },
-                {presenter.switchToConfiguration()},
+        adapter = MirrorsAdapter(context,
+                { presenter.setMirrorIsWaitingForSubscriber(it.tunerSubscription.id) },
+                { startActivity(Intent(this, EditMirrorActivity::class.java)) },
+                { configurationId: String, mirrorModel: MirrorModel -> /*todo edit */ },
+                { configurationId: String, mirrorModel: MirrorModel -> presenter.deleteConfigurationForMirror(configurationId, mirrorModel.key) },
+                { configurationId: String, mirrorModel: MirrorModel -> presenter.setConfigurationIdForMirror(configurationId, mirrorModel.key) },
                 this)
         contentView.adapter = adapter
 

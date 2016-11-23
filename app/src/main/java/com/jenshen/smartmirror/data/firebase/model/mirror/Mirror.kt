@@ -14,13 +14,17 @@ data class Mirror(
         @get:PropertyName(FirebaseConstant.Mirror.IS_WAITING_FOR_TUNER)
         var isWaitingForTuner: Boolean = true) {
 
+    @set:PropertyName(FirebaseConstant.Mirror.SELECTED_CONFIGURATION_ID)
+    @get:PropertyName(FirebaseConstant.Mirror.SELECTED_CONFIGURATION_ID)
+    var selectedConfigurationId: String? = null
+
     @set:PropertyName(FirebaseConstant.Mirror.SUBSCRIBERS)
     @get:PropertyName(FirebaseConstant.Mirror.SUBSCRIBERS)
     var subscribers: HashMap<String, MirrorSubscriber>? = null
 
     @set:PropertyName(FirebaseConstant.Mirror.CONFIGURATIONS)
     @get:PropertyName(FirebaseConstant.Mirror.CONFIGURATIONS)
-    var sonfugurations: HashMap<String, MirrorConfigurationInfo>? = null
+    var confugurations: HashMap<String, MirrorConfigurationInfo>? = null
 
     constructor() : this("") {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)

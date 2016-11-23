@@ -20,6 +20,9 @@ import javax.inject.Inject
 
 class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: RealtimeDatabaseManager) : TunerApiManager {
 
+
+    /* mirror */
+
     override fun addSubscriberToMirror(tunerId: String, mirrorId: String): Completable {
         return fireBaseDatabase
                 .getMirrorSubscribersRef(mirrorId)
@@ -30,20 +33,6 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
     override fun removeSubscriberFromMirror(tunerId: String, mirrorId: String): Completable {
         return fireBaseDatabase
                 .getMirrorSubscribersRef(mirrorId)
-                .flatMapCompletable { it.clearValue() }
-    }
-
-    override fun addSubscriptionToTuner(tunerId: String, mirrorId: String, mirror: Mirror): Completable {
-        return fireBaseDatabase
-                .getTunerSubscriptionsRef(tunerId)
-                .map { it.child(mirrorId) }
-                .flatMapCompletable { it.uploadValue(TunerSubscription(mirrorId, mirror.deviceInfo)) }
-    }
-
-    override fun removeSubscriptionFromTuner(tunerId: String, mirrorId: String): Completable {
-        return fireBaseDatabase
-                .getTunerSubscriptionsRef(tunerId)
-                .map { it.child(mirrorId) }
                 .flatMapCompletable { it.clearValue() }
     }
 
@@ -62,6 +51,32 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                     val type = object : GenericTypeIndicator<HashMap<String, MirrorConfigurationInfo>>() {}
                     it.getValue(type)
                 }
+    }
+
+    override fun setConfigurationIdForMirror(configurationId: String, mirrorId: String): Completable {
+        return fireBaseDatabase
+                .getSelectedConfigurationRef(mirrorId)
+                .flatMapCompletable { it.uploadValue(configurationId) }
+    }
+
+    override fun deleteConfigurationForMirror(configurationId: String): Completable {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    /* tuner */
+
+    override fun addSubscriptionToTuner(tunerId: String, mirrorId: String, mirror: Mirror): Completable {
+        return fireBaseDatabase
+                .getTunerSubscriptionsRef(tunerId)
+                .map { it.child(mirrorId) }
+                .flatMapCompletable { it.uploadValue(TunerSubscription(mirrorId, mirror.deviceInfo)) }
+    }
+
+    override fun removeSubscriptionFromTuner(tunerId: String, mirrorId: String): Completable {
+        return fireBaseDatabase
+                .getTunerSubscriptionsRef(tunerId)
+                .map { it.child(mirrorId) }
+                .flatMapCompletable { it.clearValue() }
     }
 
     override fun observeTunerSubscriptions(tunerId: String): Flowable<FirebaseChildEvent> {

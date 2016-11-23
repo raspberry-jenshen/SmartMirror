@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
 import com.jenshen.smartmirror.R
+import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.ui.holder.SwipeToDeleteHolder
 import kotlinx.android.synthetic.main.item_configuration.view.*
@@ -32,31 +33,44 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
 
     fun bindInfo(mirror: MirrorModel,
                  onQrCodeClicked: (MirrorModel) -> Unit,
-                 deleteConfigurationClick: (MirrorModel) -> Unit,
-                 editConfigurationClick: (MirrorModel) -> Unit,
-                 addConfigurationClick: (MirrorModel) -> Unit) {
+                 addConfigurationClick: (MirrorModel) -> Unit,
+                 editConfigurationClick: (String, MirrorModel) -> Unit,
+                 deleteConfigurationClick: (String, MirrorModel) -> Unit,
+                 selectConfigurationClick: (String, MirrorModel) -> Unit) {
         itemView.deviceInfo.text = mirror.tunerSubscription.deviceInfo
         itemView.addConfiguration_textView.setOnClickListener { addConfigurationClick(mirror) }
         itemView.qr_code_imageView.setOnClickListener { onQrCodeClicked(mirror) }
-
         if (mirror.mirrorConfigurationInfo != null) {
-            mirror.mirrorConfigurationInfo
-
-            for (0...mirror.mirrorConfigurationInfo)
-
-
-            val configurationInfo = layoutInflater.inflate(R.layout.item_configuration, itemView.configurationContainer)
-            configurationInfo.id = mirror.mirrorConfigurationInfo
-            configurationInfo.checkBox_textView.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-
-                }
-            })
-            configurationInfo.delete_button.setOnClickListener { deleteConfigurationClick(mirror) }
-            configurationInfo.setOnClickListener { editConfigurationClick(mirror) }
-            configurationsList.add(0, configurationInfo)
+            mirror.mirrorConfigurationInfo!!
+                    .toList()
+                    .forEach { item: Pair<String, MirrorConfigurationInfo> ->
+                        val configurationInfoView = layoutInflater.inflate(R.layout.item_configuration, itemView.configurationContainer)
+                        configurationInfoView.tag = mirror.key
+                        configurationInfoView.checkBox_textView.setOnCheckedChangeListener { button, isChecked ->
+                            if (isChecked) {
+                                val newConfigurationId = button!!.tag as String
+                                mirror.checkedConfigurationId = newConfigurationId
+                                selectConfigurationClick(mirror.key, mirror)
+                                setCheckedConfiguration(newConfigurationId)
+                            }
+                        }
+                        configurationInfoView.delete_button.setOnClickListener { deleteConfigurationClick(mirror.key, mirror) }
+                        configurationInfoView.setOnClickListener { editConfigurationClick(mirror.key, mirror) }
+                        configurationsList.add(0, configurationInfoView)
+                    }
         }
+        setCheckedConfiguration(mirror.checkedConfigurationId)
         setBackGround()
+    }
+
+    private fun setCheckedConfiguration(checkedItemId: String?) {
+        configurationsList.forEach {
+            if (it.tag == checkedItemId) {
+                itemView.checkBox_textView.isChecked = true
+            } else {
+                itemView.checkBox_textView.isChecked = false
+            }
+        }
     }
 
     private fun setBackGround() {

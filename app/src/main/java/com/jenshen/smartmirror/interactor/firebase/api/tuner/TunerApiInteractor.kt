@@ -5,8 +5,16 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 
 interface TunerApiInteractor {
+
+    /* mirror */
+
     fun subscribeOnMirror(mirrorId: String): Completable
-    fun fetchTunerSubscriptions(): Flowable<MirrorModel>
-    fun switchFlagForWaitingTuner(mirrorId: String): Completable
     fun unsubscribeFromMirror(mirrorId: String): Completable
+    fun switchFlagForWaitingTuner(mirrorId: String): Completable
+    fun setConfigurationIdForMirror(configurationId: String, mirrorId: String): Completable
+    fun deleteConfigurationForMirror(configurationId: String, mirrorId: String, isSelected: Boolean): Completable
+
+    /* tuner */
+
+    fun fetchTunerSubscriptions(): Flowable<MirrorModel>
 }

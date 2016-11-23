@@ -26,6 +26,11 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
                 .map { it.child(FirebaseConstant.Mirror.IS_WAITING_FOR_TUNER)}
     }
 
+    override fun getSelectedConfigurationRef(id: String): Single<DatabaseReference> {
+        return getMirrorRef(id)
+                .map { it.child(FirebaseConstant.Mirror.SELECTED_CONFIGURATION_ID)}
+    }
+
     override fun getMirrorSubscribersRef(mirrorId: String): Single<DatabaseReference> {
         return getMirrorRef(mirrorId)
                 .map { it.child(FirebaseConstant.Mirror.SUBSCRIBERS)}

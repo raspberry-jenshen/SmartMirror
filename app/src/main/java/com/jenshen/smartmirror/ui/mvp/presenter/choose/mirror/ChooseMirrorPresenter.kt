@@ -47,7 +47,17 @@ class ChooseMirrorPresenter @Inject constructor(private val apiInteractor: Tuner
                 .subscribe({}, { view?.handleError(it) })
     }
 
-    fun switchToConfiguration() {
+    fun setConfigurationIdForMirror(configurationId: String, mirrorId: String) {
+        apiInteractor.setConfigurationIdForMirror(configurationId, mirrorId)
+                .applySchedulers(Schedulers.io())
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({}, { view?.handleError(it) })
+    }
 
+    fun deleteConfigurationForMirror(configurationId: String, mirrorId: String) {
+        apiInteractor.deleteConfigurationForMirror(configurationId, mirrorId, false)
+                .applySchedulers(Schedulers.io())
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({}, { view?.handleError(it) })
     }
 }
