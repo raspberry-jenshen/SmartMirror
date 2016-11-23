@@ -45,18 +45,20 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
                     .toList()
                     .forEach { item: Pair<String, MirrorConfigurationInfo> ->
                         val configurationInfoView = layoutInflater.inflate(R.layout.item_configuration, itemView.configurationContainer)
-                        configurationInfoView.tag = mirror.key
-                        configurationInfoView.checkBox_textView.setOnCheckedChangeListener { button, isChecked ->
-                            if (isChecked) {
-                                val newConfigurationId = button!!.tag as String
-                                mirror.checkedConfigurationId = newConfigurationId
-                                selectConfigurationClick(mirror.key, mirror)
-                                setCheckedConfiguration(newConfigurationId)
+                        with(configurationInfoView) {
+                            tag = mirror.key
+                            checkBox_textView.setOnCheckedChangeListener { button, isChecked ->
+                                if (isChecked) {
+                                    val newConfigurationId = button!!.tag as String
+                                    mirror.checkedConfigurationId = newConfigurationId
+                                    selectConfigurationClick(mirror.key, mirror)
+                                    setCheckedConfiguration(newConfigurationId)
+                                }
                             }
+                            delete_button.setOnClickListener { deleteConfigurationClick(mirror.key, mirror) }
+                            setOnClickListener { editConfigurationClick(mirror.key, mirror) }
+                            configurationsList.add(0, this)
                         }
-                        configurationInfoView.delete_button.setOnClickListener { deleteConfigurationClick(mirror.key, mirror) }
-                        configurationInfoView.setOnClickListener { editConfigurationClick(mirror.key, mirror) }
-                        configurationsList.add(0, configurationInfoView)
                     }
         }
         setCheckedConfiguration(mirror.checkedConfigurationId)
