@@ -12,12 +12,14 @@
     <string name="error.cant_find_mirror">Can\'t find mirror</string>
 
     <!--sign in-->
-    <string name="login.email.hint">email</string>
-    <string name="login.password.hint">password</string>
-    <string name="login.button.text">Login</string>
-    <string name="login.restore_password">Restore password</string>
-    <string name="login.create.account">Don\'t have account? Create it.</string>
+    <string name="signIn">SignIn</string>
+    <string name="signIn.email.hint">email</string>
+    <string name="signIn.password.hint">password</string>
+    <string name="signIn.button.text">Login</string>
+    <string name="signIn.restore_password">Restore password</string>
+    <string name="signIn.create.account">Don\'t have account? Create it.</string>
     <!--sign up-->
+    <string name="signUp">SignUp</string>
     <string name="signUp.name.hint">name</string>
     <string name="signUp.email.hint">email</string>
     <string name="signUp.password.hint">password</string>
@@ -43,6 +45,8 @@
     <!--tuner -->
     <string name="tuner">Tuner</string>
     <string name="tuner.home_mirror">Home mirror</string>
+    <string name="tuner.add_configuration">Add new configuration…</string>
+    <string name="tuner.delete">Delete</string>
 
 
 </resources>

@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.jenshen.compat.base.view.impl.BaseActivity
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.ui.activity.signIn.SignInActivity
+import com.jenshen.smartmirror.ui.activity.signIn.SignInTunerActivity
 import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
 import kotlinx.android.synthetic.main.activity_start.*
 
@@ -19,7 +19,7 @@ class StartActivity: BaseActivity() {
         }
 
         mirrorTuner_button.setOnClickListener {
-            startActivity(Intent(this, SignInActivity::class.java))
+            startActivity(Intent(this, SignInTunerActivity::class.java))
         }
     }
 }

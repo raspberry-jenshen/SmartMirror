@@ -3,8 +3,8 @@ package com.jenshen.smartmirror.manager.firebase.api
 import android.os.Build
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.entity.session.TunerSession
-import com.jenshen.smartmirror.data.firebase.model.Mirror
-import com.jenshen.smartmirror.data.firebase.model.Tuner
+import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
+import com.jenshen.smartmirror.data.firebase.model.tuner.Tuner
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
 import com.jenshen.smartmirror.util.reactive.firebase.loadValue
 import com.jenshen.smartmirror.util.reactive.firebase.observeValue

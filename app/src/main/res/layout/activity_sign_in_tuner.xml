@@ -14,14 +14,14 @@
         android:layout_height="?attr/actionBarSize"
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/signUp" />
+        app:title="@string/signIn" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <include layout="@layout/partial_sign_up" />
+        <include layout="@layout/partial_sign_in" />
 
     </ScrollView>
 

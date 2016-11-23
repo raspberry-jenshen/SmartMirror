@@ -37,7 +37,7 @@
             android:id="@+id/emailEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login.email.hint"
+            android:hint="@string/signIn.email.hint"
             android:inputType="textEmailAddress" />
     </android.support.design.widget.TextInputLayout>
 
@@ -60,7 +60,7 @@
             android:id="@+id/passwordEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login.password.hint"
+            android:hint="@string/signIn.password.hint"
             android:imeOptions="actionDone"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
@@ -72,7 +72,7 @@
         android:background="@drawable/selector_login_button_color"
         android:enabled="false"
         android:foreground="?attr/selectableItemBackground"
-        android:text="@string/login.button.text"
+        android:text="@string/signIn.button.text"
         android:textColor="@drawable/selector_login_button_text_color"
         app:layout_constraintBottom_toTopOf="@+id/restorePassword"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -92,7 +92,7 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
-        android:text="@string/login.restore_password"
+        android:text="@string/signIn.restore_password"
         app:layout_constraintBottom_toTopOf="@+id/createAccount"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -112,7 +112,7 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
-        android:text="@string/login.create.account"
+        android:text="@string/signIn.create.account"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

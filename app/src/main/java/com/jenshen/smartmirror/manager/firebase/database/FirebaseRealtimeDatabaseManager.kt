@@ -8,26 +8,17 @@ import javax.inject.Inject
 
 class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDatabase: FirebaseDatabase) : RealtimeDatabaseManager {
 
-    override fun getTunersRef(): Single<DatabaseReference> {
-        return Single.fromCallable { fireBaseDatabase.reference }
-                .map { it.child(FirebaseConstant.TUNERS) }
-    }
-
-    override fun getTunerRef(id: String): Single<DatabaseReference> {
-        return Single.fromCallable { fireBaseDatabase.reference }
-                .map { it.child(FirebaseConstant.TUNERS) }
-                .map { it.child(id) }
-    }
+    /* mirror */
 
     override fun getMirrorsRef(): Single<DatabaseReference> {
         return Single.fromCallable { fireBaseDatabase.reference }
                 .map { it.child(FirebaseConstant.MIRRORS) }
     }
 
-    override fun getMirrorRef(id: String): Single<DatabaseReference> {
+    override fun getMirrorRef(mirrorId: String): Single<DatabaseReference> {
         return Single.fromCallable { fireBaseDatabase.reference }
                 .map { it.child(FirebaseConstant.MIRRORS) }
-                .map { it.child(id) }
+                .map { it.child(mirrorId) }
     }
 
     override fun getIsWaitingForTunerFlagRef(id: String): Single<DatabaseReference> {
@@ -35,13 +26,30 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
                 .map { it.child(FirebaseConstant.Mirror.IS_WAITING_FOR_TUNER)}
     }
 
-    override fun getMirrorSubscribersRef(id: String): Single<DatabaseReference> {
-        return getMirrorRef(id)
+    override fun getMirrorSubscribersRef(mirrorId: String): Single<DatabaseReference> {
+        return getMirrorRef(mirrorId)
                 .map { it.child(FirebaseConstant.Mirror.SUBSCRIBERS)}
     }
 
-    override fun getTunerSubscriptionsRef(id: String): Single<DatabaseReference> {
-        return getTunerRef(id)
+    override fun getMirrorConfigurationsInfoRef(mirrorId: String): Single<DatabaseReference> {
+        return getMirrorRef(mirrorId)
+                .map { it.child(FirebaseConstant.Mirror.CONFIGURATIONS)}
+    }
+
+    /* tuner */
+
+    override fun getTunersRef(): Single<DatabaseReference> {
+        return Single.fromCallable { fireBaseDatabase.reference }
+                .map { it.child(FirebaseConstant.TUNERS) }
+    }
+
+    override fun getTunerRef(tunerId: String): Single<DatabaseReference> {
+        return Single.fromCallable { fireBaseDatabase.reference }
+                .map { it.child(FirebaseConstant.TUNERS) }
+                .map { it.child(tunerId) }
+    }
+    override fun getTunerSubscriptionsRef(tunerId: String): Single<DatabaseReference> {
+        return getTunerRef(tunerId)
                 .map { it.child(FirebaseConstant.Tuner.SUBSCRIPTIONS)}
     }
 }

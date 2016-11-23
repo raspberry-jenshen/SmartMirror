@@ -7,7 +7,7 @@ import com.jenshen.smartmirror.di.component.activity.signUp.tuner.SignUpTunerCom
 import com.jenshen.smartmirror.di.component.activity.splash.SplashComponent
 import com.jenshen.smartmirror.di.multibuildings.ActivityKey
 import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
-import com.jenshen.smartmirror.ui.activity.signIn.SignInActivity
+import com.jenshen.smartmirror.ui.activity.signIn.SignInTunerActivity
 import com.jenshen.smartmirror.ui.activity.signup.tuner.SignUpTunerActivity
 import com.jenshen.smartmirror.ui.activity.splash.SplashActivity
 import dagger.Binds
@@ -29,7 +29,7 @@ abstract class  ActivityBindingModule {
 
     @Binds
     @IntoMap
-    @ActivityKey(SignInActivity::class)
+    @ActivityKey(SignInTunerActivity::class)
     abstract fun sighInActivityComponentBuilder(impl: SignInComponent.Builder): ActivityComponentBuilder<*>
 
     @Binds

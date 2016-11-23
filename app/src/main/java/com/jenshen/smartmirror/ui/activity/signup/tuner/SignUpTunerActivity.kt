@@ -23,6 +23,7 @@ import com.nguyenhoanglam.imagepicker.activity.ImagePicker
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES
 import com.nguyenhoanglam.imagepicker.model.Image
 import jp.wasabeef.glide.transformations.CropCircleTransformation
+import kotlinx.android.synthetic.main.activity_sign_up_tuner.*
 import kotlinx.android.synthetic.main.partial_sign_up.*
 import java.io.File
 
@@ -52,6 +53,7 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_tuner)
+        setupToolbar()
         userModel = savedInstanceState?.getParcelable(KEY_USER_MODEL) ?: UserModel()
         loadAvatar(userModel.avatarImage)
 
@@ -160,5 +162,12 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
                     .bitmapTransform(CropCircleTransformation(context))
                     .into(avatar)
         }
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayHomeAsUpEnabled(true)
+        ab?.setDisplayShowHomeEnabled(true)
     }
 }

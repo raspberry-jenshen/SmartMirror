@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.jenshen.smartmirror">
 
+    <permission android:name="android.permission.CAMERA" />
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".app.SmartMirrorApp"
@@ -33,16 +35,24 @@
             android:name=".ui.activity.start.StartActivity"
             android:theme="@style/App.Theme.Start.Activity" />
         <activity
-            android:name=".ui.activity.signIn.SignInActivity"
-            android:theme="@style/App.Theme.SignIn.Activity"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:name=".ui.activity.signIn.SignInTunerActivity"
+            android:theme="@style/App.Theme.SignInTuner.Activity"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.start.StartActivity" />
+        </activity>
         <activity
             android:name=".ui.activity.signup.tuner.SignUpTunerActivity"
-            android:theme="@style/App.Theme.SignIn.Activity"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:theme="@style/App.Theme.SignUpTuner.Activity"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.signIn.SignInTunerActivity" />
+        </activity>
         <activity
             android:name=".ui.activity.choose.mirror.ChooseMirrorActivity"
-            android:theme="@style/App.Theme.Tuner.Activity" />
+            android:theme="@style/App.Theme.ChooseMirror.Activity" />
         <activity
             android:name=".ui.activity.settings.SettingsActivity"
             android:theme="@style/App.Theme.Settings.Activity" />
@@ -54,6 +64,7 @@
             android:theme="@style/App.Theme.Settings.Activity" />
         <activity
             android:name=".ui.activity.qrScan.QRCodeScanActivity"
+            android:permission="android.permission.CAMERA"
             android:theme="@style/App.Theme.QRCodeScanner.Activity" />
     </application>
 

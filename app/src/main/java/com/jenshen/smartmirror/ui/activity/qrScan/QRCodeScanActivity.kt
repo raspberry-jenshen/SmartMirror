@@ -140,6 +140,7 @@ class QRCodeScanActivity : BaseActivity(), ZXingScannerView.ResultHandler {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun setIconCamera(menuItem: MenuItem, cameraId: Int) {
         val info = Camera.CameraInfo()
         Camera.getCameraInfo(cameraId, info)

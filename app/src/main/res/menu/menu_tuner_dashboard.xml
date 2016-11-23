@@ -4,7 +4,7 @@
 
     <item android:title="@string/dashboard.tuner.scanQRCode"
         android:id="@+id/scan_QrCode_item_menu"
-        android:icon="@drawable/ic_qr_code"
+        android:icon="@drawable/ic_qr_code_white"
         app:showAsAction="ifRoom" />
 
     <item android:title="@string/settings"

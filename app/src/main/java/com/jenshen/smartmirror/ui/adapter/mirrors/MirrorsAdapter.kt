@@ -10,7 +10,8 @@ import com.jenshen.smartmirror.ui.holder.mirrors.MirrorHolder
 
 class MirrorsAdapter(private val context: Context,
                      private val onQrCodeClick: (MirrorModel) -> Unit,
-                     private val onItemClick: (MirrorModel) -> Unit,
+                     private val addConfigurationClick: (MirrorModel) -> Unit,
+                     private val onConfigurationClick: (String, MirrorModel) -> Unit,
                      onDeleteItemListener: SwipeToDeleteAdapter.OnDeleteItemListener<MirrorModel>) : SwipeToDeleteAdapter<MirrorModel, MirrorHolder>(onDeleteItemListener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MirrorHolder {
@@ -22,8 +23,7 @@ class MirrorsAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: MirrorHolder, position: Int) {
         val mirror = itemList[position]
-        holder.bindInfo(mirror, onQrCodeClick)
-        holder.itemView.setOnClickListener { onItemClick(mirror) }
+        holder.bindInfo(mirror, onQrCodeClick, addConfigurationClick)
     }
 
     fun addModel(model: MirrorModel) {

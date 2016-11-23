@@ -7,16 +7,31 @@ interface FirebaseConstant {
         const val TUNERS: String = "tuners"
     }
 
+    interface MirrorConfiguration {
+        companion object {
+            const val MIRROR_ID = "mirror_id"
+            const val LAST_TIME_UPDATE = "last_time_update"
+        }
+    }
+
     interface Mirror {
         companion object {
             const val DEVICE_INFO = "device_info"
             const val IS_WAITING_FOR_TUNER = "is_waiting_for_tuner"
             const val SUBSCRIBERS = "subscribers"
+            const val CONFIGURATIONS = "configurations"
         }
 
         interface MirrorSubscriber {
             companion object {
                 const val ID = "id"
+                const val LAST_TIME_UPDATE = "last_time_update"
+            }
+        }
+
+        interface MirrorConfigurationInfo {
+            companion object {
+                const val TITLE = "title"
                 const val LAST_TIME_UPDATE = "last_time_update"
             }
         }

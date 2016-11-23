@@ -4,7 +4,7 @@ import android.content.Context
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
-import com.jenshen.smartmirror.data.firebase.model.TunerSubscription
+import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
@@ -23,7 +23,18 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         return Single.fromCallable { preferencesManager.getSession() }
                 .cast(TunerSession::class.java)
                 .flatMapPublisher { tunerApiManager.observeTunerSubscriptions(it.id) }
-                .map { MirrorModel(it.dataSnapshot.getValue(TunerSubscription::class.java), it.eventType == FirebaseChildEvent.CHILD_REMOVED) }
+                .map { MirrorModel(it.dataSnapshot.key,
+                        it.dataSnapshot.getValue(TunerSubscription::class.java),
+                        it.eventType == FirebaseChildEvent.CHILD_REMOVED)}
+                .flatMapSingle { model ->
+                    tunerApiManager.getMirrorConfigurationsInfo(model.key)
+                            .doOnSuccess { model.mirrorConfigurationInfo = it }
+                            .isEmpty
+                            .map { model }
+
+                    ///todo
+                }
+
     }
 
     override fun subscribeOnMirror(mirrorId: String): Completable {

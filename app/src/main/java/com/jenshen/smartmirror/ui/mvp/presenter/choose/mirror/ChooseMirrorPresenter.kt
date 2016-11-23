@@ -2,7 +2,7 @@ package com.jenshen.smartmirror.ui.mvp.presenter.choose.mirror
 
 
 import com.jenshen.compat.base.presenter.MvpLceRxPresenter
-import com.jenshen.smartmirror.data.firebase.model.TunerSubscription
+import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.interactor.firebase.api.tuner.TunerApiInteractor
 import com.jenshen.smartmirror.ui.mvp.view.choose.mirror.ChooseMirrorView
@@ -45,5 +45,9 @@ class ChooseMirrorPresenter @Inject constructor(private val apiInteractor: Tuner
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({}, { view?.handleError(it) })
+    }
+
+    fun switchToConfiguration() {
+
     }
 }

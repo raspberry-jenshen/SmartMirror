@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.data.firebase.model
+package com.jenshen.smartmirror.data.firebase.model.tuner
 
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName

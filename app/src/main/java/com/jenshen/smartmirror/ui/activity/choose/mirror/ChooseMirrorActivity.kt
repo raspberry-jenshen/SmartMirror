@@ -54,7 +54,9 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
         setContentView(R.layout.activity_choose_mirror)
         setSupportActionBar(toolbar)
         adapter = MirrorsAdapter(context, { presenter.setMirrorIsWaitingForSubscriber(it.tunerSubscription.id) },
-                {/*todo edit mirror*/ }, this)
+                {/*todo edit mirror*/ },
+                {presenter.switchToConfiguration()},
+                this)
         contentView.adapter = adapter
 
         val callback = SimpleItemTouchHelperCallback(adapter, context, ItemTouchHelper.LEFT)

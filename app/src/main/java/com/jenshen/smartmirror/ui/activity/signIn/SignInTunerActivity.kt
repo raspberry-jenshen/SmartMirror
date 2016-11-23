@@ -18,16 +18,17 @@ import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
 import com.jenshen.smartmirror.util.reactive.onEditorAction
 import com.jenshen.smartmirror.util.reactive.onTextChanged
 import com.jenshen.smartmirror.util.validation.ValidationResult
+import kotlinx.android.synthetic.main.activity_sign_up_tuner.*
 import kotlinx.android.synthetic.main.partial_sign_in.*
 
 
-class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPresenter>(), SignInView {
+class SignInTunerActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPresenter>(), SignInView {
 
     /* inject */
 
     override fun createComponent(): SignInComponent {
         return SmartMirrorApp
-                .activityComponentBuilders[SignInActivity::class.java]?.build() as SignInComponent
+                .activityComponentBuilders[SignInTunerActivity::class.java]?.build() as SignInComponent
     }
 
     override fun injectMembers(instance: SignInComponent) {
@@ -39,16 +40,15 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
-
-        presenter.loadPreviousUserData();
+        setContentView(R.layout.activity_sign_in_tuner)
+        setupToolbar()
+        presenter.loadPreviousUserData()
         presenter.initLoginButtonStateListener(emailEdit.onTextChanged(), passwordEdit.onTextChanged())
         presenter.initEditableAction(passwordEdit.onEditorAction())
 
         login.setOnClickListener { onLoginClicked() }
         createAccount.setOnClickListener {
             val intent = Intent(context, SignUpTunerActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
 
@@ -58,7 +58,7 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
             editText.layoutParams = layoutParams
 
             val dialog = AlertDialog.Builder(context)
-                    .setTitle(R.string.login_restore_password)
+                    .setTitle(R.string.signIn_restore_password)
                     .setView(editText)
                     .setPositiveButton(R.string.ok, { dialogInterface, i -> })
                     .setNegativeButton(R.string.cancel, { dialogInterface, i -> dialogInterface.dismiss() })
@@ -80,7 +80,7 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
     /* callbacks */
 
     override fun onPreviousTunerSessionLoaded(session: TunerSession) {
-        emailEdit.setText(session?.email)
+        emailEdit.setText(session.email)
     }
 
     override fun onEmailValidated(result: ValidationResult<String>) {
@@ -111,5 +111,15 @@ class SignInActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPres
 
     override fun onLoginClicked() {
         presenter.login(emailEdit.text.toString(), passwordEdit.text.toString())
+    }
+
+
+    /* private methods */
+
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayHomeAsUpEnabled(true)
+        ab?.setDisplayShowHomeEnabled(true)
     }
 }

@@ -18,19 +18,19 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="App.Theme.SignIn.Activity">
+    <style name="App.Theme.SignInTuner.Activity">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="App.Theme.SignUp.Activity">
+    <style name="App.Theme.SignUpTuner.Activity">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="App.Theme.Tuner.Activity">
+    <style name="App.Theme.ChooseMirror.Activity">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowLightStatusBar">true</item>

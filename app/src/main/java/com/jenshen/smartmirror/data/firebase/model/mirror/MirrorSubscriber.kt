@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.data.firebase.model
+package com.jenshen.smartmirror.data.firebase.model.mirror
 
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
