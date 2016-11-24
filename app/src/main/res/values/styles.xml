@@ -53,7 +53,9 @@
 
     <style name="App.Theme.QRCodeScanner.Activity" />
 
-    <style name="App.Theme.EditMirror" />
+    <style name="App.Theme.EditMirror">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
 
     <style name="App.Theme.EditMirror.Activity" />
 

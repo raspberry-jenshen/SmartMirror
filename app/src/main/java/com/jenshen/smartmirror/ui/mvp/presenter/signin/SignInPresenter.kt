@@ -60,7 +60,6 @@ class SignInPresenter @Inject constructor(private val preferencesManager: Prefer
         Single.zip(validateEmail, validatePassword, BiFunction { isValidEmail: Boolean, isValidPassword: Boolean -> isValidEmail && isValidPassword })
                 .doOnSuccess { view?.showProgress() }
                 .observeOn(Schedulers.io())
-                .toObservable()
                 .flatMapCompletable { isValid ->
                     if (isValid) {
                         authInteractor.signInTuner(email, password)

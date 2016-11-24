@@ -50,6 +50,7 @@
     <string name="tuner.delete">Delete</string>
 
     <!-- edit mirror -->
+    <string name="editMirror">Edit mirror configuration</string>
     <string name="editMirror.typeTitle">Type title</string>
 
 

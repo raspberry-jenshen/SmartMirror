@@ -4,15 +4,10 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.Toast
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.di.component.activity.choose.mirror.ChooseMirrorComponent
 import com.jenshen.smartmirror.di.component.activity.edit.mirror.EditMirrorComponent
-import com.jenshen.smartmirror.di.component.activity.signIn.SignInComponent
-import com.jenshen.smartmirror.ui.activity.choose.mirror.ChooseMirrorActivity
-import com.jenshen.smartmirror.ui.activity.signIn.SignInTunerActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.edit.mirror.EditMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.edit.mirror.EditMirrorView
 
@@ -54,7 +49,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                     .setPositiveButton(R.string.ok, null)
                     .create()
 
-            with(dialog) {
+           /* with(dialog) {
                 setCancelable(false)
                 show()
                 getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
@@ -66,7 +61,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                         Toast.makeText(context, R.string.error_cant_be_empty, Toast.LENGTH_LONG).show()
                     }
                 }
-            }
+            }*/
         } else {
              //todo load mirror
         }
