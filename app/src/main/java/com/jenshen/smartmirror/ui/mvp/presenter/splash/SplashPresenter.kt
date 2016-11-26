@@ -1,7 +1,7 @@
 package com.jenshen.smartmirror.ui.mvp.presenter.splash
 
 import com.jenshen.compat.base.presenter.MvpRxPresenter
-import com.jenshen.smartmirror.manager.auth.AuthManager
+import com.jenshen.smartmirror.manager.firebase.auth.AuthManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.ui.mvp.view.splash.SplashView
 import com.jenshen.smartmirror.util.reactive.applySchedulers

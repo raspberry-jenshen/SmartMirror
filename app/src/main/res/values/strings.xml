@@ -4,18 +4,23 @@
     <string name="mirror">Mirror</string>
 
     <!--errors-->
-    <string name="error.invalid_username">Your user name must contains at least 4 symbols</string>
+    <string name="error.invalid_username">Your session name must contains at least 4 symbols</string>
     <string name="error.invalid_email">Your email address is invalid</string>
     <string name="error.invalid_password">Your password must contains at least 6 symbols</string>
     <string name="error.invalid_confirm_password">The confirm password mast be the same with the password</string>
+    <string name="error.camera.permission">You need to allow the camera permission for register your Mirror</string>
+    <string name="error.cant_find_mirror">Can\'t find mirror</string>
+    <string name="error.cant_be_empty">Can\'t be empty</string>
 
     <!--sign in-->
-    <string name="login.email.hint">email</string>
-    <string name="login.password.hint">password</string>
-    <string name="login.button.text">Login</string>
-    <string name="login.restore_password">Restore password</string>
-    <string name="login.create.account">Don\'t have account? Create it.</string>
+    <string name="signIn">SignIn</string>
+    <string name="signIn.email.hint">email</string>
+    <string name="signIn.password.hint">password</string>
+    <string name="signIn.button.text">Login</string>
+    <string name="signIn.restore_password">Restore password</string>
+    <string name="signIn.create.account">Don\'t have account? Create it.</string>
     <!--sign up-->
+    <string name="signUp">SignUp</string>
     <string name="signUp.name.hint">name</string>
     <string name="signUp.email.hint">email</string>
     <string name="signUp.password.hint">password</string>
@@ -24,14 +29,29 @@
     <string name="signUp.choose_photo">Choose a photo</string>
     <string name="signUp.Tap_to_select">Tap to select</string>
 
+    <!--dashboard-->
+    <!--tuner-->
+    <string name="dashboard.tuner.scanQRCode">Scan QR code</string>
+
+    <!-- qr code scanner-->
+    <string name="scanner.turn.flashLight">Turn flashlight</string>
+    <string name="scanner.switch.camera">Switch camera</string>
+
     <!-- preference_settings -->
     <string name="settings">Settings</string>
-    <string name="settings.user_account.category">Manage user account</string>
+    <string name="settings.user_account.category">Manage session account</string>
     <string name="settings.logout">Logout</string>
-    <string name="settings.logout.summary">Logout user from the app</string>
+    <string name="settings.logout.summary">Logout session from the app</string>
 
     <!--tuner -->
     <string name="tuner">Tuner</string>
+    <string name="tuner.home_mirror">Home mirror</string>
+    <string name="tuner.add_configuration">Add new configuration…</string>
+    <string name="tuner.delete">Delete</string>
+
+    <!-- edit mirror -->
+    <string name="editMirror">Edit mirror configuration</string>
+    <string name="editMirror.typeTitle">Type title</string>
 
 
 </resources>

@@ -1,7 +1,8 @@
 package com.jenshen.smartmirror.manager.fabric
 
 import com.crashlytics.android.Crashlytics
-import com.jenshen.smartmirror.model.User
+import com.jenshen.smartmirror.data.entity.session.Session
+import com.jenshen.smartmirror.data.entity.session.TunerSession
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -10,9 +11,11 @@ class FabricManager {
 
     @Inject constructor()
 
-    fun setLogUser(user: User) {
-        Crashlytics.setUserIdentifier(user.id.toString())
-        Crashlytics.setUserEmail(user.email)
+    fun setLogUser(session: Session) {
+        Crashlytics.setUserIdentifier(session.id)
+        if (session is TunerSession) {
+            Crashlytics.setUserEmail(session.email)
+        }
     }
 
     fun releaseLogUser() {

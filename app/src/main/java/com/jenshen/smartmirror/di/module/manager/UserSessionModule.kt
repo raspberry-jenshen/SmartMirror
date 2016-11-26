@@ -1,8 +1,8 @@
 package com.jenshen.smartmirror.di.module.manager
 
-import com.jenshen.smartmirror.di.scope.UserScope
-import com.jenshen.smartmirror.manager.auth.AuthManager
-import com.jenshen.smartmirror.manager.auth.FirebaseAuthManager
+import com.jenshen.smartmirror.di.scope.SessionScope
+import com.jenshen.smartmirror.manager.firebase.auth.AuthManager
+import com.jenshen.smartmirror.manager.firebase.auth.FirebaseAuthManager
 import com.jenshen.smartmirror.manager.session.SessionManager
 import com.jenshen.smartmirror.manager.session.UserSessionManager
 import dagger.Binds
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Module
 abstract class UserSessionModule {
 
-    @UserScope
+    @SessionScope
     @Binds
     abstract fun bindUserSessionManager(sessionManager: UserSessionManager) : SessionManager
 }

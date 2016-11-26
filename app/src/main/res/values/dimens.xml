@@ -27,7 +27,10 @@
     <dimen name="textSize_normal">15sp</dimen>
     <dimen name="textSize_large1">20sp</dimen>
     <dimen name="textSize_large2">25sp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- animations -->
+
+    <dimen name="default_velocity_slow">50dp</dimen>
+    <dimen name="default_velocity_normal">100dp</dimen>
+    <dimen name="default_velocity_fast">200dp</dimen>
 </resources>

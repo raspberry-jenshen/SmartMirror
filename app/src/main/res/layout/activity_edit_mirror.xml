@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".ui.activity.edit.mirror.EditMirrorActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="@string/editMirror" />
+
+
+    <com.jenshen.widgetview.WidgetContainerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.jenshen.widgetview.WidgetView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:background="@color/colorPrimary">
+
+           <!-- <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent" />-->
+
+        </com.jenshen.widgetview.WidgetView>
+    </com.jenshen.widgetview.WidgetContainerLayout>
+
+</LinearLayout>

@@ -1,6 +1,8 @@
 package com.jenshen.smartmirror.app
 
 import android.app.Activity
+import android.content.Context
+import android.support.multidex.MultiDex
 import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
@@ -9,7 +11,7 @@ import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
 import com.jenshen.smartmirror.BuildConfig
 import com.jenshen.smartmirror.di.component.AppComponent
 import com.jenshen.smartmirror.di.component.DaggerAppComponent
-import com.jenshen.smartmirror.di.component.UserComponent
+import com.jenshen.smartmirror.di.component.SessionComponent
 import com.jenshen.smartmirror.di.module.AppModule
 import com.jenshen.smartmirror.util.delegate.lazyValue
 import com.squareup.leakcanary.LeakCanary
@@ -27,18 +29,24 @@ open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
 
         @JvmStatic lateinit var activityComponentBuilders: Map<Class<out Activity>, ActivityComponentBuilder<*>>
 
+        @JvmStatic var sessionActivityComponentBuilders: Map<Class<out Activity>, ActivityComponentBuilder<*>>? by lazyValue {
+            sessionActivityComponentBuilders = userComponent!!.provideMultiBuildersForActivities()
+            return@lazyValue sessionActivityComponentBuilders
+        }
+
         @JvmStatic val fabricManager by lazy {
             rootComponent.provideFabricManager()
         }
 
-        @JvmStatic var userComponent: UserComponent? by lazyValue {
-            val userComponent = rootComponent.userComponentBuilder().build()
-            fabricManager.setLogUser(userComponent.provideUser())
+        @JvmStatic var userComponent: SessionComponent? by lazyValue {
+            userComponent = rootComponent.userComponentBuilder().build()
+            fabricManager.setLogUser(userComponent!!.provideUser())
             return@lazyValue userComponent
         }
 
         @JvmStatic fun releaseUserComponent() {
             userComponent = null
+            sessionActivityComponentBuilders = null
             fabricManager.releaseLogUser()
         }
     }
@@ -56,6 +64,11 @@ open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
     }
 
     /* lifecycle */
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
 
     override fun onCreate() {
         super.onCreate()

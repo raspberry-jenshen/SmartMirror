@@ -1,16 +1,16 @@
 package com.jenshen.smartmirror.manager.preference
 
-import com.jenshen.smartmirror.model.User
+import com.jenshen.smartmirror.data.entity.session.Session
 import io.reactivex.Completable
 import io.reactivex.Single
 
 interface PreferencesManager {
 
-    fun sighIn(user: User, isMirror: Boolean)
+    fun sighIn(session: Session, isMirror: Boolean)
 
     fun logout(): Completable
 
-    fun getUser(): User?
+    fun getSession(): Session?
 
     fun isMirror(): Boolean
 }

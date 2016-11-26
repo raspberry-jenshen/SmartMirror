@@ -8,10 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/App.Theme.TextView</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-       <!-- <item name="android:windowBackground">@drawable/background</item>-->
+        <!-- <item name="android:windowBackground">@drawable/background</item>-->
     </style>
 
-    <style name="App.Theme"/>
+    <style name="App.Theme" />
 
     <!-- Activity -->
 
@@ -19,32 +19,60 @@
         <item name="android:windowBackground">@drawable/background_splash_screen</item>
     </style>
 
-    <style name="App.Theme.Splash.Activity"/>
+    <style name="App.Theme.Splash.Activity" />
 
-    <style name="App.Theme.Start"/>
+    <style name="App.Theme.Start" />
 
-    <style name="App.Theme.Start.Activity"/>
+    <style name="App.Theme.Start.Activity" />
 
-    <style name="App.Theme.SignIn"/>
+    <style name="App.Theme.SignInTuner">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
 
-    <style name="App.Theme.SignIn.Activity"/>
+    <style name="App.Theme.SignInTuner.Activity" />
 
-    <style name="App.Theme.SignUp"/>
+    <style name="App.Theme.SignUpTuner">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
 
-    <style name="App.Theme.SignUp.Activity"/>
+    <style name="App.Theme.SignUpTuner.Activity" />
 
-    <style name="App.Theme.Tuner"/>
+    <style name="App.Theme.ChooseMirror">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
 
-    <style name="App.Theme.Tuner.Activity"/>
+    <style name="App.Theme.ChooseMirror.Activity" />
 
-    <style name="App.Theme.Settings"/>
+    <style name="App.Theme.Settings" />
 
-    <style name="App.Theme.Settings.Activity"/>
+    <style name="App.Theme.Settings.Activity" />
+
+    <style name="App.Theme.QRCodeScanner">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Transparent</item>
+    </style>
+
+    <style name="App.Theme.QRCodeScanner.Activity" />
+
+    <style name="App.Theme.EditMirror">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
+
+    <style name="App.Theme.EditMirror.Activity" />
 
     <!-- Widget -->
 
     <style name="App.Theme.TextView">
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Widget.AppCompat.Toolbar.Transparent" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/black_with_alpha</item>
+    </style>
+
+    <style name="Widget.AppCompat.Toolbar.Mirror" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="logo">@drawable/ic_mirror_logo_small</item>
+        <item name="titleMarginStart">@dimen/offset_small1_plus_big1</item>
     </style>
 
 </resources>
