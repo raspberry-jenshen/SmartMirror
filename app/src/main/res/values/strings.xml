@@ -19,6 +19,7 @@
     <string name="signIn.button.text">Login</string>
     <string name="signIn.restore_password">Restore password</string>
     <string name="signIn.create.account">Don\'t have account? Create it.</string>
+
     <!--sign up-->
     <string name="signUp">SignUp</string>
     <string name="signUp.name.hint">name</string>
@@ -50,8 +51,9 @@
     <string name="tuner.delete">Delete</string>
 
     <!-- edit mirror -->
-    <string name="editMirror">Edit mirror configuration</string>
+    <string name="editMirror">Edit mirror</string>
     <string name="editMirror.typeTitle">Type title</string>
+    <string name="editMirror.addWidget">Add widget</string>
 
 
 </resources>

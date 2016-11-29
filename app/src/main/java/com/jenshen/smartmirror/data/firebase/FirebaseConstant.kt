@@ -5,12 +5,19 @@ interface FirebaseConstant {
     companion object {
         const val MIRRORS: String = "mirrors"
         const val TUNERS: String = "tuners"
+        const val WIDGETS: String = "widgets"
     }
 
     interface MirrorConfiguration {
         companion object {
             const val MIRROR_ID = "mirror_id"
             const val LAST_TIME_UPDATE = "last_time_update"
+        }
+    }
+
+    interface Widget {
+        companion object {
+
         }
     }
 

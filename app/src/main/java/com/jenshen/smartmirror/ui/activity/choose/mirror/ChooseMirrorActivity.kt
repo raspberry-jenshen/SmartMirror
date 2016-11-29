@@ -77,6 +77,8 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
         presenter.subscribeOnMirror(data!!.getStringExtra(QRCodeScanActivity.RESULT_EXTRA_MIRROR_ID))
     }
 
+    /* menu */
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_tuner_dashboard, menu)
         return super.onCreateOptionsMenu(menu)

@@ -85,4 +85,13 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .flatMapPublisher { it.observeChildren() }
                 .filter { it.dataSnapshot.exists() }
     }
+
+    /* tuner */
+
+    override fun observeWidgets(): Flowable<FirebaseChildEvent> {
+        return fireBaseDatabase
+                .getWidgetsRef()
+                .flatMapPublisher { it.observeChildren() }
+                .filter { it.dataSnapshot.exists() }
+    }
 }

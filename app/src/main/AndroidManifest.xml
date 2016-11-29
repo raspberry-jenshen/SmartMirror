@@ -69,6 +69,13 @@
         <activity
             android:name=".ui.activity.edit.mirror.EditMirrorActivity"
             android:theme="@style/App.Theme.EditMirror.Activity" />
+        <activity
+            android:name=".ui.activity.choose.widget.ChooseWidgetActivity"
+            android:theme="@style/App.Theme.ChooseWidget.Activity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.edit.mirror.EditMirrorActivity" />
+        </activity>
     </application>
 
 </manifest>

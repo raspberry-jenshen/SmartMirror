@@ -16,22 +16,18 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/editMirror" />
 
-
-    <com.jenshen.widgetview.WidgetContainerLayout
+    <com.jenshensoft.widgetview.WidgetContainerLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:widgetContainer_columnCount="7"
+        app:widgetContainer_rowCount="7">
 
-        <com.jenshen.widgetview.WidgetView
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:background="@color/colorPrimary">
+        <com.jenshensoft.widgetview.WidgetView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-           <!-- <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorAccent" />-->
 
-        </com.jenshen.widgetview.WidgetView>
-    </com.jenshen.widgetview.WidgetContainerLayout>
+        </com.jenshensoft.widgetview.WidgetView>
+    </com.jenshensoft.widgetview.WidgetContainerLayout>
 
 </LinearLayout>

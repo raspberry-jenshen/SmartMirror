@@ -57,4 +57,11 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
         return getTunerRef(tunerId)
                 .map { it.child(FirebaseConstant.Tuner.SUBSCRIPTIONS)}
     }
+
+    /* widget */
+
+    override fun getWidgetsRef(): Single<DatabaseReference> {
+        return Single.fromCallable { fireBaseDatabase.reference }
+                .map { it.child(FirebaseConstant.WIDGETS) }
+    }
 }

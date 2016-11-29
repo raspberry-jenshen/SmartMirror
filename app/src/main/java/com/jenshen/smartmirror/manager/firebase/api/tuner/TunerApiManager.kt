@@ -23,4 +23,5 @@ interface TunerApiManager {
     fun addSubscriptionToTuner(tunerId: String, mirrorId: String, mirror: Mirror): Completable
     fun removeSubscriptionFromTuner(tunerId: String, mirrorId: String): Completable
     fun observeTunerSubscriptions(tunerId: String): Flowable<FirebaseChildEvent>
+    fun observeWidgets(): Flowable<FirebaseChildEvent>
 }

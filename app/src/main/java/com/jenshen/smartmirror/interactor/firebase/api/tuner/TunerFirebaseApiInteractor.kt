@@ -6,6 +6,7 @@ import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
 import com.jenshen.smartmirror.data.model.MirrorModel
+import com.jenshen.smartmirror.data.model.WidgetModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
@@ -88,5 +89,12 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                     ///todo
                 }
 
+    }
+
+    /* widget */
+
+    override fun fetchWidgets(): Flowable<WidgetModel> {
+        return tunerApiManager.observeWidgets()
+                .cast(WidgetModel::class.java)
     }
 }

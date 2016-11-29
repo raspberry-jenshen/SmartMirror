@@ -1,6 +1,7 @@
 package com.jenshen.smartmirror.interactor.firebase.api.tuner
 
 import com.jenshen.smartmirror.data.model.MirrorModel
+import com.jenshen.smartmirror.data.model.WidgetModel
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
@@ -17,4 +18,8 @@ interface TunerApiInteractor {
     /* tuner */
 
     fun fetchTunerSubscriptions(): Flowable<MirrorModel>
+
+    /* widget */
+
+    fun fetchWidgets(): Flowable<WidgetModel>
 }
