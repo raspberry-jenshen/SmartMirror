@@ -68,13 +68,24 @@
             android:theme="@style/App.Theme.QRCodeScanner.Activity" />
         <activity
             android:name=".ui.activity.edit.mirror.EditMirrorActivity"
-            android:theme="@style/App.Theme.EditMirror.Activity" />
+            android:theme="@style/App.Theme.EditMirror.Activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.choose.mirror.ChooseMirrorActivity" />
+        </activity>
         <activity
             android:name=".ui.activity.choose.widget.ChooseWidgetActivity"
-            android:theme="@style/App.Theme.ChooseWidget.Activity" >
+            android:theme="@style/App.Theme.ChooseWidget.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.edit.mirror.EditMirrorActivity" />
+        </activity>
+        <activity
+            android:name=".ui.activity.add.widget.AddWidgetActivity"
+            android:theme="@style/App.Theme.AddWidget.Activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.settings.SettingsActivity" />
         </activity>
     </application>
 

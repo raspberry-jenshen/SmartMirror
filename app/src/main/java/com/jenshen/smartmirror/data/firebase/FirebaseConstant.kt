@@ -17,7 +17,15 @@ interface FirebaseConstant {
 
     interface Widget {
         companion object {
+            const val NAME = "name"
+            const val DEFAULT_SIZE = "default_size"
+        }
 
+        interface Size {
+            companion object {
+                const val WIDTH = "width"
+                const val HEIGHT = "height"
+            }
         }
     }
 

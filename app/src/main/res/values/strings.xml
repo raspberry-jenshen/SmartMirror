@@ -43,6 +43,9 @@
     <string name="settings.user_account.category">Manage session account</string>
     <string name="settings.logout">Logout</string>
     <string name="settings.logout.summary">Logout session from the app</string>
+    <string name="settings.developers_options">Developers options</string>
+    <string name="settings.add_widget">Add widget</string>
+    <string name="settings.add_widget.summary">Add widget for mirror</string>
 
     <!--tuner -->
     <string name="tuner">Tuner</string>

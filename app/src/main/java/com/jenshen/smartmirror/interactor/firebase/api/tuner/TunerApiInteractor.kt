@@ -22,4 +22,5 @@ interface TunerApiInteractor {
     /* widget */
 
     fun fetchWidgets(): Flowable<WidgetModel>
+    fun addWidget(name: String, width: Int, height: Int): Completable
 }

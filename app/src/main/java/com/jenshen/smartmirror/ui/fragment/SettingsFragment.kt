@@ -9,6 +9,7 @@ import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.interactor.firebase.auth.AuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.manager.session.SessionManager
+import com.jenshen.smartmirror.ui.activity.add.widget.AddWidgetActivity
 import com.jenshen.smartmirror.ui.activity.start.StartActivity
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -44,6 +45,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)
                     }, {})
+            true
+        }
+
+        val buttonAddWidget = findPreference(getString(R.string.preference_add_widgets))
+        buttonAddWidget.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            val intent = Intent(context, AddWidgetActivity::class.java)
+            startActivity(intent)
             true
         }
     }

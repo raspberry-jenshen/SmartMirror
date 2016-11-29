@@ -6,6 +6,7 @@ import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorSubscriber
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
+import com.jenshen.smartmirror.data.firebase.model.widget.Widget
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
 import com.jenshen.smartmirror.util.reactive.firebase.clearValue
 import com.jenshen.smartmirror.util.reactive.firebase.loadValue
@@ -93,5 +94,12 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .getWidgetsRef()
                 .flatMapPublisher { it.observeChildren() }
                 .filter { it.dataSnapshot.exists() }
+    }
+
+    override fun addWidget(widget: Widget): Completable {
+        return fireBaseDatabase
+                .getWidgetsRef()
+                .map { it.push() }
+                .flatMapCompletable { it.uploadValue(widget) }
     }
 }

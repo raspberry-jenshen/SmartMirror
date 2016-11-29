@@ -22,7 +22,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         val EXTRA_MIRROR_CONFIGURATION_ID = "EXTRA_MIRROR_ID"
     }
 
-    private lateinit var configurationModel :ConfigurationModel
+    private lateinit var configurationModel: ConfigurationModel
 
     /* inject */
 
@@ -32,7 +32,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 .build() as EditMirrorComponent
     }
 
-    override fun injectMembers(instance:  EditMirrorComponent) {
+    override fun injectMembers(instance: EditMirrorComponent) {
         instance.injectMembers(this)
     }
 
@@ -55,21 +55,21 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                     .setPositiveButton(R.string.ok, null)
                     .create()
 
-           /* with(dialog) {
-                setCancelable(false)
-                show()
-                getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    val title = editText.text.toString()
-                    if (!title.isEmpty()) {
-                        configurationModel = ConfigurationModel(title)
-                        dialog.dismiss()
-                    } else {
-                        Toast.makeText(context, R.string.error_cant_be_empty, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }*/
+            /* with(dialog) {
+                 setCancelable(false)
+                 show()
+                 getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                     val title = editText.text.toString()
+                     if (!title.isEmpty()) {
+                         configurationModel = ConfigurationModel(title)
+                         dialog.dismiss()
+                     } else {
+                         Toast.makeText(context, R.string.error_cant_be_empty, Toast.LENGTH_LONG).show()
+                     }
+                 }
+             }*/
         } else {
-             //todo load mirror
+            //todo load mirror
         }
     }
 
