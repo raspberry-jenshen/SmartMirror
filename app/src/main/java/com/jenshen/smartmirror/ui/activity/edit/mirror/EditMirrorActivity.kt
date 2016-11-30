@@ -1,7 +1,9 @@
 package com.jenshen.smartmirror.ui.activity.edit.mirror
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.NavUtils
 import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
@@ -10,11 +12,13 @@ import android.widget.LinearLayout
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
+import com.jenshen.smartmirror.data.model.WidgetModel
 import com.jenshen.smartmirror.di.component.activity.edit.mirror.EditMirrorComponent
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.edit.mirror.EditMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.edit.mirror.EditMirrorView
-import kotlinx.android.synthetic.main.activity_qr_scanner.*
+import com.jenshen.smartmirror.util.widget.getWidgetView
+import kotlinx.android.synthetic.main.activity_edit_mirror.*
 
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
 
@@ -73,6 +77,16 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == ChooseWidgetActivity.RESULT_KEY_CHOSE_WIDGET && resultCode != Activity.RESULT_OK && data == null) {
+            return
+        }
+        val widgetModel = data!!.getParcelableExtra<WidgetModel>(ChooseWidgetActivity.RESULT_EXTRA_WIDGET)
+        val widgetView = getWidgetView(widgetModel, context)
+        widgetView.setBackgroundColor(R.color.colorAccent)
+        widgetContainer.addWidget(widgetView)
+    }
+
     /* menu */
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -84,13 +98,15 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         when (item.itemId) {
             R.id.addWidget_item_menu -> {
                 val intent = Intent(this, ChooseWidgetActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, ChooseWidgetActivity.RESULT_KEY_CHOSE_WIDGET)
                 return true
+            }
+            android.R.id.home -> {
+                NavUtils.navigateUpFromSameTask(this);
             }
         }
         return super.onOptionsItemSelected(item)
     }
-
 
     class ConfigurationModel(val title: String) {
 

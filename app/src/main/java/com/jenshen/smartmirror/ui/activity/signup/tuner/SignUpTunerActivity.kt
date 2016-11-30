@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.v4.app.NavUtils
 import android.util.Log
+import android.view.MenuItem
 import com.bumptech.glide.Glide
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
@@ -82,6 +84,15 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putParcelable(KEY_USER_MODEL, userModel)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                NavUtils.navigateUpFromSameTask(this)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     /* callbacks */

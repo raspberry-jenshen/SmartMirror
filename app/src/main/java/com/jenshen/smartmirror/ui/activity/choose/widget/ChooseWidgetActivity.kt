@@ -1,7 +1,11 @@
 package com.jenshen.smartmirror.ui.activity.choose.widget
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.NavUtils
 import android.support.v7.widget.RecyclerView
+import android.view.MenuItem
 import com.jenshen.compat.base.view.impl.mvp.lce.component.lce.BaseDiLceMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
@@ -20,6 +24,10 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         ChooseWidgetPresenter>(),
         ChooseWidgetView {
 
+    companion object {
+        val RESULT_KEY_CHOSE_WIDGET = 478
+        val RESULT_EXTRA_WIDGET = "RESULT_EXTRA_WIDGET"
+    }
 
     private lateinit var adapter: WidgetsAdapter
 
@@ -41,7 +49,23 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_mirror)
         setupToolbar()
+        adapter = WidgetsAdapter(context, {
+            val intent = Intent()
+            intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, it)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        })
+        contentView.adapter = adapter
         loadData(false)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                NavUtils.navigateUpFromSameTask(this);
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     /* lce */

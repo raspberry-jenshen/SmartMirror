@@ -2,7 +2,9 @@ package com.jenshen.smartmirror.ui.activity.signIn
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.NavUtils
 import android.support.v7.app.AlertDialog
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -74,6 +76,15 @@ class SignInTunerActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignI
                 }
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                NavUtils.navigateUpFromSameTask(this)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

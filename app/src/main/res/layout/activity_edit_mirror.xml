@@ -17,17 +17,12 @@
         app:title="@string/editMirror" />
 
     <com.jenshensoft.widgetview.WidgetContainerLayout
+        android:id="@+id/widgetContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:widgetContainer_columnCount="7"
         app:widgetContainer_rowCount="7">
 
-        <com.jenshensoft.widgetview.WidgetView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-
-        </com.jenshensoft.widgetview.WidgetView>
     </com.jenshensoft.widgetview.WidgetContainerLayout>
 
 </LinearLayout>

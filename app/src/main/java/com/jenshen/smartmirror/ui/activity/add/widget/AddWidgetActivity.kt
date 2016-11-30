@@ -1,6 +1,8 @@
 package com.jenshen.smartmirror.ui.activity.add.widget
 
 import android.os.Bundle
+import android.support.v4.app.NavUtils
+import android.view.MenuItem
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
@@ -36,6 +38,15 @@ class AddWidgetActivity : BaseDiMvpActivity<AddWidgetComponent, AddWidgetView, A
                     sizeWidth.text.toString(),
                     sizeHeight.text.toString())
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                NavUtils.navigateUpFromSameTask(this);
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     /* private methods */

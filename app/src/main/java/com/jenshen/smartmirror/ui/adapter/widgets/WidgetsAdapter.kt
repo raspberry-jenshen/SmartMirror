@@ -5,12 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.data.model.WidgetModel
 import com.jenshen.smartmirror.ui.holder.widgets.WidgetHolder
 
 class WidgetsAdapter(private val context: Context,
-                     private val onQrCodeClicked: (MirrorModel) -> Unit) : RecyclerView.Adapter<WidgetHolder>() {
+                     private val onItemClicked: (WidgetModel) -> Unit) : RecyclerView.Adapter<WidgetHolder>() {
 
     override fun getItemCount() = this.itemList.size
 
@@ -23,12 +22,14 @@ class WidgetsAdapter(private val context: Context,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WidgetHolder {
         val view = LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.item_mirror, parent, false)
+                .inflate(R.layout.item_widget, parent, false)
         return WidgetHolder(context, view)
     }
 
     override fun onBindViewHolder(holder: WidgetHolder, position: Int) {
-        val mirror = itemList[position]
+        val widgetModel = itemList[position]
+        holder.itemView.setOnClickListener { onItemClicked(widgetModel) }
+        holder.bindInfo(widgetModel)
     }
 
     fun addModel(model: WidgetModel) {
