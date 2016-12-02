@@ -9,11 +9,12 @@ import com.jenshen.smartmirror.ui.adapter.SwipeToDeleteAdapter
 import com.jenshen.smartmirror.ui.holder.mirrors.MirrorHolder
 
 class MirrorsAdapter(private val context: Context,
+                     private val onItemClicked: (MirrorModel) -> Unit,
                      private val onQrCodeClicked: (MirrorModel) -> Unit,
-                     private val   addConfigurationClick: (MirrorModel) -> Unit,
-                     private val   editConfigurationClick: (String, MirrorModel) -> Unit,
-                     private val   deleteConfigurationClick: (String, MirrorModel) -> Unit,
-                     private val   selectConfigurationClick: (String, MirrorModel) -> Unit,
+                     private val addConfigurationClick: (MirrorModel) -> Unit,
+                     private val editConfigurationClick: (String, MirrorModel) -> Unit,
+                     private val deleteConfigurationClick: (String, MirrorModel) -> Unit,
+                     private val selectConfigurationClick: (String, MirrorModel) -> Unit,
                      onDeleteItemListener: SwipeToDeleteAdapter.OnDeleteItemListener<MirrorModel>) : SwipeToDeleteAdapter<MirrorModel, MirrorHolder>(onDeleteItemListener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MirrorHolder {
@@ -25,6 +26,7 @@ class MirrorsAdapter(private val context: Context,
 
     override fun onBindViewHolder(holder: MirrorHolder, position: Int) {
         val mirror = itemList[position]
+        holder.itemView.setOnClickListener { onItemClicked(mirror) }
         holder.bindInfo(mirror,
                 onQrCodeClicked,
                 addConfigurationClick,

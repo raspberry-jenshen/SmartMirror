@@ -3,6 +3,7 @@ package com.jenshen.smartmirror.manager.firebase.api.tuner
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
+import com.jenshen.smartmirror.data.firebase.model.widget.Widget
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
@@ -23,4 +24,8 @@ interface TunerApiManager {
     fun addSubscriptionToTuner(tunerId: String, mirrorId: String, mirror: Mirror): Completable
     fun removeSubscriptionFromTuner(tunerId: String, mirrorId: String): Completable
     fun observeTunerSubscriptions(tunerId: String): Flowable<FirebaseChildEvent>
+
+    /* widget */
+    fun observeWidgets(): Flowable<FirebaseChildEvent>
+    fun addWidget(widget: Widget): Completable
 }

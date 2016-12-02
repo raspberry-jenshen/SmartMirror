@@ -19,7 +19,7 @@ class FirebaseModule {
     @Provides
     fun provideDatabase(): FirebaseDatabase {
         val firebaseDatabase = FirebaseDatabase.getInstance()
-        //firebaseDatabase.setPersistenceEnabled(true)
+        firebaseDatabase.setPersistenceEnabled(true)
         return firebaseDatabase
     }
 }

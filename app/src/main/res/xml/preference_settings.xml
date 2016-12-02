@@ -8,4 +8,12 @@
             android:summary="@string/settings.logout.summary"
             android:title="@string/settings.logout" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings.developers_options">
+
+        <Preference
+            android:key="@string/preference_add_widgets"
+            android:summary="@string/settings.add_widget.summary"
+            android:title="@string/settings.add_widget" />
+    </PreferenceCategory>
 </PreferenceScreen>

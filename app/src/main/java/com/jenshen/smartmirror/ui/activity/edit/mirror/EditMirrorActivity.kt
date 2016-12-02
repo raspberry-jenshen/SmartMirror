@@ -1,15 +1,24 @@
 package com.jenshen.smartmirror.ui.activity.edit.mirror
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.NavUtils
 import android.support.v7.app.AlertDialog
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
+import com.jenshen.smartmirror.data.model.WidgetModel
 import com.jenshen.smartmirror.di.component.activity.edit.mirror.EditMirrorComponent
+import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.edit.mirror.EditMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.edit.mirror.EditMirrorView
+import com.jenshen.smartmirror.util.widget.getWidgetView
+import kotlinx.android.synthetic.main.activity_edit_mirror.*
 
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
 
@@ -17,7 +26,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         val EXTRA_MIRROR_CONFIGURATION_ID = "EXTRA_MIRROR_ID"
     }
 
-    private lateinit var configurationModel :ConfigurationModel
+    private lateinit var configurationModel: ConfigurationModel
 
     /* inject */
 
@@ -27,7 +36,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 .build() as EditMirrorComponent
     }
 
-    override fun injectMembers(instance:  EditMirrorComponent) {
+    override fun injectMembers(instance: EditMirrorComponent) {
         instance.injectMembers(this)
     }
 
@@ -37,6 +46,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_mirror)
+        setupToolbar()
         val stringExtra = intent.getStringExtra(EXTRA_MIRROR_CONFIGURATION_ID)
         if (stringExtra == null) {
             val editText = EditText(context)
@@ -49,26 +59,65 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                     .setPositiveButton(R.string.ok, null)
                     .create()
 
-           /* with(dialog) {
-                setCancelable(false)
-                show()
-                getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    val title = editText.text.toString()
-                    if (!title.isEmpty()) {
-                        configurationModel = ConfigurationModel(title)
-                        dialog.dismiss()
-                    } else {
-                        Toast.makeText(context, R.string.error_cant_be_empty, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }*/
+            /* with(dialog) {
+                 setCancelable(false)
+                 show()
+                 getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                     val title = editText.text.toString()
+                     if (!title.isEmpty()) {
+                         configurationModel = ConfigurationModel(title)
+                         dialog.dismiss()
+                     } else {
+                         Toast.makeText(context, R.string.error_cant_be_empty, Toast.LENGTH_LONG).show()
+                     }
+                 }
+             }*/
         } else {
-             //todo load mirror
+            //todo load mirror
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == ChooseWidgetActivity.RESULT_KEY_CHOSE_WIDGET && resultCode != Activity.RESULT_OK && data == null) {
+            return
+        }
+        val widgetModel = data!!.getParcelableExtra<WidgetModel>(ChooseWidgetActivity.RESULT_EXTRA_WIDGET)
+        val widgetView = getWidgetView(widgetModel, context)
+        widgetView.setBackgroundColor(R.color.colorAccent)
+        widgetContainer.addWidget(widgetView)
+    }
+
+    /* menu */
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_edit_mirror, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.addWidget_item_menu -> {
+                val intent = Intent(this, ChooseWidgetActivity::class.java)
+                startActivityForResult(intent, ChooseWidgetActivity.RESULT_KEY_CHOSE_WIDGET)
+                return true
+            }
+            android.R.id.home -> {
+                NavUtils.navigateUpFromSameTask(this);
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     class ConfigurationModel(val title: String) {
 
+    }
+
+    /* private methods */
+
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayHomeAsUpEnabled(true)
+        ab?.setDisplayShowHomeEnabled(true)
     }
 }

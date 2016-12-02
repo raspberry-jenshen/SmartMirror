@@ -45,4 +45,14 @@
         <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
+    <style name="App.Theme.ChooseWidget.Activity">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+    <style name="App.Theme.AddWidget.Activity">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
 </resources>

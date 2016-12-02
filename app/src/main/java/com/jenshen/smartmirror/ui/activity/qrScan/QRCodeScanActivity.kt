@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.hardware.Camera
 import android.os.Bundle
+import android.support.v4.app.NavUtils
 import android.view.Menu
 import android.view.MenuItem
 import com.google.zxing.Result
@@ -103,9 +104,13 @@ class QRCodeScanActivity : BaseActivity(), ZXingScannerView.ResultHandler {
                 scannerView.flash = flash
                 return true
             }
+            android.R.id.home -> {
+                NavUtils.navigateUpFromSameTask(this);
+            }
         }
         return super.onOptionsItemSelected(item)
     }
+
 
     /* callbacks */
 

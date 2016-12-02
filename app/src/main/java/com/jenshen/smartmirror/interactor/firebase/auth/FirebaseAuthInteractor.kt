@@ -23,6 +23,7 @@ class FirebaseAuthInteractor @Inject constructor(private val context: Context,
                     val isMirror = it.isAnonymous
                     val session: Session
                     if (isMirror) {
+                        //todo val iid = InstanceID.getInstance(context).getId()
                         session = MirrorSession(getDeviceUniqueID(context))
                     } else {
                         session = TunerSession(it.uid, it.email)

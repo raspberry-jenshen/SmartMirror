@@ -4,4 +4,5 @@
     <string name="preference_key_is_mirror" translatable="false">preference_key_is_mirror</string>
     <!--screen-->
     <string name="preference_logout_key">logout</string>
+    <string name="preference_add_widgets">add_widgets</string>
 </resources>

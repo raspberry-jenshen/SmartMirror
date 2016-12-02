@@ -5,7 +5,10 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
+import com.jenshen.smartmirror.data.firebase.model.widget.Size
+import com.jenshen.smartmirror.data.firebase.model.widget.Widget
 import com.jenshen.smartmirror.data.model.MirrorModel
+import com.jenshen.smartmirror.data.model.WidgetModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
@@ -66,7 +69,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         return tunerApiManager.setConfigurationIdForMirror(configurationId, mirrorId)
     }
 
-    override fun deleteConfigurationForMirror(configurationId: String, mirrorId: String, isSelected:Boolean): Completable {
+    override fun deleteConfigurationForMirror(configurationId: String, mirrorId: String, isSelected: Boolean): Completable {
         return tunerApiManager.deleteConfigurationForMirror(configurationId)
     }
 
@@ -76,9 +79,11 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         return Single.fromCallable { preferencesManager.getSession() }
                 .cast(TunerSession::class.java)
                 .flatMapPublisher { tunerApiManager.observeTunerSubscriptions(it.id) }
-                .map { MirrorModel(it.dataSnapshot.key,
-                        it.dataSnapshot.getValue(TunerSubscription::class.java),
-                        it.eventType == FirebaseChildEvent.CHILD_REMOVED)}
+                .map {
+                    MirrorModel(it.dataSnapshot.key,
+                            it.dataSnapshot.getValue(TunerSubscription::class.java),
+                            it.eventType == FirebaseChildEvent.CHILD_REMOVED)
+                }
                 .flatMapSingle { model ->
                     tunerApiManager.getMirrorConfigurationsInfo(model.key)
                             .doOnSuccess { model.mirrorConfigurationInfo = it }
@@ -88,5 +93,17 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                     ///todo
                 }
 
+    }
+
+    /* widget */
+
+    override fun fetchWidgets(): Flowable<WidgetModel> {
+        return tunerApiManager.observeWidgets()
+                .map { WidgetModel(it.dataSnapshot.key, it.dataSnapshot.getValue(Widget::class.java)) }
+    }
+
+    override fun addWidget(name: String, width: Int, height: Int): Completable {
+        return Single.fromCallable { Widget(name, Size(width, height)) }
+                .flatMapCompletable { tunerApiManager.addWidget(it) }
     }
 }

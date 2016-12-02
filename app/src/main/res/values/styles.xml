@@ -59,6 +59,18 @@
 
     <style name="App.Theme.EditMirror.Activity" />
 
+    <style name="App.Theme.ChooseWidget">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
+
+    <style name="App.Theme.ChooseWidget.Activity" />
+
+    <style name="App.Theme.AddWidget">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
+
+    <style name="App.Theme.AddWidget.Activity" />
+
     <!-- Widget -->
 
     <style name="App.Theme.TextView">

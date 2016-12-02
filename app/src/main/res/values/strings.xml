@@ -19,6 +19,7 @@
     <string name="signIn.button.text">Login</string>
     <string name="signIn.restore_password">Restore password</string>
     <string name="signIn.create.account">Don\'t have account? Create it.</string>
+
     <!--sign up-->
     <string name="signUp">SignUp</string>
     <string name="signUp.name.hint">name</string>
@@ -42,6 +43,9 @@
     <string name="settings.user_account.category">Manage session account</string>
     <string name="settings.logout">Logout</string>
     <string name="settings.logout.summary">Logout session from the app</string>
+    <string name="settings.developers_options">Developers options</string>
+    <string name="settings.add_widget">Add widget</string>
+    <string name="settings.add_widget.summary">Add widget for mirror</string>
 
     <!--tuner -->
     <string name="tuner">Tuner</string>
@@ -50,8 +54,9 @@
     <string name="tuner.delete">Delete</string>
 
     <!-- edit mirror -->
-    <string name="editMirror">Edit mirror configuration</string>
+    <string name="editMirror">Edit mirror</string>
     <string name="editMirror.typeTitle">Type title</string>
+    <string name="editMirror.addWidget">Add widget</string>
 
 
 </resources>

@@ -55,6 +55,7 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
         setContentView(R.layout.activity_choose_mirror)
         setSupportActionBar(toolbar)
         adapter = MirrorsAdapter(context,
+                { /*todo edit */ },
                 { presenter.setMirrorIsWaitingForSubscriber(it.tunerSubscription.id) },
                 { startActivity(Intent(this, EditMirrorActivity::class.java)) },
                 { configurationId: String, mirrorModel: MirrorModel -> /*todo edit */ },
@@ -76,6 +77,8 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
         }
         presenter.subscribeOnMirror(data!!.getStringExtra(QRCodeScanActivity.RESULT_EXTRA_MIRROR_ID))
     }
+
+    /* menu */
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_tuner_dashboard, menu)
