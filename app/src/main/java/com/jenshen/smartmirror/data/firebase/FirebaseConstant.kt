@@ -42,7 +42,7 @@ interface FirebaseConstant {
 
         interface MirrorSubscriber {
             companion object {
-                const val ID = "id"
+                const val ID = "key"
                 const val LAST_TIME_UPDATE = "last_time_update"
             }
         }
@@ -63,7 +63,7 @@ interface FirebaseConstant {
 
         interface TunerSubscription {
             companion object {
-                const val ID = "id"
+                const val ID = "key"
                 const val DEVICE_INFO = "device_info"
             }
         }

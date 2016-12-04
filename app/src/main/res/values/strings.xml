@@ -3,6 +3,12 @@
     <string name="mirror_tuner">Mirror tuner</string>
     <string name="mirror">Mirror</string>
 
+
+    <!--dialogs-->
+    <string name="dialog.yes">Yes</string>
+    <string name="dialog.no">No</string>
+    <string name="dialog.save_and_exit">Save and exit</string>
+
     <!--errors-->
     <string name="error.invalid_username">Your session name must contains at least 4 symbols</string>
     <string name="error.invalid_email">Your email address is invalid</string>
@@ -11,6 +17,8 @@
     <string name="error.camera.permission">You need to allow the camera permission for register your Mirror</string>
     <string name="error.cant_find_mirror">Can\'t find mirror</string>
     <string name="error.cant_be_empty">Can\'t be empty</string>
+    <string name="error.not_save">Are you sure that you want to exit without save a mirror configuration?</string>
+
 
     <!--sign in-->
     <string name="signIn">SignIn</string>
@@ -57,6 +65,7 @@
     <string name="editMirror">Edit mirror</string>
     <string name="editMirror.typeTitle">Type title</string>
     <string name="editMirror.addWidget">Add widget</string>
+    <string name="editMirror.save">Save</string>
 
 
 </resources>
