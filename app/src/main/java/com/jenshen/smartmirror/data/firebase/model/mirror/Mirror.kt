@@ -24,7 +24,7 @@ data class Mirror(
 
     @set:PropertyName(FirebaseConstant.Mirror.CONFIGURATIONS)
     @get:PropertyName(FirebaseConstant.Mirror.CONFIGURATIONS)
-    var confugurations: HashMap<String, MirrorConfigurationInfo>? = null
+    var configurations: HashMap<String, MirrorConfigurationInfo>? = null
 
     constructor() : this("") {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)

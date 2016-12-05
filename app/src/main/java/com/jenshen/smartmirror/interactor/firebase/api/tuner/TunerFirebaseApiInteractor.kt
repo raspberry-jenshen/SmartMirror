@@ -1,12 +1,17 @@
 package com.jenshen.smartmirror.interactor.firebase.api.tuner
 
+import android.R.attr.width
 import android.content.Context
 import com.jenshen.smartmirror.R
+import com.jenshen.smartmirror.R.attr.height
+import com.jenshen.smartmirror.R.id.name
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
+import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
 import com.jenshen.smartmirror.data.firebase.model.widget.Size
 import com.jenshen.smartmirror.data.firebase.model.widget.Widget
+import com.jenshen.smartmirror.data.model.EditMirrorModel
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.data.model.WidgetModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
@@ -103,6 +108,21 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
     }
 
     override fun addWidget(name: String, width: Int, height: Int): Completable {
+        return Single.fromCallable { Widget(name, Size(width, height)) }
+                .flatMapCompletable { tunerApiManager.addWidget(it) }
+    }
+
+    /* mirror configurations */
+
+    override fun addConfiguration(editMirrorModel: EditMirrorModel): Single<String> {
+        return Single.fromCallable {
+            val mirrorConfiguration = MirrorConfiguration(editMirrorModel.mirrorId, editMirrorModel.title)
+            mirrorConfiguration
+        }
+
+    }
+
+    override fun editConfiguration(key: String, editMirrorModel: EditMirrorModel): Completable {
         return Single.fromCallable { Widget(name, Size(width, height)) }
                 .flatMapCompletable { tunerApiManager.addWidget(it) }
     }

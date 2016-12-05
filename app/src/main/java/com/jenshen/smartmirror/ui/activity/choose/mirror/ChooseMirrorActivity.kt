@@ -55,11 +55,17 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
         setContentView(R.layout.activity_choose_mirror)
         setSupportActionBar(toolbar)
         adapter = MirrorsAdapter(context,
+                //item click
                 { /*todo edit */ },
+                // qr code clicked
                 { presenter.setMirrorIsWaitingForSubscriber(it.tunerSubscription.id) },
-                { startActivity(Intent(this, EditMirrorActivity::class.java)) },
+                //add new configuration
+                { EditMirrorActivity.start(context, it.key) },
+                //edit configuration
                 { configurationId: String, mirrorModel: MirrorModel -> /*todo edit */ },
+                //delete configuration
                 { configurationId: String, mirrorModel: MirrorModel -> presenter.deleteConfigurationForMirror(configurationId, mirrorModel.key) },
+                //set configuration
                 { configurationId: String, mirrorModel: MirrorModel -> presenter.setConfigurationIdForMirror(configurationId, mirrorModel.key) },
                 this)
         contentView.adapter = adapter

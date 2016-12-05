@@ -6,12 +6,32 @@ interface FirebaseConstant {
         const val MIRRORS: String = "mirrors"
         const val TUNERS: String = "tuners"
         const val WIDGETS: String = "widgets"
+        const val MIRROR_CONFIGURATIONS: String = "mIrror_configurations"
     }
 
     interface MirrorConfiguration {
         companion object {
             const val MIRROR_ID = "mirror_id"
+            const val TITLE = "title"
+            const val WIDGETS = "widgets"
             const val LAST_TIME_UPDATE = "last_time_update"
+        }
+
+        interface Widget {
+            companion object {
+                const val WIDGET_KEY = "key"
+                const val TOP_LEFT_CORNER = "topLeft_corner"
+                const val TOP_RIGHT_CORNER = "topRight_corner"
+                const val BOTTOM_LEFT_CORNER = "bottomLeft_corner"
+                const val BOTTOM_RIGHT_CORNER = "bottomRight_corner"
+            }
+
+            interface Corner {
+                companion object {
+                    const val COLUMN = "column"
+                    const val ROW = "row"
+                }
+            }
         }
     }
 

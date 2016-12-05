@@ -7,6 +7,7 @@ import com.jenshen.smartmirror.interactor.firebase.api.FirebaseApiInteractor
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.ui.mvp.view.signup.tuner.SignUpTunerView
+import com.jenshen.smartmirror.util.reactive.applyProgress
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import com.jenshen.smartmirror.util.validation.isValidConfirmPassword
 import com.jenshen.smartmirror.util.validation.isValidEmail
@@ -16,6 +17,8 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Action
+import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -75,10 +78,6 @@ class SignUpTunerPresenter @Inject constructor(private val apiInteractor: Fireba
                 Function4 { isValidUserName: Boolean, isValidEmail: Boolean, isValidPassword: Boolean, isValidConfirmPassword: Boolean ->
                     isValidUserName && isValidEmail && isValidPassword && isValidConfirmPassword
                 })
-                .doOnSuccess {
-                    view?.showProgress()
-                    isTaskFinished = false
-                }
                 .observeOn(Schedulers.io())
                 .flatMapCompletable { isValid ->
                     if (isValid) {
@@ -88,12 +87,16 @@ class SignUpTunerPresenter @Inject constructor(private val apiInteractor: Fireba
                     }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({
+                .applyProgress(Consumer {
+                    view?.showProgress()
+                    isTaskFinished = false
+                }, Action {
                     if (isTaskFinished) {
                         view?.hideProgress()
                     }
-                }, {
+                })
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({}, {
                     view?.handleError(it)
                     view?.hideProgress()
                     isTaskFinished = true
@@ -108,23 +111,24 @@ class SignUpTunerPresenter @Inject constructor(private val apiInteractor: Fireba
     }
 
     fun onCreateTunerAccount() {
-        if (isTaskFinished) {
-            view?.showProgress()
-            isTaskFinished = false
-        }
         Single.fromCallable { preferencesManager.getSession()!! }
                 .cast(TunerSession::class.java)
                 .flatMap { apiInteractor.createOrGetTuner(it) }
                 .applySchedulers(Schedulers.io())
+                .applyProgress(Consumer {
+                    if (isTaskFinished) {
+                        view?.showProgress()
+                        isTaskFinished = false
+                    }
+                }, Action {
+                    view?.hideProgress()
+                    isTaskFinished = true
+                })
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({
                     view?.onCreateAccountSuccess()
-                    view?.hideProgress()
-                    isTaskFinished = true
                 }, {
                     view?.handleError(it)
-                    view?.hideProgress()
-                    isTaskFinished = true
                 })
     }
 }

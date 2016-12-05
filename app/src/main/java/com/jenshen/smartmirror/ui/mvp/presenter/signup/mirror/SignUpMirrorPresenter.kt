@@ -14,8 +14,11 @@ import com.jenshen.smartmirror.interactor.firebase.api.ApiInteractor
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.ui.mvp.view.signup.mirror.SignUpMirrorView
+import com.jenshen.smartmirror.util.reactive.applyProgress
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import io.reactivex.Single
+import io.reactivex.functions.Action
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
@@ -46,16 +49,18 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
     }
 
     fun signInMirror() {
-        view?.showProgress()
-        isTaskFinished = false
         authInteractor.signInMirror()
                 .applySchedulers(Schedulers.io())
-                .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({
+                .applyProgress(Consumer {
+                    view?.showProgress()
+                    isTaskFinished = false
+                }, Action {
                     if (isTaskFinished) {
                         view?.hideProgress()
                     }
-                }, {
+                })
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({}, {
                     view?.handleError(it)
                     view?.hideProgress()
                     isTaskFinished = true
@@ -63,10 +68,6 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
     }
 
     private fun createMirrorAccount() {
-        if (isTaskFinished) {
-            view?.showProgress()
-            isTaskFinished = false
-        }
         Single.fromCallable { preferencesManager.getSession()!! }
                 .cast(MirrorSession::class.java)
                 .flatMap { session ->
@@ -79,15 +80,20 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
                     }
                 }
                 .applySchedulers(Schedulers.io())
+                .applyProgress(Consumer {
+                    if (isTaskFinished) {
+                        view?.showProgress()
+                        isTaskFinished = false
+                    }
+                }, Action {
+                    view?.hideProgress()
+                    isTaskFinished = true
+                })
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({
                     view?.onMirrorCreated(it.mirror, it.mirrorSession, it.bitmap)
-                    view?.hideProgress()
-                    isTaskFinished = true
                 }, {
                     view?.handleError(it)
-                    view?.hideProgress()
-                    isTaskFinished = true
                 })
     }
 

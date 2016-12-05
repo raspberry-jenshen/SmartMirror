@@ -8,6 +8,9 @@
     <string name="dialog.yes">Yes</string>
     <string name="dialog.no">No</string>
     <string name="dialog.save_and_exit">Save and exit</string>
+    <string name="dialog.completed">Completed</string>
+    <string name="dialog.data_were_set">Data were set</string>
+    <string name="dialog.exit">Exit</string>
 
     <!--errors-->
     <string name="error.invalid_username">Your session name must contains at least 4 symbols</string>
@@ -17,6 +20,7 @@
     <string name="error.camera.permission">You need to allow the camera permission for register your Mirror</string>
     <string name="error.cant_find_mirror">Can\'t find mirror</string>
     <string name="error.cant_be_empty">Can\'t be empty</string>
+    <string name="error.finish_editing">Please, finish editing</string>
     <string name="error.not_save">Are you sure that you want to exit without save a mirror configuration?</string>
 
 

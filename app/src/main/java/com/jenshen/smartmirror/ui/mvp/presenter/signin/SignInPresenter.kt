@@ -6,6 +6,7 @@ import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
+import com.jenshen.smartmirror.util.reactive.applyProgress
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import com.jenshen.smartmirror.util.validation.isValidEmail
 import com.jenshen.smartmirror.util.validation.isValidPassword
@@ -14,7 +15,9 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Action
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -58,7 +61,6 @@ class SignInPresenter @Inject constructor(private val preferencesManager: Prefer
                 .map { it.isValid }
 
         Single.zip(validateEmail, validatePassword, BiFunction { isValidEmail: Boolean, isValidPassword: Boolean -> isValidEmail && isValidPassword })
-                .doOnSuccess { view?.showProgress() }
                 .observeOn(Schedulers.io())
                 .flatMapCompletable { isValid ->
                     if (isValid) {
@@ -68,13 +70,9 @@ class SignInPresenter @Inject constructor(private val preferencesManager: Prefer
                     }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
+                .applyProgress(Consumer { view?.showProgress() }, Action { view?.hideProgress() })
                 .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({
-                    view?.hideProgress()
-                }, {
-                    view?.handleError(it)
-                    view?.hideProgress()
-                })
+                .subscribe({}, { view?.handleError(it) })
     }
 
     fun validateEmail(email: String): Boolean {

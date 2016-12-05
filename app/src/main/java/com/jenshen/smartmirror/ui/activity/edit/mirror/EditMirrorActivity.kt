@@ -1,6 +1,7 @@
 package com.jenshen.smartmirror.ui.activity.edit.mirror
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -29,9 +30,17 @@ import kotlinx.android.synthetic.main.activity_edit_mirror.*
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
 
     companion object {
-        val EXTRA_MIRROR_CONFIGURATION_ID = "EXTRA_MIRROR_ID"
+        private val EXTRA_MIRROR_ID = "EXTRA_MIRROR_ID"
+        private val EXTRA_MIRROR_CONFIGURATION_ID = "EXTRA_MIRROR_CONFIGURATION_ID"
         private val MODEL_KEY = "MODEL_KEY"
         private val IS_SAVED_KEY = "IS_SAVED_KEY"
+
+        fun start(context: Context, mirrorId: String, configurationId: String? = null) {
+            val intent = Intent(context, EditMirrorActivity::class.java)
+            intent.putExtra(EXTRA_MIRROR_ID, mirrorId)
+            intent.putExtra(EXTRA_MIRROR_CONFIGURATION_ID, configurationId)
+            context.startActivity(intent)
+        }
     }
 
     private var editMirrorModel: EditMirrorModel? = null
@@ -57,8 +66,9 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         setContentView(R.layout.activity_edit_mirror)
         setupToolbar()
         restoreExtra(savedInstanceState)
-        val stringExtra = intent.getStringExtra(EXTRA_MIRROR_CONFIGURATION_ID)
-        if (stringExtra == null && editMirrorModel == null) {
+        val mirrorId = intent.getStringExtra(EXTRA_MIRROR_ID)
+        val configurationId = intent.getStringExtra(EXTRA_MIRROR_CONFIGURATION_ID)
+        if (configurationId == null && editMirrorModel == null) {
             val editText = EditText(context)
             val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
             editText.layoutParams = layoutParams
@@ -75,7 +85,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                     val title = editText.text.toString()
                     if (!title.isEmpty()) {
-                        editMirrorModel = EditMirrorModel(title)
+                        editMirrorModel = EditMirrorModel(mirrorId, title)
                         dialog.dismiss()
                     } else {
                         Toast.makeText(context, R.string.error_cant_be_empty, Toast.LENGTH_LONG).show()
@@ -141,7 +151,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 return true
             }
             R.id.save_item_menu -> {
-                presenter.saveConfiguration(editMirrorModel!!)
+                saveConfiguration()
                 return true
             }
             android.R.id.home -> {
@@ -155,13 +165,31 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     fun onSavedConfiguration() {
         isSaved = true
+        AlertDialog.Builder(context)
+                .setTitle(R.string.dialog_completed)
+                .setMessage(R.string.dialog_data_were_set)
+                .setPositiveButton(R.string.ok, null)
+                .setNegativeButton(R.string.dialog_exit, { dialogInterface: DialogInterface, i: Int ->
+                    NavUtils.navigateUpFromSameTask(this)
+                })
+                .create()
+                .show()
     }
 
     /* private methods */
 
-    private fun saveConfiguration(){
+    private fun saveConfiguration() {
         updateModel()
-
+        if (editMirrorModel != null && isModelCompleted(editMirrorModel!!)) {
+            presenter.saveConfiguration(editMirrorModel!!)
+        } else {
+            AlertDialog.Builder(context)
+                    .setTitle(R.string.warning)
+                    .setMessage(R.string.error_finish_editing)
+                    .setPositiveButton(R.string.ok, null)
+                    .create()
+                    .show()
+        }
     }
 
     private fun createWidget(widgetModel: WidgetModel): WidgetView {
@@ -182,7 +210,8 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     private fun updateModel() {
         editMirrorModel?.list?.forEach { widgetModel ->
-            val view = widgetContainer.widgets.find { view -> widgetModel.tag =3= view.tag }
+            val view = widgetContainer.widgets
+                    .find { widgetModel.tag == it.tag }
             if (isSaved && widgetModel.widgetPosition != null) {
                 isSaved = widgetModel.widgetPosition == view!!.widgetPosition
             }
@@ -190,9 +219,12 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         }
     }
 
-    private fun isModelCompleted(editMirrorModel: EditMirrorModel) {
+    private fun isModelCompleted(editMirrorModel: EditMirrorModel): Boolean {
         var completed = true
-        editMirrorModel.list.
+        editMirrorModel.list.forEach {
+            completed = completed && !(it.widgetPosition?.isEmpty ?: true)
+        }
+        return completed
     }
 
     private fun restoreExtra(savedInstanceState: Bundle?) {
