@@ -129,7 +129,7 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
 
     override fun addWidgetToConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String> {
         return fireBaseDatabase
-                .getMirrorConfigurationRef(configurationsKey)
+                .getMirrorConfigurationWidgetsRef(configurationsKey)
                 .map { it.push() }
                 .flatMap {
                     it.uploadValue(widgetConfiguration)
@@ -139,8 +139,7 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
 
     override fun editWidgetInConfiguration(configurationsKey: String, keyWidget: String, widgetConfiguration: WidgetConfiguration): Completable {
         return fireBaseDatabase
-                .getMirrorConfigurationRef(configurationsKey)
-                .map {it.child(keyWidget) }
+                .getMirrorConfigurationWidgetRef(keyWidget, configurationsKey)
                 .flatMapCompletable { it.uploadValue(widgetConfiguration) }
     }
 }

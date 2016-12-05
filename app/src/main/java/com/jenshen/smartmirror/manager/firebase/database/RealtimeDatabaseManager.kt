@@ -29,4 +29,6 @@ interface RealtimeDatabaseManager {
 
     fun getMirrorsConfigurationsRef(): Single<DatabaseReference>
     fun getMirrorConfigurationRef(configurationKey: String): Single<DatabaseReference>
+    fun getMirrorConfigurationWidgetsRef(configurationKey: String): Single<DatabaseReference>
+    fun getMirrorConfigurationWidgetRef(widgetKey: String, configurationKey: String): Single<DatabaseReference>
 }
