@@ -11,7 +11,7 @@ import com.jenshen.smartmirror.ui.view.widget.ClockWidget
 
 
 fun EditMirrorActivity.getViewForWidget(widgetModel: WidgetModel, context: Context): View {
-    val view = when (widgetModel.key) {
+    val view = when (widgetModel.widgetKey) {
         FirebaseConstant.Widget.CLOCK_WIDGET_KEY -> ClockWidget(context)
         else -> throw RuntimeException("Can't support this widget")
     }

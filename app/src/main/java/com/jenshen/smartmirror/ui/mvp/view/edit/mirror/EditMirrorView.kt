@@ -4,4 +4,5 @@ import com.jenshen.compat.base.view.BaseMvpView
 
 interface EditMirrorView : BaseMvpView {
 
+    fun onSavedConfiguration()
 }

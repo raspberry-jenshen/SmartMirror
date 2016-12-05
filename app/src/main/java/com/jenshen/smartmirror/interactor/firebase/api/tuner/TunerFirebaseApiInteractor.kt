@@ -107,29 +107,43 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                 .map { WidgetModel(it.dataSnapshot.key, it.dataSnapshot.getValue(Widget::class.java)) }
     }
 
-    override fun addWidget(name: String, width: Int, height: Int): Completable {
+    override fun addWidget(name: String, width: Int, height: Int): Single<String> {
         return Single.fromCallable { Widget(name, Size(width, height)) }
-                .flatMapCompletable { tunerApiManager.addWidget(it) }
+                .flatMap { tunerApiManager.addWidget(it) }
     }
 
     /* mirror configurations */
 
-    override fun addMirrorConfiguration(editMirrorModel: EditMirrorModel): Single<String> {
+    override fun saveMirrorConfiguration(editMirrorModel: EditMirrorModel): Single<MutableList<WidgetModel>> {
         val mirrorConfiguration = MirrorConfiguration(editMirrorModel.mirrorId, editMirrorModel.title)
-        return tunerApiManager.addMirrorConfiguration(mirrorConfiguration)
-                .flatMap{
+        val updateConfigurationSingle: Single<String>
+        if (editMirrorModel.configurationKey == null) {
+            updateConfigurationSingle = tunerApiManager.addMirrorConfiguration(mirrorConfiguration)
+                    .doOnSuccess { editMirrorModel.configurationKey = it }
+        } else {
+            updateConfigurationSingle = tunerApiManager.editMirrorConfiguration(editMirrorModel.configurationKey!!, mirrorConfiguration)
+                    .toSingleDefault(editMirrorModel.configurationKey)
+        }
+        return updateConfigurationSingle
+                .flatMap { configurationKey ->
                     Observable.fromIterable(editMirrorModel.list)
-                            .map {
-                                WidgetConfiguration(it.widgetKey,
-                                        Corner(it.widgetPosition!!.topLeftColumnLine, it.widgetPosition!!.topLeftRowLine),
-                                        Corner(it.widgetPosition!!.topRightColumnLine, it.widgetPosition!!.topRightRowLine),
-                                        Corner(it.widgetPosition!!.bottomLeftColumnLine, it.widgetPosition!!.bottomLeftRowLine),
-                                        Corner(it.widgetPosition!!.bottomRightColumnLine, it.widgetPosition!!.bottomRightRowLine))
-                            }
-                }
-    }
+                            .flatMapSingle { widgetModel ->
+                                val widgetConfiguration = WidgetConfiguration(widgetModel.widgetKey,
+                                        Corner(widgetModel.widgetPosition!!.topLeftColumnLine, widgetModel.widgetPosition!!.topLeftRowLine),
+                                        Corner(widgetModel.widgetPosition!!.topRightColumnLine, widgetModel.widgetPosition!!.topRightRowLine),
+                                        Corner(widgetModel.widgetPosition!!.bottomLeftColumnLine, widgetModel.widgetPosition!!.bottomLeftRowLine),
+                                        Corner(widgetModel.widgetPosition!!.bottomRightColumnLine, widgetModel.widgetPosition!!.bottomRightRowLine))
 
-    override fun editConfiguration(key: String, editMirrorModel: EditMirrorModel): Completable {
-        return Completable.complete();
+                                if (widgetModel.key == null) {
+                                    return@flatMapSingle tunerApiManager.addWidgetToConfiguration(configurationKey, widgetConfiguration)
+                                            .doOnSuccess { widgetModel.key = it }
+                                            .map { widgetModel }
+                                } else {
+                                    return@flatMapSingle tunerApiManager.editWidgetInConfiguration(configurationKey, widgetModel.key!!, widgetConfiguration)
+                                            .toSingleDefault(widgetModel)
+                                }
+                            }
+                            .toList()
+                }
     }
 }

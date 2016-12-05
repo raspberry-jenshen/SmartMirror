@@ -9,7 +9,8 @@ import com.jenshensoft.widgetview.entity.WidgetPosition
 data class WidgetModel(val widgetKey: String,
                        val widget: Widget,
                        var tag: String = widgetKey,
-                       var widgetPosition: WidgetPosition? = null) : Parcelable{
+                       var key: String? = null,
+                       var widgetPosition: WidgetPosition? = null) : Parcelable {
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<WidgetModel> = object : Parcelable.Creator<WidgetModel> {
             override fun createFromParcel(source: Parcel): WidgetModel = WidgetModel(source)
@@ -17,8 +18,8 @@ data class WidgetModel(val widgetKey: String,
         }
     }
 
-    constructor(source: Parcel) : this(source.readString(),
-            source.readParcelable<Widget>(Widget::class.java.classLoader),
+    constructor(source: Parcel) : this(source.readString(), source.readParcelable<Widget>(Widget::class.java.classLoader),
+            source.readString(),
             source.readString(),
             source.readParcelable<WidgetPosition?>(WidgetPosition::class.java.classLoader))
 
@@ -28,6 +29,7 @@ data class WidgetModel(val widgetKey: String,
         dest?.writeString(widgetKey)
         dest?.writeParcelable(widget, 0)
         dest?.writeString(tag)
+        dest?.writeString(key)
         dest?.writeParcelable(widgetPosition, 0)
     }
 }

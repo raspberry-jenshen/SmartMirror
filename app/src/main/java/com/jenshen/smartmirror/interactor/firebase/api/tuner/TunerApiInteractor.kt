@@ -24,10 +24,8 @@ interface TunerApiInteractor {
     /* widget */
 
     fun fetchWidgets(): Flowable<WidgetModel>
-    fun addWidget(name: String, width: Int, height: Int): Completable
+    fun addWidget(name: String, width: Int, height: Int): Single<String>
 
     /* mirror configurations */
-
-    fun addMirrorConfiguration(editMirrorModel: EditMirrorModel): Single<String>
-    fun editConfiguration(key: String, editMirrorModel: EditMirrorModel): Completable
+    fun saveMirrorConfiguration(editMirrorModel: EditMirrorModel): Single<MutableList<WidgetModel>>
 }

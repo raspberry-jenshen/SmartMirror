@@ -2,6 +2,8 @@ package com.jenshen.smartmirror.manager.firebase.api.tuner
 
 import com.google.firebase.database.GenericTypeIndicator
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
+import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
+import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorSubscriber
@@ -15,6 +17,7 @@ import com.jenshen.smartmirror.util.reactive.firebase.uploadValue
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
+import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 
@@ -96,10 +99,48 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .filter { it.dataSnapshot.exists() }
     }
 
-    override fun addWidget(widget: Widget): Completable {
+    override fun addWidget(widget: Widget): Single<String> {
         return fireBaseDatabase
                 .getWidgetsRef()
                 .map { it.push() }
-                .flatMapCompletable { it.uploadValue(widget) }
+                .flatMap {
+                    it.uploadValue(Widget)
+                            .toSingle { it.key }
+                }
+    }
+
+    /* mirror configuration */
+
+    override fun addMirrorConfiguration(mirrorConfiguration: MirrorConfiguration): Single<String> {
+        return fireBaseDatabase
+                .getMirrorsConfigurationsRef()
+                .map { it.push() }
+                .flatMap {
+                    it.uploadValue(mirrorConfiguration)
+                            .toSingle { it.key }
+                }
+    }
+
+    override fun editMirrorConfiguration(configurationsKey: String, mirrorConfiguration: MirrorConfiguration): Completable {
+        return fireBaseDatabase
+                .getMirrorConfigurationRef(configurationsKey)
+                .flatMapCompletable { it.uploadValue(mirrorConfiguration) }
+    }
+
+    override fun addWidgetToConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String> {
+        return fireBaseDatabase
+                .getMirrorConfigurationRef(configurationsKey)
+                .map { it.push() }
+                .flatMap {
+                    it.uploadValue(widgetConfiguration)
+                            .toSingle { it.key }
+                }
+    }
+
+    override fun editWidgetInConfiguration(configurationsKey: String, keyWidget: String, widgetConfiguration: WidgetConfiguration): Completable {
+        return fireBaseDatabase
+                .getMirrorConfigurationRef(configurationsKey)
+                .map {it.child(keyWidget) }
+                .flatMapCompletable { it.uploadValue(widgetConfiguration) }
     }
 }

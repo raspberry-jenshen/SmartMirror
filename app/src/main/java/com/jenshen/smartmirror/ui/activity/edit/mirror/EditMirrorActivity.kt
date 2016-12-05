@@ -122,7 +122,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                     .setTitle(R.string.warning)
                     .setMessage(R.string.error_not_save)
                     .setNeutralButton(R.string.dialog_save_and_exit, { dialogInterface: DialogInterface, i: Int ->
-                        presenter.saveConfiguration(editMirrorModel!!)
+                        saveConfiguration()
                     })
                     .setNegativeButton(R.string.dialog_no, null)
                     .setPositiveButton(R.string.dialog_yes, { dialogInterface: DialogInterface, i: Int ->
@@ -163,7 +163,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     /* callbacks */
 
-    fun onSavedConfiguration() {
+    override fun onSavedConfiguration() {
         isSaved = true
         AlertDialog.Builder(context)
                 .setTitle(R.string.dialog_completed)

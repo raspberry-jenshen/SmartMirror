@@ -15,13 +15,10 @@ import javax.inject.Inject
 class EditMirrorPresenter @Inject constructor(private val tunerApiInteractor: TunerApiInteractor) : MvpRxPresenter<EditMirrorView>() {
 
     fun saveConfiguration(editMirrorModel: EditMirrorModel) {
-        if (editMirrorModel.configurationId != null) {
-        } else {
-            tunerApiInteractor.addMirrorConfiguration(editMirrorModel)
-                    .applySchedulers(Schedulers.io())
-                    .applyProgress(Consumer { view?.showProgress() }, Action { view?.hideProgress() })
-                    .doOnSubscribe { compositeDisposable.add(it) }
-                    .subscribe({ view?.setLoginButtonState(it) }, { view?.handleError(it) })
-        }
+        tunerApiInteractor.saveMirrorConfiguration(editMirrorModel)
+                .applySchedulers(Schedulers.io())
+                .applyProgress(Consumer { view?.showProgress() }, Action { view?.hideProgress() })
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({ view?.onSavedConfiguration() }, { view?.handleError(it) })
     }
 }

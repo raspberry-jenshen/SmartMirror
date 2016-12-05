@@ -5,8 +5,8 @@ import android.os.Parcelable
 
 data class EditMirrorModel(val mirrorId: String,
                            val title: String,
-                           val configurationId: String? = null,
-                           val list: MutableList<WidgetModel> = mutableListOf()) : Parcelable {
+                           val list: MutableList<WidgetModel> = mutableListOf(),
+                           var configurationKey: String? = null) : Parcelable {
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<EditMirrorModel> = object : Parcelable.Creator<EditMirrorModel> {
             override fun createFromParcel(source: Parcel): EditMirrorModel = EditMirrorModel(source)
@@ -16,15 +16,15 @@ data class EditMirrorModel(val mirrorId: String,
 
     constructor(source: Parcel) : this(source.readString(),
             source.readString(),
-            source.readString(),
-            source.createTypedArrayList(WidgetModel.CREATOR))
+            source.createTypedArrayList(WidgetModel.CREATOR),
+            source.readString())
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
         dest?.writeString(mirrorId)
         dest?.writeString(title)
-        dest?.writeString(configurationId)
+        dest?.writeString(configurationKey)
         dest?.writeTypedList(list)
     }
 }
