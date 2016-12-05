@@ -1,13 +1,12 @@
 package com.jenshen.smartmirror.interactor.firebase.api.tuner
 
-import android.R.attr.width
 import android.content.Context
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.R.attr.height
-import com.jenshen.smartmirror.R.id.name
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
+import com.jenshen.smartmirror.data.firebase.model.configuration.Corner
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
+import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
 import com.jenshen.smartmirror.data.firebase.model.widget.Size
 import com.jenshen.smartmirror.data.firebase.model.widget.Widget
@@ -19,6 +18,7 @@ import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -114,16 +114,22 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     /* mirror configurations */
 
-    override fun addConfiguration(editMirrorModel: EditMirrorModel): Single<String> {
-        return Single.fromCallable {
-            val mirrorConfiguration = MirrorConfiguration(editMirrorModel.mirrorId, editMirrorModel.title)
-            mirrorConfiguration
-        }
-
+    override fun addMirrorConfiguration(editMirrorModel: EditMirrorModel): Single<String> {
+        val mirrorConfiguration = MirrorConfiguration(editMirrorModel.mirrorId, editMirrorModel.title)
+        return tunerApiManager.addMirrorConfiguration(mirrorConfiguration)
+                .flatMap{
+                    Observable.fromIterable(editMirrorModel.list)
+                            .map {
+                                WidgetConfiguration(it.widgetKey,
+                                        Corner(it.widgetPosition!!.topLeftColumnLine, it.widgetPosition!!.topLeftRowLine),
+                                        Corner(it.widgetPosition!!.topRightColumnLine, it.widgetPosition!!.topRightRowLine),
+                                        Corner(it.widgetPosition!!.bottomLeftColumnLine, it.widgetPosition!!.bottomLeftRowLine),
+                                        Corner(it.widgetPosition!!.bottomRightColumnLine, it.widgetPosition!!.bottomRightRowLine))
+                            }
+                }
     }
 
     override fun editConfiguration(key: String, editMirrorModel: EditMirrorModel): Completable {
-        return Single.fromCallable { Widget(name, Size(width, height)) }
-                .flatMapCompletable { tunerApiManager.addWidget(it) }
+        return Completable.complete();
     }
 }

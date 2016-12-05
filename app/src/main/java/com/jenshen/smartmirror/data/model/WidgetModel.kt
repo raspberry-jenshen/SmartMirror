@@ -6,9 +6,9 @@ import android.os.Parcelable
 import com.jenshen.smartmirror.data.firebase.model.widget.Widget
 import com.jenshensoft.widgetview.entity.WidgetPosition
 
-data class WidgetModel(val key: String,
+data class WidgetModel(val widgetKey: String,
                        val widget: Widget,
-                       var tag: String = key,
+                       var tag: String = widgetKey,
                        var widgetPosition: WidgetPosition? = null) : Parcelable{
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<WidgetModel> = object : Parcelable.Creator<WidgetModel> {
@@ -25,7 +25,7 @@ data class WidgetModel(val key: String,
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
-        dest?.writeString(key)
+        dest?.writeString(widgetKey)
         dest?.writeParcelable(widget, 0)
         dest?.writeString(tag)
         dest?.writeParcelable(widgetPosition, 0)
