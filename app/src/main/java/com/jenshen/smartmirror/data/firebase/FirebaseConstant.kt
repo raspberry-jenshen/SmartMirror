@@ -6,7 +6,7 @@ interface FirebaseConstant {
         const val MIRRORS: String = "mirrors"
         const val TUNERS: String = "tuners"
         const val WIDGETS: String = "widgets"
-        const val MIRROR_CONFIGURATIONS: String = "mIrror_configurations"
+        const val MIRROR_CONFIGURATIONS: String = "mirror_configurations"
     }
 
     interface MirrorConfiguration {
@@ -54,7 +54,7 @@ interface FirebaseConstant {
     interface Mirror {
         companion object {
             const val DEVICE_INFO = "device_info"
-            const val SELECTED_CONFIGURATION_ID = "selected_configuration_id"
+            const val SELECTED_CONFIGURATION_ID = "selected_configuration_key"
             const val IS_WAITING_FOR_TUNER = "is_waiting_for_tuner"
             const val SUBSCRIBERS = "subscribers"
             const val CONFIGURATIONS = "configurations"

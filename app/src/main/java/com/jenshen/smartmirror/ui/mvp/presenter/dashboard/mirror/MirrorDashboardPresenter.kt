@@ -14,11 +14,18 @@ class MirrorDashboardPresenter @Inject constructor(private val mirrorApiInteract
     override fun attachView(view: MirrorDashboardView?) {
         super.attachView(view)
         fetchIsNeedToShoQrCode()
+        fetchSelectedConfiguration()
     }
 
     private fun fetchIsNeedToShoQrCode() {
-       addDisposible(mirrorApiInteractor.fetchIsNeedToShoQrCode(preferencesManager.getSession()!!.id)
+       addDisposible(mirrorApiInteractor.fetchIsNeedToShowQrCode(preferencesManager.getSession()!!.id)
                 .applySchedulers(Schedulers.computation())
                 .subscribe({ view?.showSignUpScreen() }, { view?.handleError(it) }))
+    }
+
+    private fun fetchSelectedConfiguration() {
+       addDisposible(mirrorApiInteractor.fetchSelectedConfiguration(preferencesManager.getSession()!!.id)
+                .applySchedulers(Schedulers.computation())
+                .subscribe({ view?.updateMirrorConfiguration(it) }, { view?.handleError(it) }))
     }
 }
