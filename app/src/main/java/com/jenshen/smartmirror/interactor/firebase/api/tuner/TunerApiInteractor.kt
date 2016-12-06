@@ -27,5 +27,5 @@ interface TunerApiInteractor {
     fun addWidget(name: String, width: Int, height: Int): Single<String>
 
     /* mirror configurations */
-    fun saveMirrorConfiguration(editMirrorModel: EditMirrorModel): Single<MutableList<WidgetModel>>
+    fun saveMirrorConfiguration(editMirrorModel: EditMirrorModel): Completable
 }

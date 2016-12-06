@@ -5,16 +5,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.jenshen.smartmirror.data.firebase.FirebaseConstant
-import com.jenshen.smartmirror.data.model.WidgetModel
-import com.jenshen.smartmirror.ui.activity.edit.mirror.EditMirrorActivity
 import com.jenshen.smartmirror.ui.view.widget.ClockWidget
+import com.jenshensoft.widgetview.WidgetView
 
 
-fun EditMirrorActivity.getViewForWidget(widgetModel: WidgetModel, context: Context): View {
-    val view = when (widgetModel.widgetKey) {
+fun getViewForWidget(widgetKey: String, context: Context): View {
+    val view = when (widgetKey) {
         FirebaseConstant.Widget.CLOCK_WIDGET_KEY -> ClockWidget(context)
         else -> throw RuntimeException("Can't support this widget")
     }
     view.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     return view
+}
+
+fun createWidget(widgetKey: String, context: Context): WidgetView {
+    val view = getViewForWidget(widgetKey, context)
+    val widgetView = WidgetView(context)
+    widgetView.addView(view)
+    widgetView.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    return widgetView
 }

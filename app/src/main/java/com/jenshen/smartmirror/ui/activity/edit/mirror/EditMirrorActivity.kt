@@ -9,9 +9,7 @@ import android.support.v4.app.NavUtils
 import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
@@ -23,8 +21,7 @@ import com.jenshen.smartmirror.di.component.activity.edit.mirror.EditMirrorCompo
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.edit.mirror.EditMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.edit.mirror.EditMirrorView
-import com.jenshen.smartmirror.util.widget.getViewForWidget
-import com.jenshensoft.widgetview.WidgetView
+import com.jenshen.smartmirror.util.widget.createWidget
 import kotlinx.android.synthetic.main.activity_edit_mirror.*
 
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
@@ -111,7 +108,8 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         val widgetModel = data!!.getParcelableExtra<WidgetModel>(ChooseWidgetActivity.RESULT_EXTRA_WIDGET)
         val sameWidgetsCount = editMirrorModel?.list?.filter { it.key == widgetModel.key }?.size ?: 0
         widgetModel.tag += sameWidgetsCount
-        val widget = createWidget(widgetModel)
+        val widget = createWidget(widgetModel.widgetKey, context)
+        widget.tag = widgetModel.tag
         editMirrorModel!!.list.add(widgetModel)
         widgetContainer.addWidgetView(widget)
     }
@@ -192,15 +190,6 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         }
     }
 
-    private fun createWidget(widgetModel: WidgetModel): WidgetView {
-        val view = getViewForWidget(widgetModel, context)
-        val widgetView = WidgetView(context)
-        widgetView.addView(view)
-        widgetView.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        widgetView.tag = widgetModel.tag
-        return widgetView
-    }
-
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
         val ab = supportActionBar
@@ -231,7 +220,8 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         isSaved = savedInstanceState?.getBoolean(IS_SAVED_KEY) ?: false
         editMirrorModel = savedInstanceState?.getParcelable<EditMirrorModel>(MODEL_KEY)
         editMirrorModel?.list?.forEach { widgetModel ->
-            val widget = createWidget(widgetModel)
+            val widget = createWidget(widgetModel.widgetKey, context)
+            widget.tag = widgetModel.tag
             with(widget.widgetPosition) {
                 val widgetPosition = widgetModel.widgetPosition
 

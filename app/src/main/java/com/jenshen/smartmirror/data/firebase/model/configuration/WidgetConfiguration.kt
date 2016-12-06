@@ -18,7 +18,7 @@ class WidgetConfiguration(@set:PropertyName(FirebaseConstant.MirrorConfiguration
              var bottomLeftCorner: Corner,
                           @set:PropertyName(FirebaseConstant.MirrorConfiguration.Widget.BOTTOM_RIGHT_CORNER)
              @get:PropertyName(FirebaseConstant.MirrorConfiguration.Widget.BOTTOM_RIGHT_CORNER)
-             var bottomRight: Corner) {
+             var bottomRightCorner: Corner) {
 
     constructor() : this("", Corner(), Corner(), Corner(), Corner()) {
         // Default constructor required for calls to DataSnapshot.getValue(Widget.class)

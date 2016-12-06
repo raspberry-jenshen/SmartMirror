@@ -114,36 +114,43 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     /* mirror configurations */
 
-    override fun saveMirrorConfiguration(editMirrorModel: EditMirrorModel): Single<MutableList<WidgetModel>> {
-        val mirrorConfiguration = MirrorConfiguration(editMirrorModel.mirrorId, editMirrorModel.title)
-        val updateConfigurationSingle: Single<String>
-        if (editMirrorModel.configurationKey == null) {
-            updateConfigurationSingle = tunerApiManager.addMirrorConfiguration(mirrorConfiguration)
-                    .doOnSuccess { editMirrorModel.configurationKey = it }
-        } else {
-            updateConfigurationSingle = tunerApiManager.editMirrorConfiguration(editMirrorModel.configurationKey!!, mirrorConfiguration)
-                    .toSingleDefault(editMirrorModel.configurationKey)
-        }
-        return updateConfigurationSingle
-                .flatMap { configurationKey ->
-                    Observable.fromIterable(editMirrorModel.list)
-                            .flatMapSingle { widgetModel ->
-                                val widgetConfiguration = WidgetConfiguration(widgetModel.widgetKey,
-                                        Corner(widgetModel.widgetPosition!!.topLeftColumnLine, widgetModel.widgetPosition!!.topLeftRowLine),
-                                        Corner(widgetModel.widgetPosition!!.topRightColumnLine, widgetModel.widgetPosition!!.topRightRowLine),
-                                        Corner(widgetModel.widgetPosition!!.bottomLeftColumnLine, widgetModel.widgetPosition!!.bottomLeftRowLine),
-                                        Corner(widgetModel.widgetPosition!!.bottomRightColumnLine, widgetModel.widgetPosition!!.bottomRightRowLine))
-
-                                if (widgetModel.key == null) {
-                                    return@flatMapSingle tunerApiManager.addWidgetToConfiguration(configurationKey, widgetConfiguration)
-                                            .doOnSuccess { widgetModel.key = it }
-                                            .map { widgetModel }
-                                } else {
-                                    return@flatMapSingle tunerApiManager.editWidgetInConfiguration(configurationKey, widgetModel.key!!, widgetConfiguration)
-                                            .toSingleDefault(widgetModel)
-                                }
-                            }
-                            .toList()
+    override fun saveMirrorConfiguration(editMirrorModel: EditMirrorModel): Completable {
+        return Single.fromCallable { MirrorConfiguration(editMirrorModel.mirrorId, editMirrorModel.title) }
+                .flatMapCompletable { mirrorConfiguration ->
+                    if (editMirrorModel.configurationKey == null) {
+                        return@flatMapCompletable tunerApiManager.addMirrorConfiguration(mirrorConfiguration)
+                                .doOnSuccess { editMirrorModel.configurationKey = it }
+                                .toCompletable()
+                    } else {
+                        return@flatMapCompletable tunerApiManager.editMirrorConfiguration(editMirrorModel.configurationKey!!, mirrorConfiguration)
+                    }
                 }
+                .andThen(updateWidgets(editMirrorModel))
+                .andThen { }
+    }
+
+    /* private methods */
+
+    private fun updateWidgets(editMirrorModel: EditMirrorModel): Completable {
+        return Observable.fromIterable(editMirrorModel.list)
+                .flatMapCompletable { widgetModel ->
+                    val widgetConfiguration = WidgetConfiguration(widgetModel.widgetKey,
+                            Corner(widgetModel.widgetPosition!!.topLeftColumnLine, widgetModel.widgetPosition!!.topLeftRowLine),
+                            Corner(widgetModel.widgetPosition!!.topRightColumnLine, widgetModel.widgetPosition!!.topRightRowLine),
+                            Corner(widgetModel.widgetPosition!!.bottomLeftColumnLine, widgetModel.widgetPosition!!.bottomLeftRowLine),
+                            Corner(widgetModel.widgetPosition!!.bottomRightColumnLine, widgetModel.widgetPosition!!.bottomRightRowLine))
+
+                    if (widgetModel.key == null) {
+                        tunerApiManager.addWidgetToConfiguration(editMirrorModel.configurationKey!!, widgetConfiguration)
+                                .doOnSuccess { widgetModel.key = it }
+                                .toCompletable()
+                    } else {
+                        tunerApiManager.editWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!, widgetConfiguration)
+                    }
+                }
+    }
+
+    private fun updateMirrorConfigurations(): Completable {
+
     }
 }
