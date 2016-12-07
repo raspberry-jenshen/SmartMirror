@@ -7,6 +7,7 @@ import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.model.configuration.Corner
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
+import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
 import com.jenshen.smartmirror.data.firebase.model.widget.Size
 import com.jenshen.smartmirror.data.firebase.model.widget.Widget
@@ -20,6 +21,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
+import java.util.*
 import javax.inject.Inject
 
 class TunerFirebaseApiInteractor @Inject constructor(private var context: Context,
@@ -118,7 +120,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         return Single.fromCallable { MirrorConfiguration(editMirrorModel.mirrorId, editMirrorModel.title) }
                 .flatMapCompletable { mirrorConfiguration ->
                     if (editMirrorModel.configurationKey == null) {
-                        return@flatMapCompletable tunerApiManager.addMirrorConfiguration(mirrorConfiguration)
+                        return@flatMapCompletable tunerApiManager.createMirrorConfiguration(mirrorConfiguration)
                                 .doOnSuccess { editMirrorModel.configurationKey = it }
                                 .toCompletable()
                     } else {
@@ -126,31 +128,38 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                     }
                 }
                 .andThen(updateWidgets(editMirrorModel))
-                .andThen { }
+                .andThen(updateConfigurationForMirror(editMirrorModel))
     }
 
     /* private methods */
 
     private fun updateWidgets(editMirrorModel: EditMirrorModel): Completable {
-        return Observable.fromIterable(editMirrorModel.list)
-                .flatMapCompletable { widgetModel ->
-                    val widgetConfiguration = WidgetConfiguration(widgetModel.widgetKey,
-                            Corner(widgetModel.widgetPosition!!.topLeftColumnLine, widgetModel.widgetPosition!!.topLeftRowLine),
-                            Corner(widgetModel.widgetPosition!!.topRightColumnLine, widgetModel.widgetPosition!!.topRightRowLine),
-                            Corner(widgetModel.widgetPosition!!.bottomLeftColumnLine, widgetModel.widgetPosition!!.bottomLeftRowLine),
-                            Corner(widgetModel.widgetPosition!!.bottomRightColumnLine, widgetModel.widgetPosition!!.bottomRightRowLine))
+        return Completable.defer {
+            Observable.fromIterable(editMirrorModel.list)
+                    .flatMapCompletable { widgetModel ->
+                        val widgetConfiguration = WidgetConfiguration(widgetModel.widgetKey,
+                                Corner(widgetModel.widgetPosition!!.topLeftColumnLine, widgetModel.widgetPosition!!.topLeftRowLine),
+                                Corner(widgetModel.widgetPosition!!.topRightColumnLine, widgetModel.widgetPosition!!.topRightRowLine),
+                                Corner(widgetModel.widgetPosition!!.bottomLeftColumnLine, widgetModel.widgetPosition!!.bottomLeftRowLine),
+                                Corner(widgetModel.widgetPosition!!.bottomRightColumnLine, widgetModel.widgetPosition!!.bottomRightRowLine))
 
-                    if (widgetModel.key == null) {
-                        tunerApiManager.addWidgetToConfiguration(editMirrorModel.configurationKey!!, widgetConfiguration)
-                                .doOnSuccess { widgetModel.key = it }
-                                .toCompletable()
-                    } else {
-                        tunerApiManager.editWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!, widgetConfiguration)
+                        if (widgetModel.key == null) {
+                            tunerApiManager.createWidgetToConfiguration(editMirrorModel.configurationKey!!, widgetConfiguration)
+                                    .doOnSuccess { widgetModel.key = it }
+                                    .toCompletable()
+                        } else {
+                            tunerApiManager.editWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!, widgetConfiguration)
+                        }
                     }
-                }
+        }
     }
 
-    private fun updateMirrorConfigurations(): Completable {
-
+    private fun updateConfigurationForMirror(editMirrorModel: EditMirrorModel): Completable {
+        return Completable.defer {
+            tunerApiManager.createOrEditConfigurationForMirror(
+                    editMirrorModel.mirrorId,
+                    editMirrorModel.configurationKey!!,
+                    MirrorConfigurationInfo(editMirrorModel.title, Calendar.getInstance().time.time))
+        }
     }
 }

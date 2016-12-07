@@ -13,6 +13,7 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
     override fun observeSelectedConfigurationKey(mirrorKey: String): Flowable<String> {
         return firebaseDatabase.getSelectedConfigurationRef(mirrorKey)
                 .flatMapPublisher { it.observeValue() }
+                .filter { it.exists() }
                 .map { it.getValue(String::class.java) }
     }
 

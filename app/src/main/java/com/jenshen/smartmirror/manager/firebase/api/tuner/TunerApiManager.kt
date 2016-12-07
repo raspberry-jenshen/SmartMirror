@@ -33,8 +33,9 @@ interface TunerApiManager {
     fun addWidget(widget: Widget): Single<String>
 
     /* mirror configurations */
-    fun addMirrorConfiguration(mirrorConfiguration: MirrorConfiguration): Single<String>
+    fun createMirrorConfiguration(mirrorConfiguration: MirrorConfiguration): Single<String>
     fun editMirrorConfiguration(configurationsKey: String, mirrorConfiguration: MirrorConfiguration): Completable
-    fun addWidgetToConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String>
+    fun createWidgetToConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String>
     fun editWidgetInConfiguration(configurationsKey: String, keyWidget: String, widgetConfiguration: WidgetConfiguration): Completable
+    fun createOrEditConfigurationForMirror(mirrorKey: String, configurationKey: String, configurationInfo: MirrorConfigurationInfo): Completable
 }
