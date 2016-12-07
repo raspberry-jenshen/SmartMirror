@@ -6,6 +6,7 @@ import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfigura
 import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.widget.Widget
+import com.jenshen.smartmirror.data.model.EditMirrorModel
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe

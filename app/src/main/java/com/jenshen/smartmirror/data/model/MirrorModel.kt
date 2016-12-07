@@ -9,7 +9,7 @@ data class MirrorModel(val key: String,
                        val tunerSubscription: TunerSubscription,
                        val isRemoved: Boolean) {
 
-    var checkedConfigurationId: String? = null
+    var checkedConfigurationKey: String? = null
     var mirrorConfigurationInfo: HashMap<String, MirrorConfigurationInfo>? = null
 
     override fun equals(other: Any?): Boolean {

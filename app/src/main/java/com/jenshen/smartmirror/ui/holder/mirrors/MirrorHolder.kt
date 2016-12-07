@@ -2,15 +2,19 @@ package com.jenshen.smartmirror.ui.holder.mirrors
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.LinearLayout
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.ui.holder.SwipeToDeleteHolder
 import kotlinx.android.synthetic.main.item_configuration.view.*
 import kotlinx.android.synthetic.main.partial_mirror.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, view) {
@@ -44,32 +48,40 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
             mirror.mirrorConfigurationInfo!!
                     .toList()
                     .forEach { item: Pair<String, MirrorConfigurationInfo> ->
-                        val configurationInfoView = layoutInflater.inflate(R.layout.item_configuration, itemView.configurationContainer)
+                        val configurationInfoView = layoutInflater.inflate(R.layout.item_configuration, itemView.configurationContainer, false)
                         with(configurationInfoView) {
-                            tag = mirror.key
-                            checkBox_textView.setOnCheckedChangeListener { button, isChecked ->
-                                if (isChecked) {
-                                    val newConfigurationId = button!!.tag as String
-                                    mirror.checkedConfigurationId = newConfigurationId
+                            val configurationKey = item.first
+                            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                            tag = configurationKey
+                            titleConfig_textView.text = item.second.title
+                            val dateFormat = SimpleDateFormat("h:mm, E, d MMM y", Locale.getDefault())
+                            lastUpdate_textView.text = dateFormat.format(Date(item.second.lastTimeUpdate))
+                            checkBox_textView.setOnCheckedChangeListener { button: CompoundButton, isChecked: Boolean ->
+                                if (isChecked && !checkBox_textView.isChecked) {
+                                    val newConfigurationKey = this!!.tag as String
+                                    mirror.checkedConfigurationKey = newConfigurationKey
                                     selectConfigurationClick(mirror.key, mirror)
-                                    setCheckedConfiguration(newConfigurationId)
+                                    setCheckedConfiguration(newConfigurationKey)
                                 }
                             }
                             delete_button.setOnClickListener { deleteConfigurationClick(mirror.key, mirror) }
-                            setOnClickListener { editConfigurationClick(mirror.key, mirror) }
+                            setOnClickListener { editConfigurationClick(configurationKey, mirror) }
                             configurationsList.add(0, this)
+                            itemView.configurationContainer.addView(this)
                         }
                     }
+            setCheckedConfiguration(mirror.checkedConfigurationKey)
         }
-        setCheckedConfiguration(mirror.checkedConfigurationId)
         setBackGround()
     }
 
-    private fun setCheckedConfiguration(checkedItemId: String?) {
+    private fun setCheckedConfiguration(checkedItemTag: String?) {
         configurationsList.forEach {
-            if (it.tag == checkedItemId) {
+            if (it.tag == checkedItemTag) {
+                Log.e("tag", "true")
                 itemView.checkBox_textView.isChecked = true
             } else {
+                Log.e("tag", "false")
                 itemView.checkBox_textView.isChecked = false
             }
         }

@@ -3,7 +3,7 @@ package com.jenshen.smartmirror.data.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class EditMirrorModel(val mirrorId: String,
+data class EditMirrorModel(val mirrorKey: String,
                            val title: String,
                            val list: MutableList<WidgetModel> = mutableListOf(),
                            var configurationKey: String? = null) : Parcelable {
@@ -22,7 +22,7 @@ data class EditMirrorModel(val mirrorId: String,
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
-        dest?.writeString(mirrorId)
+        dest?.writeString(mirrorKey)
         dest?.writeString(title)
         dest?.writeString(configurationKey)
         dest?.writeTypedList(list)

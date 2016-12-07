@@ -27,15 +27,15 @@ import kotlinx.android.synthetic.main.activity_edit_mirror.*
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
 
     companion object {
-        private val EXTRA_MIRROR_ID = "EXTRA_MIRROR_ID"
-        private val EXTRA_MIRROR_CONFIGURATION_ID = "EXTRA_MIRROR_CONFIGURATION_ID"
+        private val EXTRA_MIRROR_KEY = "EXTRA_MIRROR_KEY"
+        private val EXTRA_MIRROR_CONFIGURATION_KEY = "EXTRA_MIRROR_CONFIGURATION_KEY"
         private val MODEL_KEY = "MODEL_KEY"
         private val IS_SAVED_KEY = "IS_SAVED_KEY"
 
-        fun start(context: Context, mirrorId: String, configurationId: String? = null) {
+        fun start(context: Context, mirrorKey: String, configurationKey: String? = null) {
             val intent = Intent(context, EditMirrorActivity::class.java)
-            intent.putExtra(EXTRA_MIRROR_ID, mirrorId)
-            intent.putExtra(EXTRA_MIRROR_CONFIGURATION_ID, configurationId)
+            intent.putExtra(EXTRA_MIRROR_KEY, mirrorKey)
+            intent.putExtra(EXTRA_MIRROR_CONFIGURATION_KEY, configurationKey)
             context.startActivity(intent)
         }
     }
@@ -63,9 +63,9 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         setContentView(R.layout.activity_edit_mirror)
         setupToolbar()
         restoreExtra(savedInstanceState)
-        val mirrorId = intent.getStringExtra(EXTRA_MIRROR_ID)
-        val configurationId = intent.getStringExtra(EXTRA_MIRROR_CONFIGURATION_ID)
-        if (configurationId == null && editMirrorModel == null) {
+        val mirrorId = intent.getStringExtra(EXTRA_MIRROR_KEY)
+        val configurationKey = intent.getStringExtra(EXTRA_MIRROR_CONFIGURATION_KEY)
+        if (configurationKey == null && editMirrorModel == null) {
             val editText = EditText(context)
             val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
             editText.layoutParams = layoutParams
@@ -74,6 +74,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                     .setTitle(R.string.editMirror_typeTitle)
                     .setView(editText)
                     .setPositiveButton(R.string.ok, null)
+                    .setNegativeButton(R.string.cancel, { dialogInterface, i -> finish() })
                     .create()
 
             with(dialog) {
@@ -90,7 +91,9 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 }
             }
         } else if (editMirrorModel == null) {
-            //todo load mirror
+            presenter.loadMirrorConfiguration(configurationKey)
+        } else {
+            throw RuntimeException("Something went wrong")
         }
     }
 
@@ -172,6 +175,10 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 })
                 .create()
                 .show()
+    }
+
+    override fun onMirrorConfigurationLoaded(model: EditMirrorModel) {
+        editMirrorModel = model
     }
 
     /* private methods */

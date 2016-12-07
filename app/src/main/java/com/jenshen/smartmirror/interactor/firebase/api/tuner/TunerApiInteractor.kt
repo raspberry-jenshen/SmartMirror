@@ -28,4 +28,5 @@ interface TunerApiInteractor {
 
     /* mirror configurations */
     fun saveMirrorConfiguration(editMirrorModel: EditMirrorModel): Completable
+    fun getMirrorConfiguration(configurationKey: String): Single<EditMirrorModel>
 }

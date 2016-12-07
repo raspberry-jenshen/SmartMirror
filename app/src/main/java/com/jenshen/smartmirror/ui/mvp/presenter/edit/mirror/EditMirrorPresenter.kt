@@ -21,4 +21,12 @@ class EditMirrorPresenter @Inject constructor(private val tunerApiInteractor: Tu
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({ view?.onSavedConfiguration() }, { view?.handleError(it) })
     }
+
+    fun loadMirrorConfiguration(configurationKey: String) {
+        tunerApiInteractor.getMirrorConfiguration(configurationKey)
+                .applySchedulers(Schedulers.io())
+                .applyProgress(Consumer { view?.showProgress() }, Action { view?.hideProgress() })
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({ view?.onMirrorConfigurationLoaded(it) }, { view?.handleError(it) })
+    }
 }

@@ -15,6 +15,7 @@ import com.jenshen.smartmirror.data.model.EditMirrorModel
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.data.model.WidgetModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
+import com.jenshen.smartmirror.manager.firebase.api.mirror.MirrorApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import io.reactivex.Completable
@@ -27,7 +28,8 @@ import javax.inject.Inject
 class TunerFirebaseApiInteractor @Inject constructor(private var context: Context,
                                                      private var apiManager: ApiManager,
                                                      private var preferencesManager: PreferencesManager,
-                                                     private var tunerApiManager: TunerApiManager) : TunerApiInteractor {
+                                                     private var tunerApiManager: TunerApiManager,
+                                                     private var mirrorApiManager: MirrorApiManager): TunerApiInteractor {
 
     /* mirror */
 
@@ -117,7 +119,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
     /* mirror configurations */
 
     override fun saveMirrorConfiguration(editMirrorModel: EditMirrorModel): Completable {
-        return Single.fromCallable { MirrorConfiguration(editMirrorModel.mirrorId, editMirrorModel.title) }
+        return Single.fromCallable { MirrorConfiguration(editMirrorModel.mirrorKey, editMirrorModel.title) }
                 .flatMapCompletable { mirrorConfiguration ->
                     if (editMirrorModel.configurationKey == null) {
                         return@flatMapCompletable tunerApiManager.createMirrorConfiguration(mirrorConfiguration)
@@ -129,6 +131,14 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                 }
                 .andThen(updateWidgets(editMirrorModel))
                 .andThen(updateConfigurationForMirror(editMirrorModel))
+    }
+
+    override fun getMirrorConfiguration(configurationKey: String): Single<EditMirrorModel> {
+        return mirrorApiManager.getMirrorConfiguration(configurationKey)
+                .flatMap { data -> Observable.fromIterable(data.data.widgets!!.toList())
+                        .map {  }
+
+               // .map { EditMirrorModel(it.data.mirrorId, it.data.title,  mutableListOf(), it.key) }
     }
 
     /* private methods */
@@ -157,7 +167,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
     private fun updateConfigurationForMirror(editMirrorModel: EditMirrorModel): Completable {
         return Completable.defer {
             tunerApiManager.createOrEditConfigurationForMirror(
-                    editMirrorModel.mirrorId,
+                    editMirrorModel.mirrorKey,
                     editMirrorModel.configurationKey!!,
                     MirrorConfigurationInfo(editMirrorModel.title, Calendar.getInstance().time.time))
         }

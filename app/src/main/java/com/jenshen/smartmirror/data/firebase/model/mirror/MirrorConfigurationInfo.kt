@@ -3,6 +3,7 @@ package com.jenshen.smartmirror.data.firebase.model.mirror
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName
 import com.jenshen.smartmirror.data.firebase.FirebaseConstant
+import java.util.*
 
 @IgnoreExtraProperties
 data class MirrorConfigurationInfo(@set:PropertyName(FirebaseConstant.Mirror.MirrorConfigurationInfo.TITLE)
@@ -10,7 +11,7 @@ data class MirrorConfigurationInfo(@set:PropertyName(FirebaseConstant.Mirror.Mir
                                    var title: String,
                                    @set:PropertyName(FirebaseConstant.MirrorConfiguration.LAST_TIME_UPDATE)
                                    @get:PropertyName(FirebaseConstant.MirrorConfiguration.LAST_TIME_UPDATE)
-                                   var lastTimeUpdate: Long) {
+                                   var lastTimeUpdate: Long = Calendar.getInstance().time.time) {
     constructor() : this("", 0L) {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
