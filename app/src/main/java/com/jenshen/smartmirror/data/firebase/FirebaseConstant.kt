@@ -83,6 +83,7 @@ interface FirebaseConstant {
         interface TunerSubscription {
             companion object {
                 const val DEVICE_INFO = "device_info"
+                const val LAST_TIME_UPDATE = "last_time_update"
             }
         }
     }

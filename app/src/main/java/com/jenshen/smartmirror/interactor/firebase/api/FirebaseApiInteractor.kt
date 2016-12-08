@@ -12,13 +12,13 @@ import javax.inject.Inject
 class FirebaseApiInteractor @Inject constructor(private val apiManager: ApiManager) : ApiInteractor {
 
     override fun createOrGetTuner(tunerSession: TunerSession): Single<Tuner> {
-        return apiManager.getTuner(tunerSession.id)
+        return apiManager.getTuner(tunerSession.key)
                 .switchIfEmpty(apiManager.createTuner(tunerSession).toMaybe())
                 .toSingle()
     }
 
     override fun createOrGetMirror(mirrorSession: MirrorSession): Single<Mirror> {
-        return apiManager.getMirror(mirrorSession.id)
+        return apiManager.getMirror(mirrorSession.key)
                 .switchIfEmpty(apiManager.createMirror(mirrorSession).toMaybe())
                 .toSingle()
     }

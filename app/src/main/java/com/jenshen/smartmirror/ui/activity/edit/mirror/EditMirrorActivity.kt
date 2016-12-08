@@ -92,8 +92,6 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
             }
         } else if (editMirrorModel == null) {
             presenter.loadMirrorConfiguration(configurationKey)
-        } else {
-            throw RuntimeException("Something went wrong")
         }
     }
 

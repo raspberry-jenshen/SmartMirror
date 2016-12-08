@@ -1,8 +1,10 @@
 package com.jenshen.smartmirror.manager.firebase.api.tuner
 
 import com.google.firebase.database.GenericTypeIndicator
+import com.google.firebase.database.ServerValue
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
+import com.jenshen.smartmirror.data.firebase.FirebaseConstant
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
@@ -64,17 +66,31 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .flatMapCompletable { it.uploadValue(configurationId) }
     }
 
-    override fun deleteConfigurationForMirror(configurationId: String): Completable {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun createOrEditMirrorConfigurationInfoForMirror(mirrorKey: String, configurationKey: String, configurationInfo: MirrorConfigurationInfo): Completable {
+        return fireBaseDatabase.getMirrorConfigurationsInfoRef(mirrorKey)
+                .map { it.child(configurationKey) }
+                .flatMapCompletable { it.uploadValue(configurationInfo) }
+    }
+
+    override fun deleteMirrorConfigurationInfoForMirror(configurationId: String, mirrorId: String): Completable {
+        return fireBaseDatabase
+                .getMirrorConfigurationInfoRef(configurationId, mirrorId)
+                .flatMapCompletable { it.clearValue() }
     }
 
     /* tuner */
 
-    override fun addSubscriptionToTuner(tunerId: String, mirrorId: String, mirror: Mirror): Completable {
+    override fun addSubscriptionInTuner(tunerId: String, mirrorId: String, mirror: Mirror): Completable {
         return fireBaseDatabase
-                .getTunerSubscriptionsRef(tunerId)
-                .map { it.child(mirrorId) }
-                .flatMapCompletable { it.uploadValue(TunerSubscription(mirror.deviceInfo)) }
+                .getTunerSubscriptionRef(mirrorId, tunerId)
+                .flatMapCompletable { it.uploadValue(TunerSubscription(mirror.deviceInfo).toValueWithUpdateTime()) }
+    }
+
+    override fun updateSubscriptionInTuner(tunerKey: String, mirrorKey: String): Completable {
+        return fireBaseDatabase
+                .getTunerSubscriptionRef(mirrorKey, tunerKey)
+                .map { it.child(FirebaseConstant.Tuner.TunerSubscription.LAST_TIME_UPDATE) }
+                .flatMapCompletable { it.uploadValue( ServerValue.TIMESTAMP) }
     }
 
     override fun removeSubscriptionFromTuner(tunerId: String, mirrorId: String): Completable {
@@ -135,7 +151,7 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .flatMapCompletable { it.uploadValue(mirrorConfiguration) }
     }
 
-    override fun createWidgetToConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String> {
+    override fun createWidgetInConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String> {
         return fireBaseDatabase
                 .getMirrorConfigurationWidgetsRef(configurationsKey)
                 .map { it.push() }
@@ -151,9 +167,8 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .flatMapCompletable { it.uploadValue(widgetConfiguration) }
     }
 
-    override fun createOrEditConfigurationForMirror(mirrorKey: String, configurationKey: String, configurationInfo: MirrorConfigurationInfo): Completable {
-        return fireBaseDatabase.getMirrorConfigurationsInfoRef(mirrorKey)
-                .map { it.child(configurationKey) }
-                .flatMapCompletable { it.uploadValue(configurationInfo) }
+    override fun deleteMirrorConfiguration(configurationId: String): Completable {
+        return fireBaseDatabase.getMirrorConfigurationRef(configurationId)
+                .flatMapCompletable { it.clearValue() }
     }
 }

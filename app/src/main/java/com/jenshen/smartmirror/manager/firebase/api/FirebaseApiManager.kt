@@ -20,7 +20,7 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
     private val fireBaseDatabase: RealtimeDatabaseManager = realtimeDatabaseManager
 
     override fun createTuner(tunerSession: TunerSession): Single<Tuner> {
-        return fireBaseDatabase.getTunerRef(tunerSession.id)
+        return fireBaseDatabase.getTunerRef(tunerSession.key)
                 .flatMap { reference ->
                     Single.fromCallable { Tuner(tunerSession.email) }
                             .flatMap { tuner ->
@@ -45,7 +45,7 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
     }
 
     override fun createMirror(mirrorSession: MirrorSession): Single<Mirror> {
-        return fireBaseDatabase.getMirrorRef(mirrorSession.id)
+        return fireBaseDatabase.getMirrorRef(mirrorSession.key)
                 .flatMap { reference ->
                     Single.fromCallable {
                         Mirror(Build.DEVICE + " " +

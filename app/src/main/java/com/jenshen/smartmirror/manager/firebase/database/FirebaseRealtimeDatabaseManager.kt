@@ -40,6 +40,11 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
                 .map { it.child(FirebaseConstant.Mirror.CONFIGURATIONS) }
     }
 
+    override fun getMirrorConfigurationInfoRef(configurationKey: String, mirrorKey: String): Single<DatabaseReference> {
+        return getMirrorConfigurationsInfoRef(mirrorKey)
+                .map { it.child(configurationKey) }
+    }
+
     /* tuner */
 
     override fun getTunersRef(): Single<DatabaseReference> {
@@ -48,14 +53,18 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
     }
 
     override fun getTunerRef(tunerKey: String): Single<DatabaseReference> {
-        return Single.fromCallable { fireBaseDatabase.reference }
-                .map { it.child(FirebaseConstant.TUNERS) }
+        return getTunersRef()
                 .map { it.child(tunerKey) }
     }
 
     override fun getTunerSubscriptionsRef(tunerKey: String): Single<DatabaseReference> {
         return getTunerRef(tunerKey)
                 .map { it.child(FirebaseConstant.Tuner.SUBSCRIPTIONS) }
+    }
+
+    override fun getTunerSubscriptionRef(mirrorKey: String, tunerKey: String): Single<DatabaseReference> {
+        return getTunerSubscriptionsRef(tunerKey)
+                .map { it.child(mirrorKey) }
     }
 
     /* widget */

@@ -14,12 +14,14 @@ interface RealtimeDatabaseManager {
     fun getSelectedConfigurationRef(mirrorKey: String): Single<DatabaseReference>
     fun getMirrorSubscribersRef(mirrorKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationsInfoRef(mirrorKey: String): Single<DatabaseReference>
+    fun getMirrorConfigurationInfoRef(configurationKey: String, mirrorKey: String): Single<DatabaseReference>
 
     /* tuner */
 
     fun getTunersRef(): Single<DatabaseReference>
     fun getTunerRef(tunerKey: String): Single<DatabaseReference>
     fun getTunerSubscriptionsRef(tunerKey: String): Single<DatabaseReference>
+    fun getTunerSubscriptionRef(mirrorKey: String, tunerKey: String): Single<DatabaseReference>
 
     /* widget */
 

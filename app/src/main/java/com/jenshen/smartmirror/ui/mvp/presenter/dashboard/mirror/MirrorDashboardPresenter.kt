@@ -18,13 +18,13 @@ class MirrorDashboardPresenter @Inject constructor(private val mirrorApiInteract
     }
 
     private fun fetchIsNeedToShoQrCode() {
-       addDisposible(mirrorApiInteractor.fetchIsNeedToShowQrCode(preferencesManager.getSession()!!.id)
+       addDisposible(mirrorApiInteractor.fetchIsNeedToShowQrCode(preferencesManager.getSession()!!.key)
                 .applySchedulers(Schedulers.computation())
                 .subscribe({ view?.showSignUpScreen() }, { view?.handleError(it) }))
     }
 
     private fun fetchSelectedConfiguration() {
-       addDisposible(mirrorApiInteractor.fetchSelectedConfiguration(preferencesManager.getSession()!!.id)
+       addDisposible(mirrorApiInteractor.fetchSelectedConfiguration(preferencesManager.getSession()!!.key)
                 .applySchedulers(Schedulers.computation())
                 .subscribe({ view?.updateMirrorConfiguration(it) }, { view?.handleError(it) }))
     }

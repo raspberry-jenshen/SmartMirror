@@ -22,10 +22,12 @@ interface TunerApiManager {
     fun setFlagForWaitingSubscribersOnMirror(isWaiting: Boolean, mirrorId: String): Completable
     fun getMirrorConfigurationsInfo(mirrorId: String): Maybe<HashMap<String, MirrorConfigurationInfo>>
     fun setConfigurationIdForMirror(configurationId: String, mirrorId: String): Completable
-    fun deleteConfigurationForMirror(configurationId: String): Completable
+    fun deleteMirrorConfigurationInfoForMirror(configurationId: String, mirrorId: String): Completable
+    fun createOrEditMirrorConfigurationInfoForMirror(mirrorKey: String, configurationKey: String, configurationInfo: MirrorConfigurationInfo): Completable
 
     /* tuner */
-    fun addSubscriptionToTuner(tunerId: String, mirrorId: String, mirror: Mirror): Completable
+    fun addSubscriptionInTuner(tunerId: String, mirrorId: String, mirror: Mirror): Completable
+    fun updateSubscriptionInTuner(tunerKey: String, mirrorKey: String): Completable
     fun removeSubscriptionFromTuner(tunerId: String, mirrorId: String): Completable
     fun observeTunerSubscriptions(tunerId: String): Flowable<FirebaseChildEvent>
 
@@ -37,8 +39,7 @@ interface TunerApiManager {
     /* mirror configurations */
     fun createMirrorConfiguration(mirrorConfiguration: MirrorConfiguration): Single<String>
     fun editMirrorConfiguration(configurationsKey: String, mirrorConfiguration: MirrorConfiguration): Completable
-    fun createWidgetToConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String>
+    fun createWidgetInConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String>
     fun editWidgetInConfiguration(configurationsKey: String, keyWidget: String, widgetConfiguration: WidgetConfiguration): Completable
-    fun createOrEditConfigurationForMirror(mirrorKey: String, configurationKey: String, configurationInfo: MirrorConfigurationInfo): Completable
-
+    fun deleteMirrorConfiguration(configurationId: String): Completable
 }

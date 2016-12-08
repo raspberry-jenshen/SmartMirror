@@ -5,6 +5,8 @@ import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.CompoundButton
 import android.widget.LinearLayout
 import com.jenshen.smartmirror.R
@@ -59,7 +61,7 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
                             val dateFormat = SimpleDateFormat("h:mm, E, d MMM y", Locale.getDefault())
                             lastUpdate_textView.text = dateFormat.format(Date(item.second.lastTimeUpdate))
                             setOnClickListener { editConfigurationClick(configurationKey, mirror) }
-                            checkBox_textView.setOnClickListener{
+                            checkBox_textView.setOnClickListener {
                                 if (checkBox_textView.isChecked) {
                                     val newConfigurationKey = this!!.tag as String
                                     Log.e("TAG", "newConfigurationKey " + newConfigurationKey)
@@ -68,7 +70,12 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
                                     setCheckedConfiguration(newConfigurationKey)
                                 }
                             }
-                            delete_button.setOnClickListener { deleteConfigurationClick(mirror.key, mirror) }
+                            delete_button.setOnClickListener {
+                                val view = configurationsList.filter { it.tag == configurationKey }.first()
+                                configurationsList.remove(view)
+                                (view.parent as ViewGroup).removeView(view)
+                                deleteConfigurationClick(configurationKey, mirror)
+                            }
                         }
                     }
             setCheckedConfiguration(mirror.checkedConfigurationKey)

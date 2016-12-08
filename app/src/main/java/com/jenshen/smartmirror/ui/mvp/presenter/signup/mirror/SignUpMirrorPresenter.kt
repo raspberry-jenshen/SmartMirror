@@ -76,7 +76,7 @@ class SignUpMirrorPresenter @Inject constructor(private val authInteractor: Fire
                 }
                 .doOnSuccess {
                     if (it.mirror.isWaitingForTuner) {
-                        it.bitmap = generateQrCode(it.mirrorSession.id)
+                        it.bitmap = generateQrCode(it.mirrorSession.key)
                     }
                 }
                 .applySchedulers(Schedulers.io())
