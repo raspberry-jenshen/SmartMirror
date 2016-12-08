@@ -68,7 +68,7 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
                                     setCheckedConfiguration(newConfigurationKey)
                                 }
                                 mirror.checkedConfigurationKey = newConfigurationKey
-                                selectConfigurationClick(configurationKey, mirror)
+                                selectConfigurationClick(newConfigurationKey, mirror)
                             }
                             delete_button.setOnClickListener {
                                 val view = configurationsList.filter { it.tag == configurationKey }.first()
