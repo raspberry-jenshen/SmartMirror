@@ -3,6 +3,7 @@ package com.jenshen.smartmirror.interactor.firebase.api.tuner
 import android.content.Context
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
+import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.model.configuration.Corner
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
@@ -13,11 +14,12 @@ import com.jenshen.smartmirror.data.firebase.model.widget.Size
 import com.jenshen.smartmirror.data.firebase.model.widget.Widget
 import com.jenshen.smartmirror.data.model.EditMirrorModel
 import com.jenshen.smartmirror.data.model.MirrorModel
-import com.jenshen.smartmirror.data.model.WidgetModel
+import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.mirror.MirrorApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
+import com.jenshensoft.widgetview.entity.WidgetPosition
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -29,7 +31,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                                      private var apiManager: ApiManager,
                                                      private var preferencesManager: PreferencesManager,
                                                      private var tunerApiManager: TunerApiManager,
-                                                     private var mirrorApiManager: MirrorApiManager): TunerApiInteractor {
+                                                     private var mirrorApiManager: MirrorApiManager) : TunerApiInteractor {
 
     /* mirror */
 
@@ -106,9 +108,9 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     /* widget */
 
-    override fun fetchWidgets(): Flowable<WidgetModel> {
+    override fun fetchWidgets(): Flowable<DataSnapshotWithKey<Widget>> {
         return tunerApiManager.observeWidgets()
-                .map { WidgetModel(it.dataSnapshot.key, it.dataSnapshot.getValue(Widget::class.java)) }
+                .map { DataSnapshotWithKey(it.dataSnapshot.key, it.dataSnapshot.getValue(Widget::class.java)) }
     }
 
     override fun addWidget(name: String, width: Int, height: Int): Single<String> {
@@ -135,10 +137,32 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     override fun getMirrorConfiguration(configurationKey: String): Single<EditMirrorModel> {
         return mirrorApiManager.getMirrorConfiguration(configurationKey)
-                .flatMap { data -> Observable.fromIterable(data.data.widgets!!.toList())
-                        .map {  }
-
-               // .map { EditMirrorModel(it.data.mirrorId, it.data.title,  mutableListOf(), it.key) }
+                .flatMap { dataSnapshotWithKey ->
+                    Observable.fromIterable(dataSnapshotWithKey.data.widgets?.toList() ?: mutableListOf())
+                            .flatMapSingle { pair ->
+                                val widgetConfiguration = pair.second
+                                tunerApiManager.getWidget(pair.second.widgetKey)
+                                        .map { snapshotsWithKey ->
+                                            WidgetConfigurationModel(
+                                                    snapshotsWithKey.key,
+                                                    snapshotsWithKey.data,
+                                                    snapshotsWithKey.key,
+                                                    pair.first,
+                                                    WidgetPosition(widgetConfiguration.topLeftCorner.column, widgetConfiguration.topLeftCorner.row,
+                                                            widgetConfiguration.topRightCorner.column, widgetConfiguration.topRightCorner.row,
+                                                            widgetConfiguration.bottomLeftCorner.column, widgetConfiguration.bottomLeftCorner.row,
+                                                            widgetConfiguration.bottomRightCorner.column, widgetConfiguration.bottomRightCorner.row))
+                                        }
+                            }
+                            .toList()
+                            .map { widgetModels ->
+                                EditMirrorModel(
+                                        dataSnapshotWithKey.data.mirrorKey,
+                                        dataSnapshotWithKey.data.title,
+                                        widgetModels,
+                                        dataSnapshotWithKey.key)
+                            }
+                }
     }
 
     /* private methods */

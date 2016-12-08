@@ -24,6 +24,7 @@ interface RealtimeDatabaseManager {
     /* widget */
 
     fun getWidgetsRef(): Single<DatabaseReference>
+    fun getWidgetRef(widgetKey: String): Single<DatabaseReference>
 
     /* mirror configuration */
 

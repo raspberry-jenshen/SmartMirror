@@ -3,7 +3,8 @@ package com.jenshen.smartmirror.di.component.activity.choose.widget
 import com.jenshen.compat.base.component.activity.ActivityComponent
 import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
 import com.jenshen.compat.base.component.presenter.PresenterLceComponent
-import com.jenshen.smartmirror.data.model.WidgetModel
+import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
+import com.jenshen.smartmirror.data.firebase.model.widget.Widget
 import com.jenshen.smartmirror.di.module.activity.choose.widget.ChooseWidgetModule
 import com.jenshen.smartmirror.di.scope.SessionScope
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
@@ -13,7 +14,7 @@ import dagger.Subcomponent
 
 @SessionScope
 @Subcomponent(modules = arrayOf(ChooseWidgetModule::class))
-interface ChooseWidgetComponent : PresenterLceComponent<WidgetModel, ChooseWidgetView, ChooseWidgetPresenter>,
+interface ChooseWidgetComponent : PresenterLceComponent<DataSnapshotWithKey<Widget>, ChooseWidgetView, ChooseWidgetPresenter>,
         ActivityComponent<ChooseWidgetActivity> {
 
     @Subcomponent.Builder

@@ -14,7 +14,7 @@ data class MirrorModel(val key: String,
 
     override fun equals(other: Any?): Boolean {
         if (other != null && other is MirrorModel) {
-            return tunerSubscription.id == other.tunerSubscription.id
+            return key == other.key
         }
         return super.equals(other)
     }

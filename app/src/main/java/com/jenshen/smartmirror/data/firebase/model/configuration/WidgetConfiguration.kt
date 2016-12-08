@@ -6,7 +6,7 @@ import com.jenshen.smartmirror.data.firebase.FirebaseConstant
 
 class WidgetConfiguration(@set:PropertyName(FirebaseConstant.MirrorConfiguration.Widget.WIDGET_KEY)
              @get:PropertyName(FirebaseConstant.MirrorConfiguration.Widget.WIDGET_KEY)
-             var key: String,
+             var widgetKey: String,
                           @set:PropertyName(FirebaseConstant.MirrorConfiguration.Widget.TOP_LEFT_CORNER)
              @get:PropertyName(FirebaseConstant.MirrorConfiguration.Widget.TOP_LEFT_CORNER)
              var topLeftCorner: Corner,

@@ -11,7 +11,7 @@ interface FirebaseConstant {
 
     interface MirrorConfiguration {
         companion object {
-            const val MIRROR_ID = "mirror_id"
+            const val MIRROR_KEY = "mirror_key"
             const val TITLE = "title"
             const val WIDGETS = "widgets"
             const val LAST_TIME_UPDATE = "last_time_update"
@@ -19,7 +19,7 @@ interface FirebaseConstant {
 
         interface Widget {
             companion object {
-                const val WIDGET_KEY = "key"
+                const val WIDGET_KEY = "widgetKey"
                 const val TOP_LEFT_CORNER = "topLeft_corner"
                 const val TOP_RIGHT_CORNER = "topRight_corner"
                 const val BOTTOM_LEFT_CORNER = "bottomLeft_corner"
@@ -62,7 +62,6 @@ interface FirebaseConstant {
 
         interface MirrorSubscriber {
             companion object {
-                const val ID = "key"
                 const val LAST_TIME_UPDATE = "last_time_update"
             }
         }
@@ -83,7 +82,6 @@ interface FirebaseConstant {
 
         interface TunerSubscription {
             companion object {
-                const val ID = "key"
                 const val DEVICE_INFO = "device_info"
             }
         }

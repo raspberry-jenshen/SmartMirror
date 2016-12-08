@@ -65,6 +65,11 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
                 .map { it.child(FirebaseConstant.WIDGETS) }
     }
 
+    override fun getWidgetRef(widgetKey: String): Single<DatabaseReference> {
+        return getWidgetsRef()
+                .map { it.child(widgetKey) }
+    }
+
     /* mirror configuration */
 
     override fun getMirrorsConfigurationsRef(): Single<DatabaseReference> {

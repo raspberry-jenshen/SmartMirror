@@ -1,6 +1,7 @@
 package com.jenshen.smartmirror.manager.firebase.api.tuner
 
 import com.google.firebase.database.GenericTypeIndicator
+import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
@@ -31,7 +32,7 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
         return fireBaseDatabase
                 .getMirrorSubscribersRef(mirrorId)
                 .map { it.child(tunerId) }
-                .flatMapCompletable { it.uploadValue(MirrorSubscriber(tunerId).toValueWithUpdateTime()) }
+                .flatMapCompletable { it.uploadValue(MirrorSubscriber().toValueWithUpdateTime()) }
     }
 
     override fun removeSubscriberFromMirror(tunerId: String, mirrorId: String): Completable {
@@ -73,7 +74,7 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
         return fireBaseDatabase
                 .getTunerSubscriptionsRef(tunerId)
                 .map { it.child(mirrorId) }
-                .flatMapCompletable { it.uploadValue(TunerSubscription(mirrorId, mirror.deviceInfo)) }
+                .flatMapCompletable { it.uploadValue(TunerSubscription(mirror.deviceInfo)) }
     }
 
     override fun removeSubscriptionFromTuner(tunerId: String, mirrorId: String): Completable {
@@ -90,13 +91,20 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .filter { it.dataSnapshot.exists() }
     }
 
-    /* tuner */
+    /* widgets */
 
     override fun observeWidgets(): Flowable<FirebaseChildEvent> {
         return fireBaseDatabase
                 .getWidgetsRef()
                 .flatMapPublisher { it.observeChildren() }
                 .filter { it.dataSnapshot.exists() }
+    }
+
+    override fun getWidget(widgetKey: String): Single<DataSnapshotWithKey<Widget>> {
+        return fireBaseDatabase
+                .getWidgetRef(widgetKey)
+                .flatMap { it.loadValue() }
+                .map { DataSnapshotWithKey(it.key, it.getValue(Widget::class.java)) }
     }
 
     override fun addWidget(widget: Widget): Single<String> {

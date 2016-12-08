@@ -58,7 +58,7 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
                 //item click
                 { /*todo edit */ },
                 // qr code clicked
-                { presenter.setMirrorIsWaitingForSubscriber(it.tunerSubscription.id) },
+                { presenter.setMirrorIsWaitingForSubscriber(it.key) },
                 //add new configuration
                 { EditMirrorActivity.start(context, it.key) },
                 //edit configuration
@@ -133,6 +133,6 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
 
     override fun onDeleteItem(position: Int, item: MirrorModel) {
         adapter.deleteModel(position)
-        presenter.deleteSubscription(item.tunerSubscription)
+        presenter.deleteSubscription(item.key)
     }
 }

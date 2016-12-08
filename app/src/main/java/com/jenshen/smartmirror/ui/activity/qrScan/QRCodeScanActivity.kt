@@ -106,6 +106,7 @@ class QRCodeScanActivity : BaseActivity(), ZXingScannerView.ResultHandler {
             }
             android.R.id.home -> {
                 NavUtils.navigateUpFromSameTask(this);
+                return true
             }
         }
         return super.onOptionsItemSelected(item)

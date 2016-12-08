@@ -16,7 +16,7 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.model.EditMirrorModel
-import com.jenshen.smartmirror.data.model.WidgetModel
+import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
 import com.jenshen.smartmirror.di.component.activity.edit.mirror.EditMirrorComponent
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.edit.mirror.EditMirrorPresenter
@@ -108,7 +108,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         if (requestCode == ChooseWidgetActivity.RESULT_KEY_CHOSE_WIDGET && resultCode != Activity.RESULT_OK && data == null) {
             return
         }
-        val widgetModel = data!!.getParcelableExtra<WidgetModel>(ChooseWidgetActivity.RESULT_EXTRA_WIDGET)
+        val widgetModel = data!!.getParcelableExtra<WidgetConfigurationModel>(ChooseWidgetActivity.RESULT_EXTRA_WIDGET)
         val sameWidgetsCount = editMirrorModel?.list?.filter { it.key == widgetModel.key }?.size ?: 0
         widgetModel.tag += sameWidgetsCount
         val widget = createWidget(widgetModel.widgetKey, context)
@@ -157,6 +157,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
             }
             android.R.id.home -> {
                 onBackPressed()
+                return true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -179,6 +180,26 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     override fun onMirrorConfigurationLoaded(model: EditMirrorModel) {
         editMirrorModel = model
+        editMirrorModel?.list?.forEach { widgetModel ->
+            val widget = createWidget(widgetModel.widgetKey, context)
+            widget.tag = widgetModel.tag
+            with(widget.widgetPosition) {
+                val widgetPosition = widgetModel.widgetPosition
+
+                topLeftColumnLine = widgetPosition!!.topLeftColumnLine
+                topLeftRowLine = widgetPosition.topLeftRowLine
+
+                topRightColumnLine = widgetPosition.topRightColumnLine
+                topRightRowLine = widgetPosition.topRightRowLine
+
+                bottomLeftColumnLine = widgetPosition.bottomLeftColumnLine
+                bottomLeftRowLine = widgetPosition.bottomLeftRowLine
+
+                bottomRightColumnLine = widgetPosition.bottomRightColumnLine
+                bottomRightRowLine = widgetPosition.bottomRightRowLine
+            }
+            widgetContainer.addWidgetView(widget)
+        }
     }
 
     /* private methods */
@@ -225,26 +246,9 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     private fun restoreExtra(savedInstanceState: Bundle?) {
         isSaved = savedInstanceState?.getBoolean(IS_SAVED_KEY) ?: false
-        editMirrorModel = savedInstanceState?.getParcelable<EditMirrorModel>(MODEL_KEY)
-        editMirrorModel?.list?.forEach { widgetModel ->
-            val widget = createWidget(widgetModel.widgetKey, context)
-            widget.tag = widgetModel.tag
-            with(widget.widgetPosition) {
-                val widgetPosition = widgetModel.widgetPosition
-
-                topLeftColumnLine = widgetPosition!!.topLeftColumnLine
-                topLeftRowLine = widgetPosition.topLeftRowLine
-
-                topRightColumnLine = widgetPosition.topRightColumnLine
-                topRightRowLine = widgetPosition.topRightRowLine
-
-                bottomLeftColumnLine = widgetPosition.bottomLeftColumnLine
-                bottomLeftRowLine = widgetPosition.bottomLeftRowLine
-
-                bottomRightColumnLine = widgetPosition.bottomRightColumnLine
-                bottomRightRowLine = widgetPosition.bottomRightRowLine
-            }
-            widgetContainer.addWidgetView(widget)
+        val model = savedInstanceState?.getParcelable<EditMirrorModel>(MODEL_KEY)
+        if (model != null) {
+            onMirrorConfigurationLoaded(model)
         }
     }
 }

@@ -6,15 +6,15 @@ import android.os.Parcelable
 import com.jenshen.smartmirror.data.firebase.model.widget.Widget
 import com.jenshensoft.widgetview.entity.WidgetPosition
 
-data class WidgetModel(val widgetKey: String,
-                       val widget: Widget,
-                       var tag: String = widgetKey,
-                       var key: String? = null,
-                       var widgetPosition: WidgetPosition? = null) : Parcelable {
+data class WidgetConfigurationModel(val widgetKey: String,
+                                    val widget: Widget,
+                                    var tag: String = widgetKey,
+                                    var key: String? = null,
+                                    var widgetPosition: WidgetPosition? = null) : Parcelable {
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<WidgetModel> = object : Parcelable.Creator<WidgetModel> {
-            override fun createFromParcel(source: Parcel): WidgetModel = WidgetModel(source)
-            override fun newArray(size: Int): Array<WidgetModel?> = arrayOfNulls(size)
+        @JvmField val CREATOR: Parcelable.Creator<WidgetConfigurationModel> = object : Parcelable.Creator<WidgetConfigurationModel> {
+            override fun createFromParcel(source: Parcel): WidgetConfigurationModel = WidgetConfigurationModel(source)
+            override fun newArray(size: Int): Array<WidgetConfigurationModel?> = arrayOfNulls(size)
         }
     }
 

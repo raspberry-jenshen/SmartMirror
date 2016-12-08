@@ -82,6 +82,7 @@ class SignInTunerActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignI
         when (item.itemId) {
             android.R.id.home -> {
                 NavUtils.navigateUpFromSameTask(this)
+                return true
             }
         }
         return super.onOptionsItemSelected(item)

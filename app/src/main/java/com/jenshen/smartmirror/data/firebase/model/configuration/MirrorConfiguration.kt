@@ -7,9 +7,9 @@ import java.util.*
 
 @IgnoreExtraProperties
 data class MirrorConfiguration(
-        @set:PropertyName(FirebaseConstant.MirrorConfiguration.MIRROR_ID)
-        @get:PropertyName(FirebaseConstant.MirrorConfiguration.MIRROR_ID)
-        var mirrorId: String,
+        @set:PropertyName(FirebaseConstant.MirrorConfiguration.MIRROR_KEY)
+        @get:PropertyName(FirebaseConstant.MirrorConfiguration.MIRROR_KEY)
+        var mirrorKey: String,
         @set:PropertyName(FirebaseConstant.MirrorConfiguration.TITLE)
         @get:PropertyName(FirebaseConstant.MirrorConfiguration.TITLE)
         var title: String) {

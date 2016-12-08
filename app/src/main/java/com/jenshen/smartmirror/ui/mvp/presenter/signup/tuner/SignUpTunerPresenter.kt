@@ -75,7 +75,10 @@ class SignUpTunerPresenter @Inject constructor(private val apiInteractor: Fireba
                 .map { it.isValid }
 
         Single.zip(validateName, validateEmail, validatePassword, validateConfirmPassword,
-                Function4 { isValidUserName: Boolean, isValidEmail: Boolean, isValidPassword: Boolean, isValidConfirmPassword: Boolean ->
+                Function4 { isValidUserName: Boolean,
+                            isValidEmail: Boolean,
+                            isValidPassword: Boolean,
+                            isValidConfirmPassword: Boolean ->
                     isValidUserName && isValidEmail && isValidPassword && isValidConfirmPassword
                 })
                 .observeOn(Schedulers.io())

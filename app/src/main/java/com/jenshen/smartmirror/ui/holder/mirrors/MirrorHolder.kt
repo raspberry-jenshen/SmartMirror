@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, view) {
+class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, view), CompoundButton.OnCheckedChangeListener {
 
     private val layoutInflater: LayoutInflater
     private val configurationsList: MutableList<View>
@@ -52,22 +52,23 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
                         with(configurationInfoView) {
                             val configurationKey = item.first
                             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                            configurationsList.add(0, this)
+                            itemView.configurationContainer.addView(this)
                             tag = configurationKey
                             titleConfig_textView.text = item.second.title
                             val dateFormat = SimpleDateFormat("h:mm, E, d MMM y", Locale.getDefault())
                             lastUpdate_textView.text = dateFormat.format(Date(item.second.lastTimeUpdate))
-                            checkBox_textView.setOnCheckedChangeListener { button: CompoundButton, isChecked: Boolean ->
-                                if (isChecked && !checkBox_textView.isChecked) {
+                            setOnClickListener { editConfigurationClick(configurationKey, mirror) }
+                            checkBox_textView.setOnClickListener{
+                                if (checkBox_textView.isChecked) {
                                     val newConfigurationKey = this!!.tag as String
+                                    Log.e("TAG", "newConfigurationKey " + newConfigurationKey)
                                     mirror.checkedConfigurationKey = newConfigurationKey
                                     selectConfigurationClick(mirror.key, mirror)
                                     setCheckedConfiguration(newConfigurationKey)
                                 }
                             }
                             delete_button.setOnClickListener { deleteConfigurationClick(mirror.key, mirror) }
-                            setOnClickListener { editConfigurationClick(configurationKey, mirror) }
-                            configurationsList.add(0, this)
-                            itemView.configurationContainer.addView(this)
                         }
                     }
             setCheckedConfiguration(mirror.checkedConfigurationKey)
@@ -75,13 +76,17 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
         setBackGround()
     }
 
+    override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+
+    }
+
     private fun setCheckedConfiguration(checkedItemTag: String?) {
         configurationsList.forEach {
             if (it.tag == checkedItemTag) {
-                Log.e("tag", "true")
+                Log.e("tag", "true " + it.tag)
                 itemView.checkBox_textView.isChecked = true
             } else {
-                Log.e("tag", "false")
+                Log.e("tag", "false " + it.tag)
                 itemView.checkBox_textView.isChecked = false
             }
         }
