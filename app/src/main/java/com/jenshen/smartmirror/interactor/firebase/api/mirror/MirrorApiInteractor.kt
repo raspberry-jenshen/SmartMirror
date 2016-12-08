@@ -5,5 +5,5 @@ import io.reactivex.Flowable
 
 interface MirrorApiInteractor {
     fun fetchIsNeedToShowQrCode(mirrorId: String): Flowable<Boolean>
-    fun fetchSelectedConfiguration(mirrorId: String): Flowable<MirrorConfiguration>
+    fun fetchSelectedMirrorConfiguration(mirrorId: String): Flowable<MirrorConfiguration>
 }

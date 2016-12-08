@@ -66,7 +66,7 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
                 //delete configuration
                 { configurationKey: String, mirrorModel: MirrorModel -> presenter.deleteConfigurationForMirror(configurationKey, mirrorModel.key) },
                 //set configuration
-                { configurationKey: String, mirrorModel: MirrorModel -> presenter.setConfigurationIdForMirror(configurationKey, mirrorModel.key) },
+                { configurationKey: String?, mirrorModel: MirrorModel -> presenter.setSelectedConfigurationKeyForMirror(configurationKey, mirrorModel.key) },
                 this)
         contentView.adapter = adapter
 

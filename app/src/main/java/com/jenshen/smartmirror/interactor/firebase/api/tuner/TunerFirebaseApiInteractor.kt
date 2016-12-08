@@ -24,6 +24,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import java.util.*
 import javax.inject.Inject
 
@@ -74,8 +75,11 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                 .flatMapCompletable { tunerApiManager.setFlagForWaitingSubscribersOnMirror(!it.isWaitingForTuner, mirrorId) }
     }
 
-    override fun setConfigurationIdForMirror(configurationId: String, mirrorId: String): Completable {
-        return tunerApiManager.setConfigurationIdForMirror(configurationId, mirrorId)
+    override fun setSelectedConfigurationKeyForMirror(configurationId: String?, mirrorId: String): Completable {
+        if (configurationId == null) {
+           return tunerApiManager.deleteSelectedConfigurationKeyForMirror(mirrorId)
+        }
+        return tunerApiManager.setSelectedConfigurationKeyForMirror(configurationId!!, mirrorId)
     }
 
     override fun deleteConfigurationForMirror(configurationId: String, mirrorId: String, isSelected: Boolean): Completable {
@@ -88,20 +92,22 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
     override fun fetchTunerSubscriptions(): Flowable<MirrorModel> {
         return getTunerSession()
                 .flatMapPublisher { tunerApiManager.observeTunerSubscriptions(it.key) }
-                .map {
-                    MirrorModel(it.dataSnapshot.key,
-                            it.dataSnapshot.getValue(TunerSubscription::class.java),
-                            it.eventType == FirebaseChildEvent.CHILD_REMOVED)
+                .flatMapSingle {
+                    val EMPTY = "EMPTY"
+                    Single.zip(
+                            tunerApiManager.getMirrorConfigurationsInfo(it.dataSnapshot.key)
+                                    .toSingle(hashMapOf()),
+                            tunerApiManager.getSelectedConfigurationKeyForMirror(it.dataSnapshot.key)
+                                    .toSingle(EMPTY),
+                            BiFunction { configurations: HashMap<String, MirrorConfigurationInfo>,
+                                         selectedConfigurationKey: String ->
+                                MirrorModel(it.dataSnapshot.key,
+                                        it.dataSnapshot.getValue(TunerSubscription::class.java),
+                                        it.eventType == FirebaseChildEvent.CHILD_REMOVED,
+                                        if (selectedConfigurationKey == EMPTY) null else selectedConfigurationKey,
+                                        configurations)
+                            })
                 }
-                .flatMapSingle { model ->
-                    tunerApiManager.getMirrorConfigurationsInfo(model.key)
-                            .doOnSuccess { model.mirrorConfigurationInfo = it }
-                            .isEmpty
-                            .map { model }
-
-                    ///todo
-                }
-
     }
 
     /* widget */

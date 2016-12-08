@@ -42,12 +42,12 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
                  addConfigurationClick: (MirrorModel) -> Unit,
                  editConfigurationClick: (String, MirrorModel) -> Unit,
                  deleteConfigurationClick: (String, MirrorModel) -> Unit,
-                 selectConfigurationClick: (String, MirrorModel) -> Unit) {
+                 selectConfigurationClick: (String?, MirrorModel) -> Unit) {
         itemView.deviceInfo.text = mirror.tunerSubscription.deviceInfo
         itemView.addConfiguration_textView.setOnClickListener { addConfigurationClick(mirror) }
         itemView.qr_code_imageView.setOnClickListener { onQrCodeClicked(mirror) }
-        if (mirror.mirrorConfigurationInfo != null) {
-            mirror.mirrorConfigurationInfo!!
+        if (mirror.mirrorConfigurationsInfo != null) {
+            mirror.mirrorConfigurationsInfo!!
                     .toList()
                     .forEach { item: Pair<String, MirrorConfigurationInfo> ->
                         val configurationInfoView = layoutInflater.inflate(R.layout.item_configuration, itemView.configurationContainer, false)
@@ -62,13 +62,13 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
                             lastUpdate_textView.text = dateFormat.format(Date(item.second.lastTimeUpdate))
                             setOnClickListener { editConfigurationClick(configurationKey, mirror) }
                             checkBox_textView.setOnClickListener {
+                                var newConfigurationKey: String? = null
                                 if (checkBox_textView.isChecked) {
-                                    val newConfigurationKey = this!!.tag as String
-                                    Log.e("TAG", "newConfigurationKey " + newConfigurationKey)
-                                    mirror.checkedConfigurationKey = newConfigurationKey
-                                    selectConfigurationClick(mirror.key, mirror)
+                                    newConfigurationKey = this!!.tag as String
                                     setCheckedConfiguration(newConfigurationKey)
                                 }
+                                mirror.checkedConfigurationKey = newConfigurationKey
+                                selectConfigurationClick(configurationKey, mirror)
                             }
                             delete_button.setOnClickListener {
                                 val view = configurationsList.filter { it.tag == configurationKey }.first()
@@ -90,11 +90,9 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
     private fun setCheckedConfiguration(checkedItemTag: String?) {
         configurationsList.forEach {
             if (it.tag == checkedItemTag) {
-                Log.e("tag", "true " + it.tag)
-                itemView.checkBox_textView.isChecked = true
+                it.checkBox_textView.isChecked = true
             } else {
-                Log.e("tag", "false " + it.tag)
-                itemView.checkBox_textView.isChecked = false
+                it.checkBox_textView.isChecked = false
             }
         }
     }

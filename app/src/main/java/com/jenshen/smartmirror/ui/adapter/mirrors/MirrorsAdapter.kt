@@ -14,7 +14,7 @@ class MirrorsAdapter(private val context: Context,
                      private val addConfigurationClick: (MirrorModel) -> Unit,
                      private val editConfigurationClick: (String, MirrorModel) -> Unit,
                      private val deleteConfigurationClick: (String, MirrorModel) -> Unit,
-                     private val selectConfigurationClick: (String, MirrorModel) -> Unit,
+                     private val selectConfigurationClick: (String?, MirrorModel) -> Unit,
                      onDeleteItemListener: SwipeToDeleteAdapter.OnDeleteItemListener<MirrorModel>) : SwipeToDeleteAdapter<MirrorModel, MirrorHolder>(onDeleteItemListener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MirrorHolder {

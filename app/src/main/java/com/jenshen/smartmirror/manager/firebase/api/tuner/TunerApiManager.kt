@@ -21,7 +21,9 @@ interface TunerApiManager {
     fun removeSubscriberFromMirror(tunerId: String, mirrorId: String): Completable
     fun setFlagForWaitingSubscribersOnMirror(isWaiting: Boolean, mirrorId: String): Completable
     fun getMirrorConfigurationsInfo(mirrorId: String): Maybe<HashMap<String, MirrorConfigurationInfo>>
-    fun setConfigurationIdForMirror(configurationId: String, mirrorId: String): Completable
+    fun getSelectedConfigurationKeyForMirror(mirrorId: String): Maybe<String>
+    fun setSelectedConfigurationKeyForMirror(configurationId: String, mirrorId: String): Completable
+    fun deleteSelectedConfigurationKeyForMirror(mirrorId: String): Completable
     fun deleteMirrorConfigurationInfoForMirror(configurationId: String, mirrorId: String): Completable
     fun createOrEditMirrorConfigurationInfoForMirror(mirrorKey: String, configurationKey: String, configurationInfo: MirrorConfigurationInfo): Completable
 

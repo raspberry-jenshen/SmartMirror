@@ -7,10 +7,9 @@ import java.util.*
 
 data class MirrorModel(val key: String,
                        val tunerSubscription: TunerSubscription,
-                       val isRemoved: Boolean) {
-
-    var checkedConfigurationKey: String? = null
-    var mirrorConfigurationInfo: HashMap<String, MirrorConfigurationInfo>? = null
+                       val isRemoved: Boolean,
+                       var checkedConfigurationKey: String? = null,
+                       var mirrorConfigurationsInfo: HashMap<String, MirrorConfigurationInfo>? = null) {
 
     override fun equals(other: Any?): Boolean {
         if (other != null && other is MirrorModel) {

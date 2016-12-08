@@ -60,10 +60,24 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 }
     }
 
-    override fun setConfigurationIdForMirror(configurationId: String, mirrorId: String): Completable {
+    override fun getSelectedConfigurationKeyForMirror(mirrorId: String): Maybe<String> {
+        return fireBaseDatabase
+                .getSelectedConfigurationRef(mirrorId)
+                .flatMap { it.loadValue() }
+                .filter { it.exists() }
+                .map { it.getValue(String::class.java) }
+    }
+
+    override fun setSelectedConfigurationKeyForMirror(configurationId: String, mirrorId: String): Completable {
         return fireBaseDatabase
                 .getSelectedConfigurationRef(mirrorId)
                 .flatMapCompletable { it.uploadValue(configurationId) }
+    }
+
+    override fun deleteSelectedConfigurationKeyForMirror(mirrorId: String): Completable {
+        return fireBaseDatabase
+                .getSelectedConfigurationRef(mirrorId)
+                .flatMapCompletable { it.clearValue() }
     }
 
     override fun createOrEditMirrorConfigurationInfoForMirror(mirrorKey: String, configurationKey: String, configurationInfo: MirrorConfigurationInfo): Completable {
@@ -90,7 +104,7 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
         return fireBaseDatabase
                 .getTunerSubscriptionRef(mirrorKey, tunerKey)
                 .map { it.child(FirebaseConstant.Tuner.TunerSubscription.LAST_TIME_UPDATE) }
-                .flatMapCompletable { it.uploadValue( ServerValue.TIMESTAMP) }
+                .flatMapCompletable { it.uploadValue(ServerValue.TIMESTAMP) }
     }
 
     override fun removeSubscriptionFromTuner(tunerId: String, mirrorId: String): Completable {

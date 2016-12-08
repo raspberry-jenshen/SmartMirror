@@ -16,7 +16,7 @@ interface TunerApiInteractor {
     fun subscribeOnMirror(mirrorId: String): Completable
     fun unsubscribeFromMirror(mirrorId: String): Completable
     fun switchFlagForWaitingTuner(mirrorId: String): Completable
-    fun setConfigurationIdForMirror(configurationId: String, mirrorId: String): Completable
+    fun setSelectedConfigurationKeyForMirror(configurationId: String?, mirrorId: String): Completable
     fun deleteConfigurationForMirror(configurationId: String, mirrorId: String, isSelected: Boolean): Completable
 
     /* tuner */

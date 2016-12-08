@@ -24,7 +24,7 @@ class MirrorDashboardPresenter @Inject constructor(private val mirrorApiInteract
     }
 
     private fun fetchSelectedConfiguration() {
-       addDisposible(mirrorApiInteractor.fetchSelectedConfiguration(preferencesManager.getSession()!!.key)
+       addDisposible(mirrorApiInteractor.fetchSelectedMirrorConfiguration(preferencesManager.getSession()!!.key)
                 .applySchedulers(Schedulers.computation())
                 .subscribe({ view?.updateMirrorConfiguration(it) }, { view?.handleError(it) }))
     }
