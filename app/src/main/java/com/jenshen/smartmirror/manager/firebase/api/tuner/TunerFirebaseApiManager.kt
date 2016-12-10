@@ -83,7 +83,7 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
     override fun createOrEditMirrorConfigurationInfoForMirror(mirrorKey: String, configurationKey: String, configurationInfo: MirrorConfigurationInfo): Completable {
         return fireBaseDatabase.getMirrorConfigurationsInfoRef(mirrorKey)
                 .map { it.child(configurationKey) }
-                .flatMapCompletable { it.uploadValue(configurationInfo) }
+                .flatMapCompletable { it.uploadValue(configurationInfo.toValueWithUpdateTime()) }
     }
 
     override fun deleteMirrorConfigurationInfoForMirror(configurationId: String, mirrorId: String): Completable {

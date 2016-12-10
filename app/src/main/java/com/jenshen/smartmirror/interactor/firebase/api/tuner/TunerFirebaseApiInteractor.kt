@@ -136,7 +136,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                     }
                 }
                 .andThen(updateWidgets(editMirrorModel))
-                .andThen(updateConfigurationForMirror(editMirrorModel))
+                .andThen(updateConfigurationInfoForMirror(editMirrorModel))
                 .andThen(getTunerSession()
                         .flatMapCompletable { tunerApiManager.updateSubscriptionInTuner(it.key, editMirrorModel.mirrorKey) })
     }
@@ -194,11 +194,11 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         }
     }
 
-    private fun updateConfigurationForMirror(editMirrorModel: EditMirrorModel): Completable {
+    private fun updateConfigurationInfoForMirror(editMirrorModel: EditMirrorModel): Completable {
         return Completable.defer {
             tunerApiManager.createOrEditMirrorConfigurationInfoForMirror(
-                    editMirrorModel.mirrorKey,
                     editMirrorModel.configurationKey!!,
+                    editMirrorModel.mirrorKey,
                     MirrorConfigurationInfo(editMirrorModel.title, Calendar.getInstance().time.time))
         }
     }

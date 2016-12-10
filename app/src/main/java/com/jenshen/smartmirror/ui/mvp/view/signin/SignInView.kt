@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.ui.mvp.view.signIn
+package com.jenshen.smartmirror.ui.mvp.view.signin
 
 import com.jenshen.compat.base.view.BaseMvpView
 import com.jenshen.smartmirror.data.entity.session.TunerSession

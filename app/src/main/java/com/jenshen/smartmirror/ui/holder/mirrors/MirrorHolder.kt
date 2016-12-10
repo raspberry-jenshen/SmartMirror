@@ -2,12 +2,9 @@ package com.jenshen.smartmirror.ui.holder.mirrors
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewManager
-import android.widget.CompoundButton
 import android.widget.LinearLayout
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
@@ -19,7 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, view), CompoundButton.OnCheckedChangeListener {
+class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, view) {
 
     private val layoutInflater: LayoutInflater
     private val configurationsList: MutableList<View>
@@ -53,13 +50,13 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
                         val configurationInfoView = layoutInflater.inflate(R.layout.item_configuration, itemView.configurationContainer, false)
                         with(configurationInfoView) {
                             val configurationKey = item.first
+                            val dateFormat = SimpleDateFormat("h:mm, E, d MMM y", Locale.getDefault())
                             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                            tag = configurationKey
                             configurationsList.add(0, this)
                             itemView.configurationContainer.addView(this)
-                            tag = configurationKey
                             titleConfig_textView.text = item.second.title
-                            val dateFormat = SimpleDateFormat("h:mm, E, d MMM y", Locale.getDefault())
-                            lastUpdate_textView.text = dateFormat.format(Date(item.second.lastTimeUpdate))
+                            lastUpdate_textView.text = dateFormat.format(Date(item.second.lastTimeUpdate!!))
                             setOnClickListener { editConfigurationClick(configurationKey, mirror) }
                             checkBox_textView.setOnClickListener {
                                 var newConfigurationKey: String? = null
@@ -81,10 +78,6 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
             setCheckedConfiguration(mirror.checkedConfigurationKey)
         }
         setBackGround()
-    }
-
-    override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-
     }
 
     private fun setCheckedConfiguration(checkedItemTag: String?) {

@@ -5,7 +5,7 @@ import com.jenshen.compat.base.presenter.MvpRxPresenter
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.interactor.firebase.auth.FirebaseAuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
-import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
+import com.jenshen.smartmirror.ui.mvp.view.signin.SignInView
 import com.jenshen.smartmirror.util.reactive.applyProgress
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import com.jenshen.smartmirror.util.validation.isValidEmail
@@ -84,7 +84,7 @@ class SignInPresenter @Inject constructor(private val preferencesManager: Prefer
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .cast(TunerSession::class.java)
-                .subscribe({ view?.onPreviousTunerSessionLoaded(it) }, { view?.onLoginClicked() })
+                .subscribe({ view?.onPreviousTunerSessionLoaded(it) }, { view?.handleError(it) })
     }
 
     fun restorePassword(email: String) {

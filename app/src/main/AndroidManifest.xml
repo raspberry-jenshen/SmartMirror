@@ -69,7 +69,11 @@
         <activity
             android:name=".ui.activity.qrScan.QRCodeScanActivity"
             android:permission="android.permission.CAMERA"
-            android:theme="@style/App.Theme.QRCodeScanner.Activity" />
+            android:theme="@style/App.Theme.QRCodeScanner.Activity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.choose.mirror.ChooseMirrorActivity" />
+        </activity>
         <activity
             android:name=".ui.activity.edit.mirror.EditMirrorActivity"
             android:launchMode="singleTop"

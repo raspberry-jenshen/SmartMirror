@@ -16,7 +16,8 @@ class MirrorFirebaseApiInteractor @Inject constructor(private val apiManager: Ap
 
     override fun fetchSelectedMirrorConfiguration(mirrorId: String): Flowable<MirrorConfiguration> {
         return mirrorApiManager.observeSelectedConfigurationKey(mirrorId)
-                .flatMapSingle { mirrorApiManager.getMirrorConfiguration(it) }
+                .flatMap {configurationKey -> mirrorApiManager.observeMirrorConfigurationInfoForMirror(mirrorId, configurationKey)
+                        .flatMapSingle { mirrorApiManager.getMirrorConfiguration(configurationKey) }}
                 .map { it.data }
     }
 }

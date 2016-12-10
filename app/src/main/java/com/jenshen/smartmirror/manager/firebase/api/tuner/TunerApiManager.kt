@@ -25,7 +25,7 @@ interface TunerApiManager {
     fun setSelectedConfigurationKeyForMirror(configurationId: String, mirrorId: String): Completable
     fun deleteSelectedConfigurationKeyForMirror(mirrorId: String): Completable
     fun deleteMirrorConfigurationInfoForMirror(configurationId: String, mirrorId: String): Completable
-    fun createOrEditMirrorConfigurationInfoForMirror(mirrorKey: String, configurationKey: String, configurationInfo: MirrorConfigurationInfo): Completable
+    fun createOrEditMirrorConfigurationInfoForMirror(configurationKey: String, mirrorKey: String, configurationInfo: MirrorConfigurationInfo): Completable
 
     /* tuner */
     fun addSubscriptionInTuner(tunerId: String, mirrorId: String, mirror: Mirror): Completable

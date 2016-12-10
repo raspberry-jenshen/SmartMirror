@@ -40,6 +40,7 @@ class SharedPreferencesManager : PreferencesManager {
         } else{
             return mGson.fromJson(json, TunerSession::class.java)
         }
+
     }
 
     override fun isMirror(): Boolean {

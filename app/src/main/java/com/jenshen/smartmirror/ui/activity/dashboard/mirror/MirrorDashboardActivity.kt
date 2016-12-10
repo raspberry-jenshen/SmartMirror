@@ -33,7 +33,7 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard_mirror)
-        widgetContainer.isEnabled = false
+        //widgetContainer.isEnabled = false
     }
 
     /* callbacks */
@@ -46,7 +46,7 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
 
     override fun updateMirrorConfiguration(mirrorConfiguration: MirrorConfiguration) {
         mirrorConfiguration.widgets?.forEach {
-            val widget = createWidget(it.key, context)
+            val widget = createWidget(it.value.widgetKey, context)
             val position = widget.widgetPosition
 
             position.topLeftColumnLine = it.value.topLeftCorner.column

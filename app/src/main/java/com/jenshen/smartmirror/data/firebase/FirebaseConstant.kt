@@ -14,7 +14,6 @@ interface FirebaseConstant {
             const val MIRROR_KEY = "mirror_key"
             const val TITLE = "title"
             const val WIDGETS = "widgets"
-            const val LAST_TIME_UPDATE = "last_time_update"
         }
 
         interface Widget {
