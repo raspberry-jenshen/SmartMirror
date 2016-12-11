@@ -6,14 +6,17 @@ import android.os.IBinder
 import android.util.Log
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
+import com.jenshen.smartmirror.di.module.activity.start.service.StartMirrorServiceModule
 import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorDashboardActivity
-import com.jenshen.smartmirror.ui.mvp.presenter.start.service.StartMirrorServisePresenter
+import com.jenshen.smartmirror.ui.mvp.presenter.start.service.StartMirrorServicePresenter
 import com.jenshen.smartmirror.ui.mvp.view.start.service.StartMirrorServiceView
+import javax.inject.Inject
 
 
-class MirrorStartService : Service(), StartMirrorServiceView {
+class StartMirrorService : Service(), StartMirrorServiceView {
 
-    private lateinit var presenter: StartMirrorServisePresenter
+    @Inject
+    protected lateinit var presenter: StartMirrorServicePresenter
 
     /* lifecycle */
 
@@ -28,7 +31,15 @@ class MirrorStartService : Service(), StartMirrorServiceView {
 
     override fun onCreate() {
         super.onCreate()
-        SmartMirrorApp.rootComponent.injectService(this)
+        SmartMirrorApp.rootComponent
+                .plusMirrorService(StartMirrorServiceModule())
+                .injectMembers(this)
+        presenter.attachView(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView(false)
     }
 
     /* callbacks */
@@ -49,7 +60,7 @@ class MirrorStartService : Service(), StartMirrorServiceView {
     override fun getContext() = this
 
     override fun hideProgress() {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        throw UnsupportedOperationException("not implemented")
     }
 
     override fun showProgress() {

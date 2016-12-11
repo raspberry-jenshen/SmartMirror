@@ -74,7 +74,7 @@
     <style name="App.Theme.AddWidget.Activity" />
 
     <!-- mirror -->
-    <style name="App.Theme.Mirror" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+    <style name="App.Theme.Mirror">
         <item name="android:windowBackground">@color/black</item>
     </style>
 

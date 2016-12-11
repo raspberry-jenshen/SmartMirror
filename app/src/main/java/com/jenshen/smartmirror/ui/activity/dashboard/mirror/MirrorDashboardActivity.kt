@@ -2,6 +2,8 @@ package com.jenshen.smartmirror.ui.activity.dashboard.mirror
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
@@ -32,6 +34,8 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_dashboard_mirror)
         widgetContainer.isEnabled = false
     }
