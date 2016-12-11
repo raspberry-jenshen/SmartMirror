@@ -43,6 +43,12 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
         itemView.deviceInfo.text = mirror.tunerSubscription.deviceInfo
         itemView.addConfiguration_textView.setOnClickListener { addConfigurationClick(mirror) }
         itemView.qr_code_imageView.setOnClickListener { onQrCodeClicked(mirror) }
+
+        while (itemView.configurationContainer.childCount != 0){
+            val view = itemView.configurationContainer.getChildAt(0)
+            (view.parent as ViewGroup).removeView(view)
+        }
+
         if (mirror.mirrorConfigurationsInfo != null) {
             mirror.mirrorConfigurationsInfo!!
                     .toList()

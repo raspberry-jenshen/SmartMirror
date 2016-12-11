@@ -21,7 +21,8 @@ data class MirrorConfigurationInfo(@set:PropertyName(FirebaseConstant.Mirror.Mir
     @Exclude
     fun toValueWithUpdateTime(): Map<String, Any> {
         val result = HashMap<String, Any>()
-        result.put(FirebaseConstant.Mirror.MirrorSubscriber.LAST_TIME_UPDATE, ServerValue.TIMESTAMP)
+        result.put(FirebaseConstant.Mirror.MirrorConfigurationInfo.TITLE, title)
+        result.put(FirebaseConstant.Mirror.MirrorConfigurationInfo.LAST_TIME_UPDATE, ServerValue.TIMESTAMP)
         return result
     }
 }

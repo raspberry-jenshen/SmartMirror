@@ -7,7 +7,7 @@
     <!--dialogs-->
     <string name="dialog.yes">Yes</string>
     <string name="dialog.no">No</string>
-    <string name="dialog.save_and_exit">Save and exit</string>
+    <string name="dialog.save">Save</string>
     <string name="dialog.completed">Completed</string>
     <string name="dialog.data_were_set">Data were set</string>
     <string name="dialog.exit">Exit</string>

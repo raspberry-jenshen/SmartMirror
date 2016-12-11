@@ -13,11 +13,11 @@ class MirrorDashboardPresenter @Inject constructor(private val mirrorApiInteract
 
     override fun attachView(view: MirrorDashboardView?) {
         super.attachView(view)
-        fetchIsNeedToShoQrCode()
+        fetchIsNeedToShowQrCode()
         fetchSelectedConfiguration()
     }
 
-    private fun fetchIsNeedToShoQrCode() {
+    private fun fetchIsNeedToShowQrCode() {
        addDisposible(mirrorApiInteractor.fetchIsNeedToShowQrCode(preferencesManager.getSession()!!.key)
                 .applySchedulers(Schedulers.computation())
                 .subscribe({ view?.showSignUpScreen() }, { view?.handleError(it) }))

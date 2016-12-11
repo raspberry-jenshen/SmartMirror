@@ -7,7 +7,6 @@ import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
 import com.jenshen.smartmirror.util.reactive.firebase.loadValue
 import com.jenshen.smartmirror.util.reactive.firebase.observeValue
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -30,6 +29,7 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
         return firebaseDatabase.getMirrorConfigurationsInfoRef(mirrorKey)
                 .map { it.child(configurationKey) }
                 .flatMapPublisher { it.observeValue() }
+                .filter { it.exists() }
                 .map { it.getValue(MirrorConfigurationInfo::class.java) }
     }
 

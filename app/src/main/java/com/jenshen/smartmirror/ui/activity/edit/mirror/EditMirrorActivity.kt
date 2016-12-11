@@ -120,7 +120,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
             val dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.warning)
                     .setMessage(R.string.error_not_save)
-                    .setNeutralButton(R.string.dialog_save_and_exit, { dialogInterface: DialogInterface, i: Int ->
+                    .setNeutralButton(R.string.dialog_save, { dialogInterface: DialogInterface, i: Int ->
                         saveConfiguration()
                     })
                     .setNegativeButton(R.string.dialog_no, null)

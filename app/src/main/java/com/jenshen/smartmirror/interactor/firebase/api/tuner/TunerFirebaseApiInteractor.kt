@@ -79,7 +79,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         if (configurationId == null) {
            return tunerApiManager.deleteSelectedConfigurationKeyForMirror(mirrorId)
         }
-        return tunerApiManager.setSelectedConfigurationKeyForMirror(configurationId!!, mirrorId)
+        return tunerApiManager.setSelectedConfigurationKeyForMirror(configurationId, mirrorId)
     }
 
     override fun deleteConfigurationForMirror(configurationId: String, mirrorId: String, isSelected: Boolean): Completable {

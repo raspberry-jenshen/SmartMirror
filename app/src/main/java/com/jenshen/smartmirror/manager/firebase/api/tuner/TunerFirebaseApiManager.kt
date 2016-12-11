@@ -30,28 +30,28 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
 
     /* mirror */
 
-    override fun addSubscriberToMirror(tunerId: String, mirrorId: String): Completable {
+    override fun addSubscriberToMirror(tunerKey: String, mirrorKey: String): Completable {
         return fireBaseDatabase
-                .getMirrorSubscribersRef(mirrorId)
-                .map { it.child(tunerId) }
+                .getMirrorSubscribersRef(mirrorKey)
+                .map { it.child(tunerKey) }
                 .flatMapCompletable { it.uploadValue(MirrorSubscriber().toValueWithUpdateTime()) }
     }
 
-    override fun removeSubscriberFromMirror(tunerId: String, mirrorId: String): Completable {
+    override fun removeSubscriberFromMirror(tunerKey: String, mirrorKey: String): Completable {
         return fireBaseDatabase
-                .getMirrorSubscribersRef(mirrorId)
+                .getMirrorSubscribersRef(mirrorKey)
                 .flatMapCompletable { it.clearValue() }
     }
 
-    override fun setFlagForWaitingSubscribersOnMirror(isWaiting: Boolean, mirrorId: String): Completable {
+    override fun setFlagForWaitingSubscribersOnMirror(isWaiting: Boolean, mirrorKey: String): Completable {
         return fireBaseDatabase
-                .getIsWaitingForTunerFlagRef(mirrorId)
+                .getIsWaitingForTunerFlagRef(mirrorKey)
                 .flatMapCompletable { it.uploadValue(isWaiting) }
     }
 
-    override fun getMirrorConfigurationsInfo(mirrorId: String): Maybe<HashMap<String, MirrorConfigurationInfo>> {
+    override fun getMirrorConfigurationsInfo(mirrorKey: String): Maybe<HashMap<String, MirrorConfigurationInfo>> {
         return fireBaseDatabase
-                .getMirrorConfigurationsInfoRef(mirrorId)
+                .getMirrorConfigurationsInfoRef(mirrorKey)
                 .flatMap { it.loadValue() }
                 .filter { it.exists() }
                 .map {
@@ -60,35 +60,35 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 }
     }
 
-    override fun getSelectedConfigurationKeyForMirror(mirrorId: String): Maybe<String> {
+    override fun getSelectedConfigurationKeyForMirror(mirrorKey: String): Maybe<String> {
         return fireBaseDatabase
-                .getSelectedConfigurationRef(mirrorId)
+                .getSelectedConfigurationRef(mirrorKey)
                 .flatMap { it.loadValue() }
                 .filter { it.exists() }
                 .map { it.getValue(String::class.java) }
     }
 
-    override fun setSelectedConfigurationKeyForMirror(configurationId: String, mirrorId: String): Completable {
+    override fun setSelectedConfigurationKeyForMirror(configurationKey: String, mirrorKey: String): Completable {
         return fireBaseDatabase
-                .getSelectedConfigurationRef(mirrorId)
-                .flatMapCompletable { it.uploadValue(configurationId) }
+                .getSelectedConfigurationRef(mirrorKey)
+                .flatMapCompletable { it.uploadValue(configurationKey) }
     }
 
-    override fun deleteSelectedConfigurationKeyForMirror(mirrorId: String): Completable {
+    override fun deleteSelectedConfigurationKeyForMirror(mirrorKey: String): Completable {
         return fireBaseDatabase
-                .getSelectedConfigurationRef(mirrorId)
+                .getSelectedConfigurationRef(mirrorKey)
                 .flatMapCompletable { it.clearValue() }
     }
 
-    override fun createOrEditMirrorConfigurationInfoForMirror(mirrorKey: String, configurationKey: String, configurationInfo: MirrorConfigurationInfo): Completable {
+    override fun createOrEditMirrorConfigurationInfoForMirror(configurationKey: String, mirrorKey: String, configurationInfo: MirrorConfigurationInfo): Completable {
         return fireBaseDatabase.getMirrorConfigurationsInfoRef(mirrorKey)
                 .map { it.child(configurationKey) }
                 .flatMapCompletable { it.uploadValue(configurationInfo.toValueWithUpdateTime()) }
     }
 
-    override fun deleteMirrorConfigurationInfoForMirror(configurationId: String, mirrorId: String): Completable {
+    override fun deleteMirrorConfigurationInfoForMirror(configurationKey: String, mirrorId: String): Completable {
         return fireBaseDatabase
-                .getMirrorConfigurationInfoRef(configurationId, mirrorId)
+                .getMirrorConfigurationInfoRef(configurationKey, mirrorId)
                 .flatMapCompletable { it.clearValue() }
     }
 

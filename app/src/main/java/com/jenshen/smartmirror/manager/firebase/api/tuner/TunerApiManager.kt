@@ -17,14 +17,14 @@ import java.util.*
 interface TunerApiManager {
 
     /* mirror */
-    fun addSubscriberToMirror(tunerId: String, mirrorId: String): Completable
-    fun removeSubscriberFromMirror(tunerId: String, mirrorId: String): Completable
-    fun setFlagForWaitingSubscribersOnMirror(isWaiting: Boolean, mirrorId: String): Completable
-    fun getMirrorConfigurationsInfo(mirrorId: String): Maybe<HashMap<String, MirrorConfigurationInfo>>
-    fun getSelectedConfigurationKeyForMirror(mirrorId: String): Maybe<String>
-    fun setSelectedConfigurationKeyForMirror(configurationId: String, mirrorId: String): Completable
-    fun deleteSelectedConfigurationKeyForMirror(mirrorId: String): Completable
-    fun deleteMirrorConfigurationInfoForMirror(configurationId: String, mirrorId: String): Completable
+    fun addSubscriberToMirror(tunerKey: String, mirrorKey: String): Completable
+    fun removeSubscriberFromMirror(tunerKey: String, mirrorKey: String): Completable
+    fun setFlagForWaitingSubscribersOnMirror(isWaiting: Boolean, mirrorKey: String): Completable
+    fun getMirrorConfigurationsInfo(mirrorKey: String): Maybe<HashMap<String, MirrorConfigurationInfo>>
+    fun getSelectedConfigurationKeyForMirror(mirrorKey: String): Maybe<String>
+    fun setSelectedConfigurationKeyForMirror(configurationKey: String, mirrorKey: String): Completable
+    fun deleteSelectedConfigurationKeyForMirror(mirrorKey: String): Completable
+    fun deleteMirrorConfigurationInfoForMirror(configurationKey: String, mirrorId: String): Completable
     fun createOrEditMirrorConfigurationInfoForMirror(configurationKey: String, mirrorKey: String, configurationInfo: MirrorConfigurationInfo): Completable
 
     /* tuner */
