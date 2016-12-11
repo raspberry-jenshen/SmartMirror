@@ -12,6 +12,8 @@ import com.jenshen.smartmirror.di.module.interactor.firebase.api.ApiInteractorMo
 import com.jenshen.smartmirror.di.module.interactor.firebase.auth.AuthInteractorModule
 import com.jenshen.smartmirror.di.module.manager.firebase.database.RealtimeDatabaseModule
 import com.jenshen.smartmirror.manager.fabric.FabricManager
+import com.jenshen.smartmirror.manager.preference.PreferencesManager
+import com.jenshen.smartmirror.service.MirrorStartService
 import dagger.Component
 import javax.inject.Singleton
 
@@ -29,5 +31,9 @@ interface AppComponent : BaseAppComponent<SmartMirrorApp> {
 
     fun provideFabricManager(): FabricManager
 
+    fun providePreferencesManager(): PreferencesManager
+
     fun provideMultiBuildersForActivities(): Map<Class<out Activity>, ActivityComponentBuilder<*>>
+
+    fun injectService(service: MirrorStartService)
 }

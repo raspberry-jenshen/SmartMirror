@@ -25,6 +25,8 @@
 
     <style name="App.Theme.Start.Activity" />
 
+    <!--tuner-->
+
     <style name="App.Theme.SignInTuner">
         <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
     </style>
@@ -70,6 +72,11 @@
     </style>
 
     <style name="App.Theme.AddWidget.Activity" />
+
+    <!-- mirror -->
+    <style name="App.Theme.Mirror" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="android:windowBackground">@color/black</item>
+    </style>
 
     <!-- Widget -->
 

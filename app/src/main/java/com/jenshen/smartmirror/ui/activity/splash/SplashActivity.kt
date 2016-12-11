@@ -8,8 +8,8 @@ import com.jenshen.smartmirror.di.component.activity.splash.SplashComponent
 import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorDashboardActivity
 import com.jenshen.smartmirror.ui.activity.choose.mirror.ChooseMirrorActivity
 import com.jenshen.smartmirror.ui.activity.start.StartActivity
-import com.jenshen.smartmirror.ui.mvp.presenter.splash.SplashPresenter
-import com.jenshen.smartmirror.ui.mvp.view.splash.SplashView
+import com.jenshen.smartmirror.ui.mvp.presenter.start.splash.SplashPresenter
+import com.jenshen.smartmirror.ui.mvp.view.start.splash.SplashView
 
 class SplashActivity : BaseDiMvpActivity<SplashComponent, SplashView, SplashPresenter>(), SplashView {
 

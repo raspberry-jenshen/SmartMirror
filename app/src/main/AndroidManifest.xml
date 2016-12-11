@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".app.SmartMirrorApp"
         android:allowBackup="true"
@@ -16,6 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/App.Theme"
         tools:replace="theme">
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3b1adbe3949cfd0e01ca89038fa1a880df54aa38" />
+
         <activity
             android:name=".ui.activity.splash.SplashActivity"
             android:noHistory="true"
@@ -26,19 +33,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="3b1adbe3949cfd0e01ca89038fa1a880df54aa38" />
-
         <activity
             android:name=".ui.activity.start.StartActivity"
             android:launchMode="singleTop"
             android:theme="@style/App.Theme.Start.Activity" />
+
+        <!-- tuner -->
+
         <activity
             android:name=".ui.activity.signIn.SignInTunerActivity"
-            android:theme="@style/App.Theme.SignInTuner.Activity"
             android:launchMode="singleTop"
+            android:theme="@style/App.Theme.SignInTuner.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -61,15 +66,9 @@
             android:launchMode="singleTop"
             android:theme="@style/App.Theme.Settings.Activity" />
         <activity
-            android:name=".ui.activity.signup.mirror.SignUpMirrorActivity"
-            android:theme="@style/App.Theme.Settings.Activity" />
-        <activity
-            android:name=".ui.activity.dashboard.mirror.MirrorDashboardActivity"
-            android:theme="@style/App.Theme.Settings.Activity" />
-        <activity
             android:name=".ui.activity.qrScan.QRCodeScanActivity"
             android:permission="android.permission.CAMERA"
-            android:theme="@style/App.Theme.QRCodeScanner.Activity" >
+            android:theme="@style/App.Theme.QRCodeScanner.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.choose.mirror.ChooseMirrorActivity" />
@@ -96,6 +95,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.settings.SettingsActivity" />
         </activity>
+
+        <!-- mirror -->
+        <activity
+            android:name=".ui.activity.signup.mirror.SignUpMirrorActivity"
+            android:theme="@style/App.Theme.Mirror" />
+        <activity
+            android:name=".ui.activity.dashboard.mirror.MirrorDashboardActivity"
+            android:theme="@style/App.Theme.Mirror" />
+
+
+        <receiver
+            android:name=".broadcast.LaunchAppBroadcast"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".service.MirrorStartService" />
+
     </application>
 
 </manifest>
