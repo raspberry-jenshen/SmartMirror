@@ -4,8 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class EditMirrorModel(val mirrorKey: String,
+                           val columnsCount: Int,
+                           val rowsCount: Int,
                            val title: String,
-                           val list: MutableList<WidgetConfigurationModel> = mutableListOf(),
+                           val widgets: MutableList<WidgetConfigurationModel> = mutableListOf(),
                            var configurationKey: String? = null) : Parcelable {
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<EditMirrorModel> = object : Parcelable.Creator<EditMirrorModel> {
@@ -15,7 +17,8 @@ data class EditMirrorModel(val mirrorKey: String,
     }
 
     constructor(source: Parcel) : this(source.readString(),
-            source.readString(),
+            source.readInt(),
+            source.readInt(), source.readString(),
             source.createTypedArrayList(WidgetConfigurationModel.CREATOR),
             source.readString())
 
@@ -23,8 +26,10 @@ data class EditMirrorModel(val mirrorKey: String,
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
         dest?.writeString(mirrorKey)
+        dest?.writeInt(columnsCount)
+        dest?.writeInt(rowsCount)
         dest?.writeString(title)
+        dest?.writeTypedList(widgets)
         dest?.writeString(configurationKey)
-        dest?.writeTypedList(list)
     }
 }

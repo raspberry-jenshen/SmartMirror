@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NavUtils
 import android.support.v7.app.AlertDialog
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -66,13 +67,11 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         val mirrorId = intent.getStringExtra(EXTRA_MIRROR_KEY)
         val configurationKey = intent.getStringExtra(EXTRA_MIRROR_CONFIGURATION_KEY)
         if (configurationKey == null && editMirrorModel == null) {
-            val editText = EditText(context)
-            val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-            editText.layoutParams = layoutParams
+            val view = LayoutInflater.from(context).inflate(R.layout.partial_dialog_edit_configuration, null)
+            view.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
 
             val dialog = AlertDialog.Builder(context)
-                    .setTitle(R.string.editMirror_typeTitle)
-                    .setView(editText)
+                    .setView(view)
                     .setPositiveButton(R.string.ok, null)
                     .setNegativeButton(R.string.cancel, { dialogInterface, i -> finish() })
                     .create()
@@ -81,13 +80,21 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 setCancelable(false)
                 show()
                 getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    val title = editText.text.toString()
-                    if (!title.isEmpty()) {
-                        editMirrorModel = EditMirrorModel(mirrorId, title)
-                        dialog.dismiss()
-                    } else {
+                    val nameEdit = view.findViewById(R.id.configurationName) as EditText
+                    val title = nameEdit.text.toString()
+                    val columnsEdit = view.findViewById(R.id.columnsCount) as EditText
+                    val columns = columnsEdit.text.toString()
+                    val rowsEdit = view.findViewById(R.id.rowsCount) as EditText
+                    val rows = rowsEdit.text.toString()
+                    if (title.isEmpty() || columns.isEmpty() || rows.isEmpty()) {
                         Toast.makeText(context, R.string.error_cant_be_empty, Toast.LENGTH_LONG).show()
+                        return@setOnClickListener
                     }
+                    onMirrorConfigurationLoaded(EditMirrorModel(mirrorId,
+                            columns.toInt(),
+                            rows.toInt(),
+                            title))
+                    dialog.dismiss()
                 }
             }
         } else if (editMirrorModel == null) {
@@ -107,11 +114,11 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
             return
         }
         val widgetModel = data!!.getParcelableExtra<WidgetConfigurationModel>(ChooseWidgetActivity.RESULT_EXTRA_WIDGET)
-        val sameWidgetsCount = editMirrorModel?.list?.filter { it.key == widgetModel.key }?.size ?: 0
+        val sameWidgetsCount = editMirrorModel?.widgets?.filter { it.key == widgetModel.key }?.size ?: 0
         widgetModel.tag += sameWidgetsCount
         val widget = createWidget(widgetModel.widgetKey, context)
         widget.tag = widgetModel.tag
-        editMirrorModel!!.list.add(widgetModel)
+        editMirrorModel!!.widgets.add(widgetModel)
         widgetContainer.addWidgetView(widget)
     }
 
@@ -178,7 +185,10 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     override fun onMirrorConfigurationLoaded(model: EditMirrorModel) {
         editMirrorModel = model
-        editMirrorModel?.list?.forEach { widgetModel ->
+        widgetContainer.setColumnCount(model.columnsCount)
+        widgetContainer.setRowCount(model.rowsCount)
+        widgetContainer.requestLayout()
+        editMirrorModel?.widgets?.forEach { widgetModel ->
             val widget = createWidget(widgetModel.widgetKey, context)
             widget.tag = widgetModel.tag
             with(widget.widgetPosition) {
@@ -224,7 +234,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     }
 
     private fun updateModel() {
-        editMirrorModel?.list?.forEach { widgetModel ->
+        editMirrorModel?.widgets?.forEach { widgetModel ->
             val view = widgetContainer.widgets
                     .find { widgetModel.tag == it.tag }
             if (isSaved && widgetModel.widgetPosition != null) {
@@ -236,7 +246,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     private fun isModelCompleted(editMirrorModel: EditMirrorModel): Boolean {
         var completed = true
-        editMirrorModel.list.forEach {
+        editMirrorModel.widgets.forEach {
             completed = completed && !(it.widgetPosition?.isEmpty ?: true)
         }
         return completed

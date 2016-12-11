@@ -52,6 +52,9 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
         while (widgetContainer.widgets.size != 0) {
             widgetContainer.removeWidgetView(widgetContainer.widgets.iterator().next())
         }
+        widgetContainer.setRowCount(mirrorConfiguration.containerSize.row)
+        widgetContainer.setColumnCount(mirrorConfiguration.containerSize.column)
+        widgetContainer.requestLayout()
         mirrorConfiguration.widgets?.forEach {
             val widget = createWidget(it.value.widgetKey, context)
             val position = widget.widgetPosition

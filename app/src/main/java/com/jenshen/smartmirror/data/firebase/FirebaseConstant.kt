@@ -13,7 +13,15 @@ interface FirebaseConstant {
         companion object {
             const val MIRROR_KEY = "mirror_key"
             const val TITLE = "title"
+            const val CONTAINER_SIZE = "container_size"
             const val WIDGETS = "widgets"
+        }
+
+        interface ContainerSize {
+            companion object {
+                const val COLUMNS_COUNT = "columns_count"
+                const val ROWS_COUNT = "rows_count"
+            }
         }
 
         interface Widget {

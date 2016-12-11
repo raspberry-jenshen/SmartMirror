@@ -5,6 +5,7 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
+import com.jenshen.smartmirror.data.firebase.model.configuration.ContainerSize
 import com.jenshen.smartmirror.data.firebase.model.configuration.Corner
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
@@ -77,7 +78,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     override fun setSelectedConfigurationKeyForMirror(configurationId: String?, mirrorId: String): Completable {
         if (configurationId == null) {
-           return tunerApiManager.deleteSelectedConfigurationKeyForMirror(mirrorId)
+            return tunerApiManager.deleteSelectedConfigurationKeyForMirror(mirrorId)
         }
         return tunerApiManager.setSelectedConfigurationKeyForMirror(configurationId, mirrorId)
     }
@@ -125,7 +126,12 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
     /* mirror configurations */
 
     override fun saveMirrorConfiguration(editMirrorModel: EditMirrorModel): Completable {
-        return Single.fromCallable { MirrorConfiguration(editMirrorModel.mirrorKey, editMirrorModel.title) }
+        return Single.fromCallable {
+            MirrorConfiguration(
+                    editMirrorModel.mirrorKey,
+                    editMirrorModel.title,
+                    ContainerSize(editMirrorModel.columnsCount, editMirrorModel.rowsCount))
+        }
                 .flatMapCompletable { mirrorConfiguration ->
                     if (editMirrorModel.configurationKey == null) {
                         return@flatMapCompletable tunerApiManager.createMirrorConfiguration(mirrorConfiguration)
@@ -164,6 +170,8 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                             .map { widgetModels ->
                                 EditMirrorModel(
                                         dataSnapshotWithKey.data.mirrorKey,
+                                        dataSnapshotWithKey.data.containerSize.column,
+                                        dataSnapshotWithKey.data.containerSize.row,
                                         dataSnapshotWithKey.data.title,
                                         widgetModels,
                                         dataSnapshotWithKey.key)
@@ -175,7 +183,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     private fun updateWidgets(editMirrorModel: EditMirrorModel): Completable {
         return Completable.defer {
-            Observable.fromIterable(editMirrorModel.list)
+            Observable.fromIterable(editMirrorModel.widgets)
                     .flatMapCompletable { widgetModel ->
                         val widgetConfiguration = WidgetConfiguration(widgetModel.widgetKey,
                                 Corner(widgetModel.widgetPosition!!.topLeftColumnLine, widgetModel.widgetPosition!!.topLeftRowLine),

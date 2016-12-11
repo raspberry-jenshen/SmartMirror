@@ -12,13 +12,16 @@ data class MirrorConfiguration(
         var mirrorKey: String,
         @set:PropertyName(FirebaseConstant.MirrorConfiguration.TITLE)
         @get:PropertyName(FirebaseConstant.MirrorConfiguration.TITLE)
-        var title: String) {
+        var title: String,
+        @set:PropertyName(FirebaseConstant.MirrorConfiguration.CONTAINER_SIZE)
+        @get:PropertyName(FirebaseConstant.MirrorConfiguration.CONTAINER_SIZE)
+        var containerSize: ContainerSize) {
 
     @set:PropertyName(FirebaseConstant.MirrorConfiguration.WIDGETS)
     @get:PropertyName(FirebaseConstant.MirrorConfiguration.WIDGETS)
     var widgets: HashMap<String, WidgetConfiguration>? = null
 
-    constructor() : this("", "") {
+    constructor() : this("", "", ContainerSize()) {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 }
