@@ -21,6 +21,7 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
 
     override fun getMirrorConfiguration(configurationKey: String): Single<DataSnapshotWithKey<MirrorConfiguration>> {
         return firebaseDatabase.getMirrorConfigurationRef(configurationKey)
+                .doOnSuccess { it.keepSynced(true) }
                 .flatMap { it.loadValue() }
                 .map { DataSnapshotWithKey(it.key, it.getValue(MirrorConfiguration::class.java)) }
     }
@@ -28,7 +29,6 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
     override fun observeMirrorConfigurationInfoForMirror(mirrorKey: String, configurationKey: String): Flowable<MirrorConfigurationInfo> {
         return firebaseDatabase.getMirrorConfigurationsInfoRef(mirrorKey)
                 .map { it.child(configurationKey)}
-                .doOnSuccess { it.keepSynced(true) }
                 .flatMapPublisher { it.observeValue() }
                 .filter { it.exists() }
                 .map { it.getValue(MirrorConfigurationInfo::class.java) }

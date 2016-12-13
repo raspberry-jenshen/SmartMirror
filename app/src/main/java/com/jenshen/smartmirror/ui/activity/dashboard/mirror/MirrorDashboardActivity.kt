@@ -1,9 +1,13 @@
 package com.jenshen.smartmirror.ui.activity.dashboard.mirror
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
+import com.jenshen.awesomeanimation.AwesomeAnimation
+import com.jenshen.awesomeanimation.AwesomeAnimation.SizeMode.SCALE
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
@@ -49,29 +53,46 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
     }
 
     override fun updateMirrorConfiguration(mirrorConfiguration: MirrorConfiguration) {
-        while (widgetContainer.widgets.size != 0) {
-            widgetContainer.removeWidgetView(widgetContainer.widgets.iterator().next())
-        }
-        widgetContainer.setRowCount(mirrorConfiguration.containerSize.row)
-        widgetContainer.setColumnCount(mirrorConfiguration.containerSize.column)
-        widgetContainer.requestLayout()
-        mirrorConfiguration.widgets?.forEach {
-            val widget = createWidget(it.value.widgetKey, context)
-            val position = widget.widgetPosition
+        val build = AwesomeAnimation.Builder(widgetContainer)
+                .setSizeX(SCALE, 1f, 0f)
+                .setSizeY(SCALE, 1f, 0f)
+                .setAlpha(1f, 0f)
+                .build()
+        build.animatorSet.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                while (widgetContainer.widgets.size != 0) {
+                    widgetContainer.removeWidgetView(widgetContainer.widgets.iterator().next())
+                }
+                widgetContainer.setRowCount(mirrorConfiguration.containerSize.row)
+                widgetContainer.setColumnCount(mirrorConfiguration.containerSize.column)
+                mirrorConfiguration.widgets?.forEach {
+                    val widget = createWidget(it.value.widgetKey, context)
+                    val position = widget.widgetPosition
 
-            position.topLeftColumnLine = it.value.topLeftCorner.column
-            position.topLeftRowLine = it.value.topLeftCorner.row
+                    position.topLeftColumnLine = it.value.topLeftCorner.column
+                    position.topLeftRowLine = it.value.topLeftCorner.row
 
-            position.topRightColumnLine = it.value.topRightCorner.column
-            position.topRightRowLine = it.value.topRightCorner.row
+                    position.topRightColumnLine = it.value.topRightCorner.column
+                    position.topRightRowLine = it.value.topRightCorner.row
 
-            position.bottomLeftColumnLine = it.value.bottomLeftCorner.column
-            position.bottomLeftRowLine = it.value.bottomLeftCorner.row
+                    position.bottomLeftColumnLine = it.value.bottomLeftCorner.column
+                    position.bottomLeftRowLine = it.value.bottomLeftCorner.row
 
-            position.bottomRightColumnLine = it.value.bottomRightCorner.column
-            position.bottomRightRowLine = it.value.bottomRightCorner.row
+                    position.bottomRightColumnLine = it.value.bottomRightCorner.column
+                    position.bottomRightRowLine = it.value.bottomRightCorner.row
 
-            widgetContainer.addWidgetView(widget)
-        }
+                    widgetContainer.addWidgetView(widget)
+                }
+                widgetContainer.requestLayout()
+
+                AwesomeAnimation.Builder(widgetContainer)
+                        .setSizeX(SCALE, 0f, 1f)
+                        .setSizeY(SCALE, 0f, 1f)
+                        .setAlpha(0f, 1f)
+                        .build()
+                        .start()
+            }
+        })
+        build.start()
     }
 }

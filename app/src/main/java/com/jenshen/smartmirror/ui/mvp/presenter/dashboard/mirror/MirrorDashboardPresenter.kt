@@ -9,7 +9,8 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MirrorDashboardPresenter @Inject constructor(private val mirrorApiInteractor: MirrorApiInteractor,
-                                                   private  val preferencesManager: PreferencesManager) : MvpRxPresenter<MirrorDashboardView>() {
+                                                   private  val preferencesManager: PreferencesManager) :
+        MvpRxPresenter<MirrorDashboardView>(), MirrorApiInteractor by mirrorApiInteractor {
 
     override fun attachView(view: MirrorDashboardView?) {
         super.attachView(view)
