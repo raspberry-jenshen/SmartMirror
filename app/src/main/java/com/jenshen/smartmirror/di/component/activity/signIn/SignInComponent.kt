@@ -7,7 +7,7 @@ import com.jenshen.smartmirror.di.module.activity.signUp.mirror.SignUpMirrorModu
 import com.jenshen.smartmirror.di.scope.ActivityScope
 import com.jenshen.smartmirror.ui.activity.signIn.SignInTunerActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.signin.SignInPresenter
-import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
+import com.jenshen.smartmirror.ui.mvp.view.signin.SignInView
 import dagger.Subcomponent
 
 @ActivityScope

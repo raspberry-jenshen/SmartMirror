@@ -16,7 +16,7 @@ import com.jenshen.smartmirror.di.component.activity.signIn.SignInComponent
 import com.jenshen.smartmirror.ui.activity.choose.mirror.ChooseMirrorActivity
 import com.jenshen.smartmirror.ui.activity.signup.tuner.SignUpTunerActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.signin.SignInPresenter
-import com.jenshen.smartmirror.ui.mvp.view.signIn.SignInView
+import com.jenshen.smartmirror.ui.mvp.view.signin.SignInView
 import com.jenshen.smartmirror.util.reactive.onEditorAction
 import com.jenshen.smartmirror.util.reactive.onTextChanged
 import com.jenshen.smartmirror.util.validation.ValidationResult
@@ -62,8 +62,8 @@ class SignInTunerActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignI
             val dialog = AlertDialog.Builder(context)
                     .setTitle(R.string.signIn_restore_password)
                     .setView(editText)
-                    .setPositiveButton(R.string.ok, { dialogInterface, i -> })
-                    .setNegativeButton(R.string.cancel, { dialogInterface, i -> dialogInterface.dismiss() })
+                    .setPositiveButton(R.string.ok, null)
+                    .setNegativeButton(R.string.cancel, null)
                     .create()
 
             dialog.show()
@@ -82,6 +82,7 @@ class SignInTunerActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignI
         when (item.itemId) {
             android.R.id.home -> {
                 NavUtils.navigateUpFromSameTask(this)
+                return true
             }
         }
         return super.onOptionsItemSelected(item)

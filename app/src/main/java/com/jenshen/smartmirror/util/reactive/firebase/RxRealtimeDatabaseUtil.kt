@@ -43,7 +43,7 @@ fun DatabaseReference.loadValue() : Single<DataSnapshot> {
     })
 }
 
-fun DatabaseReference.uploadValue(any: Any): Completable {
+fun DatabaseReference.uploadValue(any: Any?): Completable {
     return Completable.create { source ->
         this.setValue(any)
                 .addOnCompleteListener {

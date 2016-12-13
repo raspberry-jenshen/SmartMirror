@@ -6,4 +6,9 @@
         android:id="@+id/addWidget_item_menu"
         android:icon="@drawable/ic_add"
         app:showAsAction="ifRoom" />
+
+    <item android:title="@string/editMirror.save"
+        android:id="@+id/save_item_menu"
+        android:icon="@drawable/ic_save"
+        app:showAsAction="ifRoom" />
 </menu>

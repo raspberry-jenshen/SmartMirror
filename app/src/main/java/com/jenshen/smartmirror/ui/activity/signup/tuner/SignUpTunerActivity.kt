@@ -90,6 +90,7 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
         when (item.itemId) {
             android.R.id.home -> {
                 NavUtils.navigateUpFromSameTask(this)
+                return true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -145,7 +146,7 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
     }
 
     override fun setCreateAccountButtonState(isEnabled: Boolean) {
-        createAccount.isEnabled = true
+        createAccount.isEnabled = isEnabled
     }
 
     override fun onCreateAccountClicked() {

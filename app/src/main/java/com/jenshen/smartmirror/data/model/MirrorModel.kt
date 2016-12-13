@@ -7,14 +7,13 @@ import java.util.*
 
 data class MirrorModel(val key: String,
                        val tunerSubscription: TunerSubscription,
-                       val isRemoved: Boolean) {
-
-    var checkedConfigurationId: String? = null
-    var mirrorConfigurationInfo: HashMap<String, MirrorConfigurationInfo>? = null
+                       val isRemoved: Boolean,
+                       var checkedConfigurationKey: String? = null,
+                       var mirrorConfigurationsInfo: HashMap<String, MirrorConfigurationInfo>? = null) {
 
     override fun equals(other: Any?): Boolean {
         if (other != null && other is MirrorModel) {
-            return tunerSubscription.id == other.tunerSubscription.id
+            return key == other.key
         }
         return super.equals(other)
     }

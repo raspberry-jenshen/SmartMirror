@@ -2,12 +2,14 @@ package com.jenshen.smartmirror.ui.mvp.presenter.choose.mirror
 
 
 import com.jenshen.compat.base.presenter.MvpLceRxPresenter
-import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.interactor.firebase.api.tuner.TunerApiInteractor
 import com.jenshen.smartmirror.ui.mvp.view.choose.mirror.ChooseMirrorView
+import com.jenshen.smartmirror.util.reactive.applyProgress
 import com.jenshen.smartmirror.util.reactive.applySchedulers
 import io.reactivex.Completable
+import io.reactivex.functions.Action
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -15,14 +17,11 @@ import javax.inject.Inject
 class ChooseMirrorPresenter @Inject constructor(private val apiInteractor: TunerApiInteractor) : MvpLceRxPresenter<MirrorModel, ChooseMirrorView>() {
 
     fun subscribeOnMirror(mirrorId: String) {
-        view?.showProgress()
         apiInteractor.subscribeOnMirror(mirrorId)
                 .applySchedulers(Schedulers.io())
+                .applyProgress(Consumer { view?.showProgress() }, Action { view?.hideProgress() })
                 .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({ view?.hideProgress() }, {
-                    view?.handleError(it)
-                    view?.hideProgress()
-                })
+                .subscribe({}, { view?.handleError(it) })
     }
 
     fun fetchMirrors(pullToRefresh: Boolean) {
@@ -40,15 +39,15 @@ class ChooseMirrorPresenter @Inject constructor(private val apiInteractor: Tuner
                 .subscribe({}, { view?.handleError(it) })
     }
 
-    fun deleteSubscription(tunerSubscription: TunerSubscription) {
-        apiInteractor.unsubscribeFromMirror(tunerSubscription.id)
+    fun deleteSubscription(mirrorKey: String) {
+        apiInteractor.unsubscribeFromMirror(mirrorKey)
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({}, { view?.handleError(it) })
     }
 
-    fun setConfigurationIdForMirror(configurationId: String, mirrorId: String) {
-        apiInteractor.setConfigurationIdForMirror(configurationId, mirrorId)
+    fun setSelectedConfigurationKeyForMirror(configurationId: String?, mirrorId: String) {
+        apiInteractor.setSelectedConfigurationKeyForMirror(configurationId, mirrorId)
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({}, { view?.handleError(it) })

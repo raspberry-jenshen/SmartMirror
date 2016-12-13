@@ -12,7 +12,7 @@ class FabricManager {
     @Inject constructor()
 
     fun setLogUser(session: Session) {
-        Crashlytics.setUserIdentifier(session.id)
+        Crashlytics.setUserIdentifier(session.key)
         if (session is TunerSession) {
             Crashlytics.setUserEmail(session.email)
         }

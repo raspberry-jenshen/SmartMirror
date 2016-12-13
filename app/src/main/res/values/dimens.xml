@@ -33,4 +33,8 @@
     <dimen name="default_velocity_slow">50dp</dimen>
     <dimen name="default_velocity_normal">100dp</dimen>
     <dimen name="default_velocity_fast">200dp</dimen>
+
+    <!-- widgets -->
+    <dimen name="widget.clock_width">100dp</dimen>
+    <dimen name="widget.clock_height">100dp</dimen>
 </resources>

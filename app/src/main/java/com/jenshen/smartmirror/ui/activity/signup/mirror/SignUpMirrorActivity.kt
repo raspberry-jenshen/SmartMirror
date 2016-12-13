@@ -3,6 +3,8 @@ package com.jenshen.smartmirror.ui.activity.signup.mirror
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
@@ -34,6 +36,8 @@ class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_sign_up_mirror)
         presenter.signInMirror()
     }
@@ -43,7 +47,7 @@ class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirr
     override fun onMirrorCreated(mirror: Mirror, mirrorSession: MirrorSession, bitmap: Bitmap?) {
         if (mirror.isWaitingForTuner) {
             qr_code_imageView.setImageBitmap(bitmap)
-            presenter.fetchIsTunerConnected(mirrorSession.id)
+            presenter.fetchIsTunerConnected(mirrorSession.key)
         } else {
             onTunerConnected()
         }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/offset_normal"
+        android:paddingEnd="@dimen/offset_normal"
+        android:paddingStart="@dimen/offset_normal"
+        android:text="@string/dialog.edit_configuration.type_name" />
+
+    <EditText
+        android:id="@+id/configurationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/editMirror.news"
+        android:inputType="text"
+        android:paddingEnd="@dimen/offset_normal"
+        android:paddingStart="@dimen/offset_normal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/offset_normal"
+        android:paddingEnd="@dimen/offset_normal"
+        android:paddingStart="@dimen/offset_normal"
+        android:text="@string/dialog.edit_configuration.column" />
+
+    <EditText
+        android:id="@+id/columnsCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:paddingEnd="@dimen/offset_normal"
+        android:paddingStart="@dimen/offset_normal"
+        android:text="@string/editMirror.columns_count" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/offset_normal"
+        android:paddingEnd="@dimen/offset_normal"
+        android:paddingStart="@dimen/offset_normal"
+        android:text="@string/dialog.edit_configuration.row" />
+
+    <EditText
+        android:id="@+id/rowsCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:paddingEnd="@dimen/offset_normal"
+        android:paddingStart="@dimen/offset_normal"
+        android:text="@string/editMirror.rows_count" />
+
+</LinearLayout>

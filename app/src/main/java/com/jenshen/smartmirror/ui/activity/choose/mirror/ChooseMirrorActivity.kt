@@ -55,12 +55,18 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
         setContentView(R.layout.activity_choose_mirror)
         setSupportActionBar(toolbar)
         adapter = MirrorsAdapter(context,
+                //item click
                 { /*todo edit */ },
-                { presenter.setMirrorIsWaitingForSubscriber(it.tunerSubscription.id) },
-                { startActivity(Intent(this, EditMirrorActivity::class.java)) },
-                { configurationId: String, mirrorModel: MirrorModel -> /*todo edit */ },
-                { configurationId: String, mirrorModel: MirrorModel -> presenter.deleteConfigurationForMirror(configurationId, mirrorModel.key) },
-                { configurationId: String, mirrorModel: MirrorModel -> presenter.setConfigurationIdForMirror(configurationId, mirrorModel.key) },
+                // qr code clicked
+                { presenter.setMirrorIsWaitingForSubscriber(it.key) },
+                //add new configuration
+                { EditMirrorActivity.start(context, it.key) },
+                //edit configuration
+                { configurationKey: String, mirrorModel: MirrorModel -> EditMirrorActivity.start(context, mirrorModel.key, configurationKey) },
+                //delete configuration
+                { configurationKey: String, mirrorModel: MirrorModel -> presenter.deleteConfigurationForMirror(configurationKey, mirrorModel.key) },
+                //set configuration
+                { configurationKey: String?, mirrorModel: MirrorModel -> presenter.setSelectedConfigurationKeyForMirror(configurationKey, mirrorModel.key) },
                 this)
         contentView.adapter = adapter
 
@@ -127,6 +133,6 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
 
     override fun onDeleteItem(position: Int, item: MirrorModel) {
         adapter.deleteModel(position)
-        presenter.deleteSubscription(item.tunerSubscription)
+        presenter.deleteSubscription(item.key)
     }
 }

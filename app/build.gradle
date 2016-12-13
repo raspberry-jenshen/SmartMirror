@@ -14,7 +14,7 @@ android {
     buildToolsVersion conf.buildToolsVersion
 
     /* http://genius.engineering/blog/2016/6/9/a-smaller-sleeker-apk-using-the-package-analyzer
-
+       https://developer.android.com/studio/build/configure-apk-splits.html
     splits {
         density {
             enable true
@@ -102,7 +102,7 @@ dependencies {
 
     //JenshenSoft
     compile "ua.jenshensoft:compat:${lib.jenshenSoftCompatVersion}"
-    compile 'ua.jenshensoft:widgetview:0.54'
+    compile 'ua.jenshensoft:widgetview:0.64'
 
     //Support
     compile "com.android.support:appcompat-v7:${lib.support_version}"
@@ -149,7 +149,7 @@ dependencies {
         transitive = true;
     }
     //ImagePicker
-    compile 'com.github.JenshenSoft:ImagePicker:c7ad237457'
+    compile 'com.github.nguyenhoanglam:ImagePicker:1.1.3'
 
     //Glide
     compile "com.github.bumptech.glide:glide:${lib.glide_version}"
@@ -160,6 +160,9 @@ dependencies {
 
     //Caligraphy
     compile "uk.co.chrisjenx:calligraphy:${lib.calligraphy_version}"
+
+    /** widgets */
+    compile 'com.github.tiagohm:ClockView:0.1.1'
 
     //Canary Leak
     debugCompile "com.squareup.leakcanary:leakcanary-android:${lib.canary_leak_version}"

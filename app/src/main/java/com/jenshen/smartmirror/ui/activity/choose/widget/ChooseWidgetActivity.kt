@@ -9,7 +9,9 @@ import android.view.MenuItem
 import com.jenshen.compat.base.view.impl.mvp.lce.component.lce.BaseDiLceMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.data.model.WidgetModel
+import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
+import com.jenshen.smartmirror.data.firebase.model.widget.Widget
+import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
 import com.jenshen.smartmirror.di.component.activity.choose.widget.ChooseWidgetComponent
 import com.jenshen.smartmirror.ui.adapter.widgets.WidgetsAdapter
 import com.jenshen.smartmirror.ui.mvp.presenter.choose.widget.ChooseWidgetPresenter
@@ -19,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_qr_scanner.*
 
 class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         RecyclerView,
-        WidgetModel,
+        DataSnapshotWithKey<Widget>,
         ChooseWidgetView,
         ChooseWidgetPresenter>(),
         ChooseWidgetView {
@@ -49,9 +51,9 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_mirror)
         setupToolbar()
-        adapter = WidgetsAdapter(context, {
+        adapter = WidgetsAdapter({
             val intent = Intent()
-            intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, it)
+            intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, WidgetConfigurationModel(it.key, it.data))
             setResult(Activity.RESULT_OK, intent)
             finish()
         })
@@ -62,7 +64,8 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                NavUtils.navigateUpFromSameTask(this);
+                NavUtils.navigateUpFromSameTask(this)
+                return true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -70,7 +73,7 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
 
     /* lce */
 
-    override fun setData(data: WidgetModel) {
+    override fun setData(data: DataSnapshotWithKey<Widget>) {
         adapter.addModel(data)
     }
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/colorAccent"
+    android:background="@color/grey"
     android:orientation="vertical"
     tools:context=".ui.activity.edit.mirror.EditMirrorActivity">
 
@@ -20,9 +20,7 @@
     <com.jenshensoft.widgetview.WidgetContainerLayout
         android:id="@+id/widgetContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:widgetContainer_columnCount="7"
-        app:widgetContainer_rowCount="7">
+        android:layout_height="match_parent">
 
     </com.jenshensoft.widgetview.WidgetContainerLayout>
 

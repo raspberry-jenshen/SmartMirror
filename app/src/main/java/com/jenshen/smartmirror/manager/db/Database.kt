@@ -12,7 +12,7 @@ interface Database {
 
     fun <T : RealmModel> add(model: List<T>): List<T>
 
-    fun <T : RealmModel> get(clazz: Class<T>, primaryKey: String = "id", value: String): Maybe<T>
+    fun <T : RealmModel> get(clazz: Class<T>, primaryKey: String = "key", value: String): Maybe<T>
 
     fun <T : RealmModel> getAll(clazz: Class<T>): Maybe<RealmResults<T>>
 

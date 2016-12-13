@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.ui.mvp.view.splash
+package com.jenshen.smartmirror.ui.mvp.view.start.splash
 
 import com.jenshen.compat.base.view.BaseMvpView
 
