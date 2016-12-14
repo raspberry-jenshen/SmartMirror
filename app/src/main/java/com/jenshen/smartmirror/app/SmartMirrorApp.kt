@@ -16,8 +16,6 @@ import com.jenshen.smartmirror.di.module.AppModule
 import com.jenshen.smartmirror.util.delegate.lazyValue
 import com.squareup.leakcanary.LeakCanary
 import io.fabric.sdk.android.Fabric
-import io.realm.Realm
-import io.realm.RealmConfiguration
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 import uk.co.chrisjenx.calligraphy.R
 
@@ -72,7 +70,6 @@ open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
 
     override fun onCreate() {
         super.onCreate()
-        Realm.init(this)
         LeakCanary.install(this)
 
         Fabric.with(this, Crashlytics.Builder()
@@ -81,18 +78,11 @@ open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
                         .build())
                 .build())
 
-        val configuration = RealmConfiguration.Builder()
-                .name("smartMirror.realm")
-                .deleteRealmIfMigrationNeeded()
-                .build()
-        Realm.setDefaultConfiguration(configuration)
-
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
         CalligraphyConfig.initDefault(CalligraphyConfig.Builder()
                 //.setDefaultFontPath("fonts/dinpro-medium.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build())
-
     }
 }
