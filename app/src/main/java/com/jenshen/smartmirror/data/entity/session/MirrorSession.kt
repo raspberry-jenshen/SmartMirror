@@ -1,5 +1,3 @@
 package com.jenshen.smartmirror.data.entity.session
 
-class MirrorSession(id: String) : Session(id) {
-
-}
+class MirrorSession(id: String) : Session(id)

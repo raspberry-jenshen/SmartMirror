@@ -6,7 +6,6 @@ import com.jenshen.compat.base.component.app.BaseAppComponent
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.di.component.activity.start.service.StartMirrorServiceComponent
 import com.jenshen.smartmirror.di.module.AppModule
-import com.jenshen.smartmirror.di.module.DatabaseModule
 import com.jenshen.smartmirror.di.module.activity.ActivityBindingModule
 import com.jenshen.smartmirror.di.module.activity.start.service.StartMirrorServiceModule
 import com.jenshen.smartmirror.di.module.firebase.FirebaseModule
@@ -20,7 +19,6 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = arrayOf(AppModule::class,
-        DatabaseModule::class,
         FirebaseModule::class,
         RealtimeDatabaseModule::class,
         ApiInteractorModule::class,

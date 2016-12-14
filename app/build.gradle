@@ -172,4 +172,3 @@ dependencies {
     debugCompile 'com.facebook.stetho:stetho:1.4.1'
 }
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'realm-android'
