@@ -1,10 +1,7 @@
-package com.jenshen.smartmirror.di.module.activity.signUp.mirror
+package com.jenshen.smartmirror.di.module.activity.edit.mirror
 
-import com.jenshen.smartmirror.di.scope.ActivityScope
-import com.jenshen.smartmirror.di.scope.SessionScope
 import dagger.Module
 
-@SessionScope
 @Module
 class EditMirrorModule {
 }

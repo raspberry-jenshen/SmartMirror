@@ -6,13 +6,13 @@ import com.jenshen.compat.base.component.presenter.PresenterLceComponent
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.model.widget.Widget
 import com.jenshen.smartmirror.di.module.activity.choose.widget.ChooseWidgetModule
-import com.jenshen.smartmirror.di.scope.SessionScope
+import com.jenshen.smartmirror.di.scope.ActivityScope
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.choose.widget.ChooseWidgetPresenter
 import com.jenshen.smartmirror.ui.mvp.view.choose.widget.ChooseWidgetView
 import dagger.Subcomponent
 
-@SessionScope
+@ActivityScope
 @Subcomponent(modules = arrayOf(ChooseWidgetModule::class))
 interface ChooseWidgetComponent : PresenterLceComponent<DataSnapshotWithKey<Widget>, ChooseWidgetView, ChooseWidgetPresenter>,
         ActivityComponent<ChooseWidgetActivity> {
