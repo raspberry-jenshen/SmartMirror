@@ -161,9 +161,6 @@ dependencies {
     //Caligraphy
     compile "uk.co.chrisjenx:calligraphy:${lib.calligraphy_version}"
 
-    /** widgets */
-    compile 'com.github.tiagohm:ClockView:0.1.1'
-
     //Canary Leak
     debugCompile "com.squareup.leakcanary:leakcanary-android:${lib.canary_leak_version}"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${lib.canary_leak_version}"
