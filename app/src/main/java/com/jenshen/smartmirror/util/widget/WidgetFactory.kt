@@ -12,7 +12,6 @@ import com.jenshen.smartmirror.data.entity.widget.updater.ClockWidgetUpdater
 import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
 import com.jenshen.smartmirror.data.firebase.FirebaseConstant
 import com.jenshen.smartmirror.ui.view.widget.ClockView
-import com.jenshen.smartmirror.ui.view.widget.ClockWidget
 import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshensoft.widgetview.WidgetView
 
@@ -36,7 +35,7 @@ fun createWidget(widgetKey: String, context: Context): WidgetView {
 }
 
 fun updateWidget(info: InfoForWidget, widget: Widget<*>) {
-    if (widget is ClockWidget && info is InfoForClockWidget) {
+    if (widget is ClockView && info is InfoForClockWidget) {
         widget.updateWidget(info)
     }
 }

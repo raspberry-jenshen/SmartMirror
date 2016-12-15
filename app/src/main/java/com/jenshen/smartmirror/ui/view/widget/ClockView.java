@@ -289,8 +289,8 @@ public class ClockView extends View implements Widget<InfoForClockWidget> {
     private void init() {
         final Calendar c = Calendar.getInstance();
         mShowDigitalClock = true;
-        mShowSecondHand = false;
-        mShowNumerals = false;
+        mShowSecondHand = true;
+        mShowNumerals = true;
         mShowDots = true;
         second = c.get(Calendar.SECOND);
         minute = c.get(Calendar.MINUTE);

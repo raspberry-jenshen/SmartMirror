@@ -9,6 +9,7 @@ import android.view.MenuItem
 import com.jenshen.compat.base.view.impl.mvp.lce.component.lce.BaseDiLceMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
+import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.model.widget.Widget
 import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
@@ -53,7 +54,7 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         setupToolbar()
         adapter = WidgetsAdapter({
             val intent = Intent()
-            intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, WidgetConfigurationModel(it.key, it.data))
+            intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, WidgetConfigurationModel(WidgetKey(it.key, 0), it.data))
             setResult(Activity.RESULT_OK, intent)
             finish()
         })

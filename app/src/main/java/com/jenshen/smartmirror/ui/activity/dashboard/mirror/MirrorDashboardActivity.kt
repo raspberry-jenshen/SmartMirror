@@ -60,7 +60,10 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
 
     override fun onWidgetUpdate(info: InfoForWidget) {
         widgetContainer.widgets
-                .find {(it.tag as WidgetKey).key == info.widgetKey.key }
+                .find {
+                    val widgetKey = it.tag as WidgetKey
+                    (widgetKey.key == info.widgetKey.key) && widgetKey.number == info.widgetKey.number
+                }
                 ?.apply { updateWidget(info, getChildAt(0) as Widget<*>) }
     }
 
@@ -74,8 +77,8 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
             override fun onAnimationEnd(animation: Animator?) {
                 while (widgetContainer.widgets.size != 0) {
                     widgetContainer.removeWidgetView(widgetContainer.widgets.iterator().next())
-                    presenter.clearWidgetsUpdaters()
                 }
+                presenter.clearWidgetsUpdaters()
                 widgetContainer.setRowCount(mirrorConfiguration.containerSize.row)
                 widgetContainer.setColumnCount(mirrorConfiguration.containerSize.column)
                 mirrorConfiguration.widgets?.forEach { configureWidget(it.value) }
@@ -97,7 +100,6 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
     private fun configureWidget(configuration: WidgetConfiguration) {
         val widget = createWidget(configuration.widgetKey, context)
         val sameWidgetsCount = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == configuration.widgetKey }.size
-
         val widgetKey = WidgetKey(configuration.widgetKey, sameWidgetsCount)
         widget.tag = widgetKey
         presenter.addWidgetUpdater(getWidgetUpdaterForWidget(widgetKey))

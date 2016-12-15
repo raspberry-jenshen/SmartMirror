@@ -16,13 +16,18 @@ import android.widget.Toast
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
+import com.jenshen.smartmirror.data.entity.widget.info.InfoForWidget
+import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
 import com.jenshen.smartmirror.data.model.EditMirrorModel
 import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
 import com.jenshen.smartmirror.di.component.activity.edit.mirror.EditMirrorComponent
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.edit.mirror.EditMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.edit.mirror.EditMirrorView
+import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshen.smartmirror.util.widget.createWidget
+import com.jenshen.smartmirror.util.widget.getWidgetUpdaterForWidget
+import com.jenshen.smartmirror.util.widget.updateWidget
 import kotlinx.android.synthetic.main.activity_edit_mirror.*
 
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
@@ -114,10 +119,10 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
             return
         }
         val widgetModel = data!!.getParcelableExtra<WidgetConfigurationModel>(ChooseWidgetActivity.RESULT_EXTRA_WIDGET)
-        val sameWidgetsCount = editMirrorModel?.widgets?.filter { it.key == widgetModel.key }?.size ?: 0
-        widgetModel.tag += sameWidgetsCount
-        val widget = createWidget(widgetModel.widgetKey, context)
-        widget.tag = widgetModel.tag
+        widgetModel.widgetKey.number = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == widgetModel.widgetKey.key }.size
+
+        val widget = createWidget(widgetModel.widgetKey.key, context)
+        widget.tag = widgetModel.widgetKey
         editMirrorModel!!.widgets.add(widgetModel)
         widgetContainer.addWidgetView(widget)
     }
@@ -184,30 +189,21 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     }
 
     override fun onMirrorConfigurationLoaded(model: EditMirrorModel) {
+        presenter.clearWidgetsUpdaters()
         editMirrorModel = model
         widgetContainer.setColumnCount(model.columnsCount)
         widgetContainer.setRowCount(model.rowsCount)
         widgetContainer.requestLayout()
-        editMirrorModel?.widgets?.forEach { widgetModel ->
-            val widget = createWidget(widgetModel.widgetKey, context)
-            widget.tag = widgetModel.tag
-            with(widget.widgetPosition) {
-                val widgetPosition = widgetModel.widgetPosition
+        editMirrorModel?.widgets?.forEach { updateWidgetConfiguration(it) }
+    }
 
-                topLeftColumnLine = widgetPosition!!.topLeftColumnLine
-                topLeftRowLine = widgetPosition.topLeftRowLine
-
-                topRightColumnLine = widgetPosition.topRightColumnLine
-                topRightRowLine = widgetPosition.topRightRowLine
-
-                bottomLeftColumnLine = widgetPosition.bottomLeftColumnLine
-                bottomLeftRowLine = widgetPosition.bottomLeftRowLine
-
-                bottomRightColumnLine = widgetPosition.bottomRightColumnLine
-                bottomRightRowLine = widgetPosition.bottomRightRowLine
-            }
-            widgetContainer.addWidgetView(widget)
-        }
+    override fun onWidgetUpdate(info: InfoForWidget) {
+        widgetContainer.widgets
+                .find {
+                    val widgetKey = it.tag as WidgetKey
+                    (widgetKey.key == info.widgetKey.key) && widgetKey.number == info.widgetKey.number
+                }
+                ?.apply { updateWidget(info, getChildAt(0) as Widget<*>) }
     }
 
     /* private methods */
@@ -236,7 +232,10 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     private fun updateModel() {
         editMirrorModel?.widgets?.forEach { widgetModel ->
             val view = widgetContainer.widgets
-                    .find { widgetModel.tag == it.tag }
+                    .find {
+                        val widgetKey = it.tag as WidgetKey
+                        (widgetKey.key == widgetModel.widgetKey.key) && widgetKey.number == widgetModel.widgetKey.number
+                    }
             if (isSaved && widgetModel.widgetPosition != null) {
                 isSaved = widgetModel.widgetPosition == view!!.widgetPosition
             }
@@ -258,5 +257,28 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         if (model != null) {
             onMirrorConfigurationLoaded(model)
         }
+    }
+
+    private fun updateWidgetConfiguration(widgetModel: WidgetConfigurationModel) {
+        widgetModel.widgetKey.number = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == widgetModel.widgetKey.key }.size
+        presenter.addWidgetUpdater(getWidgetUpdaterForWidget(widgetModel.widgetKey))
+        val widget = createWidget(widgetModel.widgetKey.key, context)
+        widget.tag = widgetModel.widgetKey
+        with(widget.widgetPosition) {
+            val widgetPosition = widgetModel.widgetPosition
+
+            topLeftColumnLine = widgetPosition!!.topLeftColumnLine
+            topLeftRowLine = widgetPosition.topLeftRowLine
+
+            topRightColumnLine = widgetPosition.topRightColumnLine
+            topRightRowLine = widgetPosition.topRightRowLine
+
+            bottomLeftColumnLine = widgetPosition.bottomLeftColumnLine
+            bottomLeftRowLine = widgetPosition.bottomLeftRowLine
+
+            bottomRightColumnLine = widgetPosition.bottomRightColumnLine
+            bottomRightRowLine = widgetPosition.bottomRightRowLine
+        }
+        widgetContainer.addWidgetView(widget)
     }
 }

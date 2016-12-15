@@ -3,6 +3,7 @@ package com.jenshen.smartmirror.interactor.firebase.api.tuner
 import android.content.Context
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
+import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.model.configuration.ContainerSize
@@ -156,9 +157,8 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                 tunerApiManager.getWidget(pair.second.widgetKey)
                                         .map { snapshotsWithKey ->
                                             WidgetConfigurationModel(
-                                                    snapshotsWithKey.key,
+                                                    WidgetKey(snapshotsWithKey.key, 0),
                                                     snapshotsWithKey.data,
-                                                    snapshotsWithKey.key,
                                                     pair.first,
                                                     WidgetPosition(widgetConfiguration.topLeftCorner.column, widgetConfiguration.topLeftCorner.row,
                                                             widgetConfiguration.topRightCorner.column, widgetConfiguration.topRightCorner.row,
@@ -185,7 +185,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         return Completable.defer {
             Observable.fromIterable(editMirrorModel.widgets)
                     .flatMapCompletable { widgetModel ->
-                        val widgetConfiguration = WidgetConfiguration(widgetModel.widgetKey,
+                        val widgetConfiguration = WidgetConfiguration(widgetModel.widgetKey.key,
                                 Corner(widgetModel.widgetPosition!!.topLeftColumnLine, widgetModel.widgetPosition!!.topLeftRowLine),
                                 Corner(widgetModel.widgetPosition!!.topRightColumnLine, widgetModel.widgetPosition!!.topRightRowLine),
                                 Corner(widgetModel.widgetPosition!!.bottomLeftColumnLine, widgetModel.widgetPosition!!.bottomLeftRowLine),
