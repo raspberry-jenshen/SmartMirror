@@ -26,7 +26,7 @@ interface FirebaseConstant {
 
         interface Widget {
             companion object {
-                const val WIDGET_KEY = "key"
+                const val WIDGET_KEY = "widgetKey"
                 const val TOP_LEFT_CORNER = "topLeft_corner"
                 const val TOP_RIGHT_CORNER = "topRight_corner"
                 const val BOTTOM_LEFT_CORNER = "bottomLeft_corner"
