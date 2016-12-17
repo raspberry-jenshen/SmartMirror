@@ -11,7 +11,7 @@ import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorSubscriber
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
-import com.jenshen.smartmirror.data.firebase.model.widget.Widget
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
 import com.jenshen.smartmirror.util.reactive.firebase.clearValue
 import com.jenshen.smartmirror.util.reactive.firebase.loadValue
@@ -130,19 +130,19 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .filter { it.dataSnapshot.exists() }
     }
 
-    override fun getWidget(widgetKey: String): Single<DataSnapshotWithKey<Widget>> {
+    override fun getWidget(widgetKey: String): Single<DataSnapshotWithKey<WidgetInfo>> {
         return fireBaseDatabase
                 .getWidgetRef(widgetKey)
                 .flatMap { it.loadValue() }
-                .map { DataSnapshotWithKey(it.key, it.getValue(Widget::class.java)) }
+                .map { DataSnapshotWithKey(it.key, it.getValue(WidgetInfo::class.java)) }
     }
 
-    override fun addWidget(widget: Widget): Single<String> {
+    override fun addWidget(widgetInfo: WidgetInfo): Single<String> {
         return fireBaseDatabase
                 .getWidgetsRef()
                 .map { it.push() }
                 .flatMap {
-                    it.uploadValue(Widget)
+                    it.uploadValue(WidgetInfo)
                             .toSingle { it.key }
                 }
     }
@@ -165,6 +165,11 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .flatMapCompletable { it.uploadValue(mirrorConfiguration) }
     }
 
+    override fun deleteMirrorConfiguration(configurationId: String): Completable {
+        return fireBaseDatabase.getMirrorConfigurationRef(configurationId)
+                .flatMapCompletable { it.clearValue() }
+    }
+
     override fun createWidgetInConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String> {
         return fireBaseDatabase
                 .getMirrorConfigurationWidgetsRef(configurationsKey)
@@ -181,8 +186,9 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .flatMapCompletable { it.uploadValue(widgetConfiguration) }
     }
 
-    override fun deleteMirrorConfiguration(configurationId: String): Completable {
-        return fireBaseDatabase.getMirrorConfigurationRef(configurationId)
+    override fun deleteWidgetInConfiguration(configurationsKey: String, keyWidget: String) :Completable {
+        return fireBaseDatabase
+                .getMirrorConfigurationWidgetRef(keyWidget, configurationsKey)
                 .flatMapCompletable { it.clearValue() }
     }
 }

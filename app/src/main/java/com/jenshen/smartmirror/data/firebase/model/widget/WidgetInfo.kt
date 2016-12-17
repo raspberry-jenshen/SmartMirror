@@ -8,21 +8,24 @@ import com.jenshen.smartmirror.data.firebase.FirebaseConstant
 
 
 @IgnoreExtraProperties
-data class Widget(@set:PropertyName(FirebaseConstant.Widget.NAME)
+data class WidgetInfo(@set:PropertyName(FirebaseConstant.Widget.NAME)
                   @get:PropertyName(FirebaseConstant.Widget.NAME)
                   var name: String = "widget",
-                  @set:PropertyName(FirebaseConstant.Widget.DEFAULT_SIZE)
+                      @set:PropertyName(FirebaseConstant.Widget.DEFAULT_SIZE)
                   @get:PropertyName(FirebaseConstant.Widget.DEFAULT_SIZE)
-                  var defaultSize: Size = Size()) : Parcelable {
+                  var defaultSize: WidgetSize = WidgetSize()) : Parcelable {
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<Widget> = object : Parcelable.Creator<Widget> {
-            override fun createFromParcel(source: Parcel): Widget = Widget(source)
-            override fun newArray(size: Int): Array<Widget?> = arrayOfNulls(size)
+
+        const val CLOCK_WIDGET_KEY = "-KXmMIRVjA3K4zSPwsYv"
+
+        @JvmField val CREATOR: Parcelable.Creator<WidgetInfo> = object : Parcelable.Creator<WidgetInfo> {
+            override fun createFromParcel(source: Parcel): WidgetInfo = WidgetInfo(source)
+            override fun newArray(size: Int): Array<WidgetInfo?> = arrayOfNulls(size)
         }
     }
 
-    constructor(source: Parcel) : this(source.readString(), source.readParcelable<Size>(Size::class.java.classLoader))
+    constructor(source: Parcel) : this(source.readString(), source.readParcelable<WidgetSize>(WidgetSize::class.java.classLoader))
 
     override fun describeContents() = 0
 

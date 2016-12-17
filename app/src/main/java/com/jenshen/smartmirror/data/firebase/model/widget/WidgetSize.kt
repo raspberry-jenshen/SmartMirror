@@ -7,17 +7,17 @@ import com.google.firebase.database.PropertyName
 import com.jenshen.smartmirror.data.firebase.FirebaseConstant
 
 @IgnoreExtraProperties
-data class Size(@set:PropertyName(FirebaseConstant.Widget.Size.WIDTH)
+data class WidgetSize(@set:PropertyName(FirebaseConstant.Widget.Size.WIDTH)
                 @get:PropertyName(FirebaseConstant.Widget.Size.WIDTH)
                 var width: Int = 0,
-                @set:PropertyName(FirebaseConstant.Widget.Size.HEIGHT)
+                      @set:PropertyName(FirebaseConstant.Widget.Size.HEIGHT)
                 @get:PropertyName(FirebaseConstant.Widget.Size.HEIGHT)
                 var height: Int = 0) : Parcelable {
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<Size> = object : Parcelable.Creator<Size> {
-            override fun createFromParcel(source: Parcel): Size = Size(source)
-            override fun newArray(size: Int): Array<Size?> = arrayOfNulls(size)
+        @JvmField val CREATOR: Parcelable.Creator<WidgetSize> = object : Parcelable.Creator<WidgetSize> {
+            override fun createFromParcel(source: Parcel): WidgetSize = WidgetSize(source)
+            override fun newArray(size: Int): Array<WidgetSize?> = arrayOfNulls(size)
         }
     }
 

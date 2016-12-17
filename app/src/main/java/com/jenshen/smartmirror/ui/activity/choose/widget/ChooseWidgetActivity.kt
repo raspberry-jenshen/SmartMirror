@@ -11,7 +11,7 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
-import com.jenshen.smartmirror.data.firebase.model.widget.Widget
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
 import com.jenshen.smartmirror.di.component.activity.choose.widget.ChooseWidgetComponent
 import com.jenshen.smartmirror.ui.adapter.widgets.WidgetsAdapter
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_qr_scanner.*
 
 class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         RecyclerView,
-        DataSnapshotWithKey<Widget>,
+        DataSnapshotWithKey<WidgetInfo>,
         ChooseWidgetView,
         ChooseWidgetPresenter>(),
         ChooseWidgetView {
@@ -52,7 +52,7 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_mirror)
         setupToolbar()
-        adapter = WidgetsAdapter({
+        adapter = WidgetsAdapter(context, {
             val intent = Intent()
             intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, WidgetConfigurationModel(WidgetKey(it.key, 0), it.data))
             setResult(Activity.RESULT_OK, intent)
@@ -74,7 +74,7 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
 
     /* lce */
 
-    override fun setData(data: DataSnapshotWithKey<Widget>) {
+    override fun setData(data: DataSnapshotWithKey<WidgetInfo>) {
         adapter.addModel(data)
     }
 

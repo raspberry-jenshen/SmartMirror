@@ -46,8 +46,6 @@ interface FirebaseConstant {
         companion object {
             const val NAME = "name"
             const val DEFAULT_SIZE = "default_size"
-
-            const val CLOCK_WIDGET_KEY = "-KXmMIRVjA3K4zSPwsYv"
         }
 
         interface Size {

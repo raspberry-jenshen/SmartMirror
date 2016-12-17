@@ -6,7 +6,7 @@ import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfigura
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
-import com.jenshen.smartmirror.data.firebase.model.widget.Widget
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
@@ -35,13 +35,14 @@ interface TunerApiManager {
 
     /* widget */
     fun observeWidgets(): Flowable<FirebaseChildEvent>
-    fun getWidget(widgetKey: String): Single<DataSnapshotWithKey<Widget>>
-    fun addWidget(widget: Widget): Single<String>
+    fun getWidget(widgetKey: String): Single<DataSnapshotWithKey<WidgetInfo>>
+    fun addWidget(widgetInfo: WidgetInfo): Single<String>
 
     /* mirror configurations */
     fun createMirrorConfiguration(mirrorConfiguration: MirrorConfiguration): Single<String>
     fun editMirrorConfiguration(configurationsKey: String, mirrorConfiguration: MirrorConfiguration): Completable
+    fun deleteMirrorConfiguration(configurationId: String): Completable
     fun createWidgetInConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String>
     fun editWidgetInConfiguration(configurationsKey: String, keyWidget: String, widgetConfiguration: WidgetConfiguration): Completable
-    fun deleteMirrorConfiguration(configurationId: String): Completable
+    fun deleteWidgetInConfiguration(configurationsKey: String, keyWidget: String): Completable
 }

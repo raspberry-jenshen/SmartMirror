@@ -12,8 +12,8 @@ import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfigura
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
-import com.jenshen.smartmirror.data.firebase.model.widget.Size
-import com.jenshen.smartmirror.data.firebase.model.widget.Widget
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.data.model.EditMirrorModel
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
@@ -114,13 +114,13 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     /* widget */
 
-    override fun fetchWidgets(): Flowable<DataSnapshotWithKey<Widget>> {
+    override fun fetchWidgets(): Flowable<DataSnapshotWithKey<WidgetInfo>> {
         return tunerApiManager.observeWidgets()
-                .map { DataSnapshotWithKey(it.dataSnapshot.key, it.dataSnapshot.getValue(Widget::class.java)) }
+                .map { DataSnapshotWithKey(it.dataSnapshot.key, it.dataSnapshot.getValue(WidgetInfo::class.java)) }
     }
 
     override fun addWidget(name: String, width: Int, height: Int): Single<String> {
-        return Single.fromCallable { Widget(name, Size(width, height)) }
+        return Single.fromCallable { WidgetInfo(name, WidgetSize(width, height)) }
                 .flatMap { tunerApiManager.addWidget(it) }
     }
 
@@ -196,7 +196,11 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                     .doOnSuccess { widgetModel.key = it }
                                     .toCompletable()
                         } else {
-                            tunerApiManager.editWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!, widgetConfiguration)
+                            if (widgetModel.isDeleted) {
+                                tunerApiManager.deleteWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!)
+                            } else {
+                                tunerApiManager.editWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!, widgetConfiguration)
+                            }
                         }
                     }
         }

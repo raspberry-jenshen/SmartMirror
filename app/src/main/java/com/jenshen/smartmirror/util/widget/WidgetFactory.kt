@@ -10,7 +10,7 @@ import com.jenshen.smartmirror.data.entity.widget.info.InfoForWidget
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
 import com.jenshen.smartmirror.data.entity.widget.updater.ClockWidgetUpdater
 import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
-import com.jenshen.smartmirror.data.firebase.FirebaseConstant
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.ui.view.widget.ClockView
 import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshensoft.widgetview.WidgetView
@@ -18,7 +18,7 @@ import com.jenshensoft.widgetview.WidgetView
 
 fun getWidgetUpdaterForWidget(widgetKey: WidgetKey): WidgetUpdater<*> {
     return when (widgetKey.key) {
-        FirebaseConstant.Widget.CLOCK_WIDGET_KEY -> {
+        WidgetInfo.CLOCK_WIDGET_KEY -> {
             ClockWidgetUpdater(widgetKey)
         }
         else -> throw RuntimeException("Can't support this widget")
@@ -40,9 +40,9 @@ fun updateWidget(info: InfoForWidget, widget: Widget<*>) {
     }
 }
 
-private fun getViewForWidget(widgetKey: String, context: Context): View {
+fun getViewForWidget(widgetKey: String, context: Context): View {
     val view = when (widgetKey) {
-        FirebaseConstant.Widget.CLOCK_WIDGET_KEY -> ClockView(context)
+        WidgetInfo.CLOCK_WIDGET_KEY -> ClockView(context)
         else -> throw RuntimeException("Can't support this widget")
     }
     view.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)

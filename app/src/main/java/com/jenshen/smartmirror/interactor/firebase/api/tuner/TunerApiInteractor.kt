@@ -1,7 +1,7 @@
 package com.jenshen.smartmirror.interactor.firebase.api.tuner
 
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
-import com.jenshen.smartmirror.data.firebase.model.widget.Widget
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.data.model.EditMirrorModel
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
@@ -25,7 +25,7 @@ interface TunerApiInteractor {
 
     /* widget */
 
-    fun fetchWidgets(): Flowable<DataSnapshotWithKey<Widget>>
+    fun fetchWidgets(): Flowable<DataSnapshotWithKey<WidgetInfo>>
     fun addWidget(name: String, width: Int, height: Int): Single<String>
 
     /* mirror configurations */

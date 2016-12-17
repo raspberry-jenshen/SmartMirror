@@ -1,25 +1,19 @@
 package com.jenshen.smartmirror.ui.holder.widgets
 
-import android.os.Build
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
-import com.jenshen.smartmirror.data.firebase.model.widget.Widget
-import kotlinx.android.synthetic.main.partial_widget.view.*
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
+import com.jenshen.smartmirror.util.widget.getViewForWidget
+import kotlinx.android.synthetic.main.item_widget.view.*
 
 
-class WidgetHolder(view: View) : RecyclerView.ViewHolder(view) {
+class WidgetHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bindInfo(model: DataSnapshotWithKey<Widget>) {
+    fun bindInfo(model: DataSnapshotWithKey<WidgetInfo>) {
         itemView.name_textView.text = model.data.name
-        setBackGround()
-    }
-
-    private fun setBackGround() {
-        val sdk = android.os.Build.VERSION.SDK_INT
-        if (sdk > Build.VERSION_CODES.LOLLIPOP) {
-            itemView.setBackgroundResource(R.drawable.selector_mirror_item)
-        }
+        val widget = getViewForWidget(model.key, context)
+        itemView.widgetsContainer.addView(widget)
     }
 }

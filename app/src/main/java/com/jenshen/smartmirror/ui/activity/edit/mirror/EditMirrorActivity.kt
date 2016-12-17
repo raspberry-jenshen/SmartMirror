@@ -28,6 +28,7 @@ import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshen.smartmirror.util.widget.createWidget
 import com.jenshen.smartmirror.util.widget.getWidgetUpdaterForWidget
 import com.jenshen.smartmirror.util.widget.updateWidget
+import com.jenshensoft.widgetview.WidgetView
 import kotlinx.android.synthetic.main.activity_edit_mirror.*
 
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
@@ -105,11 +106,22 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         } else if (editMirrorModel == null) {
             presenter.loadMirrorConfiguration(configurationKey)
         }
+
+        widgetContainer.setOnWidgetRemovedCallback { widgetView, widgetMotionInfo ->
+            val deletedWidgetModel = editMirrorModel!!.widgets.find { widgetView.tag as WidgetKey == it.widgetKey }
+            if (deletedWidgetModel!!.key == null) {
+                editMirrorModel!!.widgets.remove(deletedWidgetModel)
+            } else {
+                deletedWidgetModel.isDeleted = true
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        updateModel()
+        if (editMirrorModel != null) {
+            updateModel(editMirrorModel!!)
+        }
         outState.putParcelable(MODEL_KEY, editMirrorModel)
         outState.putBoolean(IS_SAVED_KEY, isSaved)
     }
@@ -119,12 +131,10 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
             return
         }
         val widgetModel = data!!.getParcelableExtra<WidgetConfigurationModel>(ChooseWidgetActivity.RESULT_EXTRA_WIDGET)
-        widgetModel.widgetKey.number = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == widgetModel.widgetKey.key }.size
 
-        val widget = createWidget(widgetModel.widgetKey.key, context)
-        widget.tag = widgetModel.widgetKey
+        val widgetView = createWidgetView(widgetModel)
         editMirrorModel!!.widgets.add(widgetModel)
-        widgetContainer.addWidgetView(widget)
+        widgetContainer.addWidgetView(widgetView)
     }
 
     override fun onBackPressed() {
@@ -194,7 +204,9 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         widgetContainer.setColumnCount(model.columnsCount)
         widgetContainer.setRowCount(model.rowsCount)
         widgetContainer.requestLayout()
-        editMirrorModel?.widgets?.forEach { updateWidgetConfiguration(it) }
+        editMirrorModel?.widgets
+                ?.filter { !it.isDeleted }
+                ?.forEach { updateWidgetPosition(createWidgetView(it), it) }
     }
 
     override fun onWidgetUpdate(info: InfoForWidget) {
@@ -209,7 +221,9 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     /* private methods */
 
     private fun saveConfiguration() {
-        updateModel()
+        if (editMirrorModel != null) {
+            updateModel(editMirrorModel!!)
+        }
         if (editMirrorModel != null && isModelCompleted(editMirrorModel!!)) {
             presenter.saveConfiguration(editMirrorModel!!)
         } else {
@@ -229,25 +243,27 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         ab?.setDisplayShowHomeEnabled(true)
     }
 
-    private fun updateModel() {
-        editMirrorModel?.widgets?.forEach { widgetModel ->
-            val view = widgetContainer.widgets
-                    .find {
-                        val widgetKey = it.tag as WidgetKey
-                        (widgetKey.key == widgetModel.widgetKey.key) && widgetKey.number == widgetModel.widgetKey.number
+    private fun updateModel(editMirrorModel: EditMirrorModel) {
+        editMirrorModel.widgets
+                .filter { !it.isDeleted }
+                .forEach { widgetModel ->
+                    val view = widgetContainer.widgets
+                            .find {
+                                val widgetKey = it.tag as WidgetKey
+                                (widgetKey.key == widgetModel.widgetKey.key) && widgetKey.number == widgetModel.widgetKey.number
+                            }
+                    if (isSaved && widgetModel.widgetPosition != null) {
+                        isSaved = widgetModel.widgetPosition == view!!.widgetPosition
                     }
-            if (isSaved && widgetModel.widgetPosition != null) {
-                isSaved = widgetModel.widgetPosition == view!!.widgetPosition
-            }
-            widgetModel.widgetPosition = view!!.widgetPosition
-        }
+                    widgetModel.widgetPosition = view!!.widgetPosition
+                }
     }
 
     private fun isModelCompleted(editMirrorModel: EditMirrorModel): Boolean {
         var completed = true
-        editMirrorModel.widgets.forEach {
-            completed = completed && !(it.widgetPosition?.isEmpty ?: true)
-        }
+        editMirrorModel.widgets
+                .filter { !it.isDeleted }
+                .forEach { completed = completed && !(it.widgetPosition?.isEmpty ?: true) }
         return completed
     }
 
@@ -259,12 +275,16 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         }
     }
 
-    private fun updateWidgetConfiguration(widgetModel: WidgetConfigurationModel) {
+    private fun createWidgetView(widgetModel: WidgetConfigurationModel): WidgetView {
         widgetModel.widgetKey.number = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == widgetModel.widgetKey.key }.size
         presenter.addWidgetUpdater(getWidgetUpdaterForWidget(widgetModel.widgetKey))
         val widget = createWidget(widgetModel.widgetKey.key, context)
         widget.tag = widgetModel.widgetKey
-        with(widget.widgetPosition) {
+        return widget
+    }
+
+    private fun updateWidgetPosition(widgetView: WidgetView, widgetModel: WidgetConfigurationModel) {
+        with(widgetView.widgetPosition) {
             val widgetPosition = widgetModel.widgetPosition
 
             topLeftColumnLine = widgetPosition!!.topLeftColumnLine
@@ -279,6 +299,6 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
             bottomRightColumnLine = widgetPosition.bottomRightColumnLine
             bottomRightRowLine = widgetPosition.bottomRightRowLine
         }
-        widgetContainer.addWidgetView(widget)
+        widgetContainer.addWidgetView(widgetView)
     }
 }

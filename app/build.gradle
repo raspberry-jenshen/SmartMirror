@@ -102,7 +102,7 @@ dependencies {
 
     //JenshenSoft
     compile "ua.jenshensoft:compat:${lib.jenshenSoftCompatVersion}"
-    compile 'ua.jenshensoft:widgetview:0.64'
+    compile 'ua.jenshensoft:widgetview:0.65'
 
     //Support
     compile "com.android.support:appcompat-v7:${lib.support_version}"
