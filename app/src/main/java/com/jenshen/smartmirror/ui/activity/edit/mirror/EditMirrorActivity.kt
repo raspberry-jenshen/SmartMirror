@@ -175,6 +175,10 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 saveConfiguration()
                 return true
             }
+            R.id.configurationSettings_item_menu -> {
+                saveConfiguration()
+                return true
+            }
             android.R.id.home -> {
                 onBackPressed()
                 return true

@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.ui.fragment
+package com.jenshen.smartmirror.ui.fragment.settings.app
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.interactor.firebase.auth.AuthInteractor
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.manager.session.SessionManager
 import com.jenshen.smartmirror.ui.activity.add.widget.AddWidgetActivity

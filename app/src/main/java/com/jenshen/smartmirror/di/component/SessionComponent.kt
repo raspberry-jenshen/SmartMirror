@@ -9,7 +9,7 @@ import com.jenshen.smartmirror.di.module.interactor.firebase.api.mirror.MirrorAp
 import com.jenshen.smartmirror.di.module.interactor.firebase.api.tuner.TunerApiInteractorModule
 import com.jenshen.smartmirror.di.module.manager.UserSessionModule
 import com.jenshen.smartmirror.di.scope.SessionScope
-import com.jenshen.smartmirror.ui.fragment.SettingsFragment
+import com.jenshen.smartmirror.ui.fragment.settings.app.SettingsFragment
 import dagger.Subcomponent
 
 @SessionScope

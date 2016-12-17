@@ -12,11 +12,12 @@ import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfigura
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
-import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
 import com.jenshen.smartmirror.data.model.EditMirrorModel
 import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
+import com.jenshen.smartmirror.data.model.WidgetModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.mirror.MirrorApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
@@ -114,9 +115,10 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     /* widget */
 
-    override fun fetchWidgets(): Flowable<DataSnapshotWithKey<WidgetInfo>> {
+    override fun fetchWidgets(): Flowable<WidgetModel> {
         return tunerApiManager.observeWidgets()
                 .map { DataSnapshotWithKey(it.dataSnapshot.key, it.dataSnapshot.getValue(WidgetInfo::class.java)) }
+                .map { WidgetModel(it) }
     }
 
     override fun addWidget(name: String, width: Int, height: Int): Single<String> {
@@ -157,7 +159,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                 tunerApiManager.getWidget(pair.second.widgetKey)
                                         .map { snapshotsWithKey ->
                                             WidgetConfigurationModel(
-                                                    WidgetKey(snapshotsWithKey.key, 0),
+                                                    WidgetKey(snapshotsWithKey.key),
                                                     snapshotsWithKey.data,
                                                     pair.first,
                                                     WidgetPosition(widgetConfiguration.topLeftCorner.column, widgetConfiguration.topLeftCorner.row,

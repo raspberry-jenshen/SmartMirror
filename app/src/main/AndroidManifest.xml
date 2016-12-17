@@ -7,7 +7,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -18,7 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/App.Theme"
         tools:replace="theme">
-
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="3b1adbe3949cfd0e01ca89038fa1a880df54aa38" />
@@ -62,7 +60,7 @@
             android:launchMode="singleTop"
             android:theme="@style/App.Theme.ChooseMirror.Activity" />
         <activity
-            android:name=".ui.activity.settings.SettingsActivity"
+            android:name=".ui.activity.settings.app.SettingsActivity"
             android:launchMode="singleTop"
             android:theme="@style/App.Theme.Settings.Activity" />
         <activity
@@ -93,7 +91,15 @@
             android:theme="@style/App.Theme.AddWidget.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.settings.SettingsActivity" />
+                android:value=".ui.activity.settings.app.SettingsActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.activity.settings.mirror.MirrorSettingsActivity"
+            android:theme="@style/App.Theme.AddWidget.Activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.edit.mirror.EditMirrorActivity" />
         </activity>
 
         <!-- mirror -->
@@ -104,7 +110,6 @@
             android:name=".ui.activity.dashboard.mirror.MirrorDashboardActivity"
             android:theme="@style/App.Theme.Mirror" />
 
-
         <receiver
             android:name=".broadcast.LaunchAppBroadcast"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
@@ -114,7 +119,6 @@
         </receiver>
 
         <service android:name=".service.StartMirrorService" />
-
     </application>
 
 </manifest>

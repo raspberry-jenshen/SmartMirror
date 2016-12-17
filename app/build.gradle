@@ -65,6 +65,8 @@ android {
 
         // Enabling multidex support.
         multiDexEnabled true
+
+        buildConfigField 'String', 'WEATHER_API_KEY', '\"ca28542db9f3ace087694d08e452d069\"'
     }
     buildTypes {
         release {

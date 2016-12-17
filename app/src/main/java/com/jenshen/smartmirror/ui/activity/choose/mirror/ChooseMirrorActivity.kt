@@ -16,7 +16,7 @@ import com.jenshen.smartmirror.data.model.MirrorModel
 import com.jenshen.smartmirror.di.component.activity.choose.mirror.ChooseMirrorComponent
 import com.jenshen.smartmirror.ui.activity.edit.mirror.EditMirrorActivity
 import com.jenshen.smartmirror.ui.activity.qrScan.QRCodeScanActivity
-import com.jenshen.smartmirror.ui.activity.settings.SettingsActivity
+import com.jenshen.smartmirror.ui.activity.settings.app.SettingsActivity
 import com.jenshen.smartmirror.ui.adapter.SwipeToDeleteAdapter
 import com.jenshen.smartmirror.ui.adapter.mirrors.MirrorsAdapter
 import com.jenshen.smartmirror.ui.adapter.touch.SimpleItemTouchHelperCallback

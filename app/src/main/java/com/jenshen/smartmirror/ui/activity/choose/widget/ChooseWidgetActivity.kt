@@ -9,10 +9,10 @@ import android.view.MenuItem
 import com.jenshen.compat.base.view.impl.mvp.lce.component.lce.BaseDiLceMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
+import com.jenshen.smartmirror.data.entity.widget.info.InfoForWidget
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
-import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
-import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
+import com.jenshen.smartmirror.data.model.WidgetModel
 import com.jenshen.smartmirror.di.component.activity.choose.widget.ChooseWidgetComponent
 import com.jenshen.smartmirror.ui.adapter.widgets.WidgetsAdapter
 import com.jenshen.smartmirror.ui.mvp.presenter.choose.widget.ChooseWidgetPresenter
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_qr_scanner.*
 
 class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         RecyclerView,
-        DataSnapshotWithKey<WidgetInfo>,
+        WidgetModel,
         ChooseWidgetView,
         ChooseWidgetPresenter>(),
         ChooseWidgetView {
@@ -54,9 +54,14 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         setupToolbar()
         adapter = WidgetsAdapter(context, {
             val intent = Intent()
-            intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, WidgetConfigurationModel(WidgetKey(it.key, 0), it.data))
+            intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, WidgetConfigurationModel(
+                    WidgetKey(it.widgetDataSnapshot.key), it.widgetDataSnapshot.data))
             setResult(Activity.RESULT_OK, intent)
             finish()
+        }, { position: Int, widgetModel: WidgetModel ->
+            presenter.loadInfoForWidget(position, widgetModel)
+        }, { position: Int, widgetModel: WidgetModel ->
+
         })
         contentView.adapter = adapter
         loadData(false)
@@ -72,9 +77,13 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onWidgetUpdate(position: Int, infoForWidget: InfoForWidget) {
+        adapter.onUpdateItem(position, infoForWidget)
+    }
+
     /* lce */
 
-    override fun setData(data: DataSnapshotWithKey<WidgetInfo>) {
+    override fun setData(data: WidgetModel) {
         adapter.addModel(data)
     }
 

@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 
-data class WidgetKey(val key: String, var number: Int) : Parcelable {
+data class WidgetKey(val key: String, var number: Int = 0) : Parcelable {
 
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<WidgetKey> = object : Parcelable.Creator<WidgetKey> {

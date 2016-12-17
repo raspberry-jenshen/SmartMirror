@@ -11,4 +11,9 @@
         android:id="@+id/save_item_menu"
         android:icon="@drawable/ic_save"
         app:showAsAction="ifRoom" />
+
+    <item android:title="@string/editMirror.save"
+        android:id="@+id/configurationSettings_item_menu"
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="ifRoom" />
 </menu>

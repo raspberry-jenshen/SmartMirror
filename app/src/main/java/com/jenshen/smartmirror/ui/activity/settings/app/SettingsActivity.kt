@@ -1,11 +1,9 @@
-package com.jenshen.smartmirror.ui.activity.settings
+package com.jenshen.smartmirror.ui.activity.settings.app
 
 import android.os.Bundle
-import android.support.v7.app.ActionBar
-
 import com.jenshen.compat.base.view.impl.BaseActivity
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.ui.fragment.SettingsFragment
+import com.jenshen.smartmirror.ui.fragment.settings.app.SettingsFragment
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : BaseActivity() {
