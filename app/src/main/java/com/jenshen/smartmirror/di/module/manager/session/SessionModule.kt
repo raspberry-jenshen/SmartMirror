@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.di.module
+package com.jenshen.smartmirror.di.module.manager.session
 
 import com.jenshen.smartmirror.data.entity.session.Session
 import com.jenshen.smartmirror.di.scope.SessionScope

@@ -7,6 +7,7 @@ import com.jenshen.smartmirror.di.component.activity.choose.widget.ChooseWidgetC
 import com.jenshen.smartmirror.di.component.activity.dashboard.mirror.MirrorDashboardComponent
 import com.jenshen.smartmirror.di.component.activity.edit.mirror.EditMirrorComponent
 import com.jenshen.smartmirror.di.multibuildings.ActivityKey
+import com.jenshen.smartmirror.di.scope.SessionScope
 import com.jenshen.smartmirror.ui.activity.add.widget.AddWidgetActivity
 import com.jenshen.smartmirror.ui.activity.choose.mirror.ChooseMirrorActivity
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
@@ -25,26 +26,31 @@ import dagger.multibindings.IntoMap
         ChooseWidgetComponent::class))
 abstract class SessionActivityBindingModule {
 
+    @SessionScope
     @Binds
     @IntoMap
     @ActivityKey(MirrorDashboardActivity::class)
     abstract fun mirrorActivityComponentBuilder(impl: MirrorDashboardComponent.Builder): ActivityComponentBuilder<*>
 
+    @SessionScope
     @Binds
     @IntoMap
     @ActivityKey(ChooseMirrorActivity::class)
     abstract fun chooseMirrorActivityComponentBuilder(impl: ChooseMirrorComponent.Builder): ActivityComponentBuilder<*>
 
+    @SessionScope
     @Binds
     @IntoMap
     @ActivityKey(EditMirrorActivity::class)
     abstract fun editMirrorActivityComponentBuilder(impl: EditMirrorComponent.Builder): ActivityComponentBuilder<*>
 
+    @SessionScope
     @Binds
     @IntoMap
     @ActivityKey(AddWidgetActivity::class)
     abstract fun addWidgetActivityComponentBuilder(impl: AddWidgetComponent.Builder): ActivityComponentBuilder<*>
 
+    @SessionScope
     @Binds
     @IntoMap
     @ActivityKey(ChooseWidgetActivity::class)

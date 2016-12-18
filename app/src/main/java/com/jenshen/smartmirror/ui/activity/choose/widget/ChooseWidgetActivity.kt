@@ -9,14 +9,15 @@ import android.view.MenuItem
 import com.jenshen.compat.base.view.impl.mvp.lce.component.lce.BaseDiLceMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.data.entity.widget.info.InfoForWidget
-import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
-import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
-import com.jenshen.smartmirror.data.model.WidgetModel
+import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
+import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
+import com.jenshen.smartmirror.data.model.widget.WidgetKey
+import com.jenshen.smartmirror.data.model.widget.WidgetModel
 import com.jenshen.smartmirror.di.component.activity.choose.widget.ChooseWidgetComponent
 import com.jenshen.smartmirror.ui.adapter.widgets.WidgetsAdapter
 import com.jenshen.smartmirror.ui.mvp.presenter.choose.widget.ChooseWidgetPresenter
 import com.jenshen.smartmirror.ui.mvp.view.choose.widget.ChooseWidgetView
+import com.jenshen.smartmirror.ui.view.widget.Widget
 import kotlinx.android.synthetic.main.activity_qr_scanner.*
 
 
@@ -58,13 +59,16 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
                     WidgetKey(it.widgetDataSnapshot.key), it.widgetDataSnapshot.data))
             setResult(Activity.RESULT_OK, intent)
             finish()
-        }, { position: Int, widgetModel: WidgetModel ->
-            presenter.loadInfoForWidget(position, widgetModel)
-        }, { position: Int, widgetModel: WidgetModel ->
-
-        })
+        },
+                { presenter.loadInfoForWidget(it) },
+                { widgetData: WidgetData, widget: Widget<*> -> presenter.updateWidget(widgetData, widget) })
         contentView.adapter = adapter
         loadData(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.clearWidgetsUpdaters()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -77,8 +81,8 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onWidgetUpdate(position: Int, infoForWidget: InfoForWidget) {
-        adapter.onUpdateItem(position, infoForWidget)
+    override fun onWidgetUpdate(widgetData: WidgetData) {
+        adapter.onUpdateItem(widgetData)
     }
 
     /* lce */

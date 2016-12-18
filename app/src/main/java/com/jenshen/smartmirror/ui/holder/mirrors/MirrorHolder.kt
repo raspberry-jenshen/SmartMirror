@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
-import com.jenshen.smartmirror.data.model.MirrorModel
+import com.jenshen.smartmirror.data.model.mirror.MirrorModel
 import com.jenshen.smartmirror.ui.holder.SwipeToDeleteHolder
 import kotlinx.android.synthetic.main.item_configuration.view.*
 import kotlinx.android.synthetic.main.partial_mirror.view.*

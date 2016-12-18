@@ -3,7 +3,7 @@ package com.jenshen.smartmirror.di.component.activity.choose.widget
 import com.jenshen.compat.base.component.activity.ActivityComponent
 import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
 import com.jenshen.compat.base.component.presenter.PresenterLceComponent
-import com.jenshen.smartmirror.data.model.WidgetModel
+import com.jenshen.smartmirror.data.model.widget.WidgetModel
 import com.jenshen.smartmirror.di.module.activity.choose.widget.ChooseWidgetModule
 import com.jenshen.smartmirror.di.scope.ActivityScope
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity

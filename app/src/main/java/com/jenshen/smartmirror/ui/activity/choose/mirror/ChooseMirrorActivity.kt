@@ -12,7 +12,7 @@ import android.view.MenuItem
 import com.jenshen.compat.base.view.impl.mvp.lce.component.lce.BaseDiLceMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.data.model.MirrorModel
+import com.jenshen.smartmirror.data.model.mirror.MirrorModel
 import com.jenshen.smartmirror.di.component.activity.choose.mirror.ChooseMirrorComponent
 import com.jenshen.smartmirror.ui.activity.edit.mirror.EditMirrorActivity
 import com.jenshen.smartmirror.ui.activity.qrScan.QRCodeScanActivity

@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.di.module.manager
+package com.jenshen.smartmirror.di.module.manager.session
 
 import com.jenshen.smartmirror.di.scope.SessionScope
 import com.jenshen.smartmirror.manager.firebase.auth.AuthManager

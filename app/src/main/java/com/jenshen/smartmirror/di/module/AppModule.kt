@@ -22,26 +22,4 @@ class AppModule(private var context: Context) {
     fun provideContext(): Context {
         return context
     }
-
-    @Singleton
-    @Provides
-    fun provideGson(): Gson {
-        val builder = GsonBuilder()
-        builder.registerTypeAdapter(Date::class.java, JsonDeserializer<Date>
-        { json, typeOfT, context -> Date(json.asJsonPrimitive.asLong * 1000) })
-
-        return builder.create()
-    }
-
-    @Singleton
-    @Provides
-    fun provideSharedPreferences(): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-    }
-
-    @Singleton
-    @Provides
-    fun providePreferencesManager(sharedPreferences: SharedPreferences, gson: Gson): PreferencesManager {
-        return SharedPreferencesManager(context, sharedPreferences, gson)
-    }
 }

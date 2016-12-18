@@ -5,38 +5,36 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.data.entity.widget.info.InfoForWidget
-import com.jenshen.smartmirror.data.model.WidgetModel
+import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
+import com.jenshen.smartmirror.data.model.widget.WidgetModel
 import com.jenshen.smartmirror.ui.holder.widgets.WidgetHolder
+import com.jenshen.smartmirror.ui.view.widget.Widget
 
 class WidgetsAdapter(private val context: Context,
                      private val onItemClicked: (WidgetModel) -> Unit,
-                     private val onItemAttached: (position: Int, WidgetModel) -> Unit,
-                     private val onItemDetached: (position: Int, WidgetModel) -> Unit) : RecyclerView.Adapter<WidgetHolder>() {
+                     private val onHolderCreated: (widgetKey: String) -> Unit,
+                     private val onWidgetUpdate: (WidgetData, Widget<*>) -> Unit) : RecyclerView.Adapter<WidgetHolder>() {
 
     override fun getItemCount() = this.itemList.size
 
     private val itemList: MutableList<WidgetModel>
 
+    companion object {
+        const val ITEM_CLOCK = 0
+    }
+
     init {
         this.itemList = mutableListOf<WidgetModel>()
-    }
-
-    override fun onViewAttachedToWindow(holder: WidgetHolder) {
-        super.onViewAttachedToWindow(holder)
-        onItemAttached(holder.layoutPosition, itemList[holder.layoutPosition])
-    }
-
-    override fun onViewDetachedFromWindow(holder: WidgetHolder) {
-        super.onViewDetachedFromWindow(holder)
-        onItemDetached(holder.layoutPosition, itemList[holder.layoutPosition])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WidgetHolder {
         val view = LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.item_widget, parent, false)
-        return WidgetHolder(context, view)
+        val widgetKey = getWidgetKey(viewType)
+        onHolderCreated(widgetKey)
+        return WidgetHolder(context, widgetKey, view, onWidgetUpdate)
     }
 
     override fun onBindViewHolder(holder: WidgetHolder, position: Int) {
@@ -57,8 +55,23 @@ class WidgetsAdapter(private val context: Context,
         }
     }
 
-    fun onUpdateItem(position: Int, infoForWidget: InfoForWidget) {
-        itemList[position].infoForWidget = infoForWidget
-        notifyItemChanged(position)
+    fun onUpdateItem(widgetData: WidgetData) {
+        itemList.forEachIndexed { position, widgetModel ->
+            if (widgetModel.widgetDataSnapshot.key == widgetData.widgetKey.key ) {
+                widgetModel.widgetData = widgetData
+                notifyItemChanged(position)
+            }
+        }
+    }
+
+    /* private methods */
+
+    private fun getWidgetKey(type: Int): String {
+        return when (type) {
+            ITEM_CLOCK -> WidgetInfo.CLOCK_WIDGET_KEY
+            else -> {
+                throw RuntimeException("Can't support this widget type")
+            }
+        }
     }
 }

@@ -16,18 +16,16 @@ import android.widget.Toast
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.data.entity.widget.info.InfoForWidget
-import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
-import com.jenshen.smartmirror.data.model.EditMirrorModel
-import com.jenshen.smartmirror.data.model.WidgetConfigurationModel
+import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
+import com.jenshen.smartmirror.data.model.widget.WidgetKey
+import com.jenshen.smartmirror.data.model.mirror.EditMirrorModel
+import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
 import com.jenshen.smartmirror.di.component.activity.edit.mirror.EditMirrorComponent
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.edit.mirror.EditMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.edit.mirror.EditMirrorView
 import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshen.smartmirror.util.widget.createWidget
-import com.jenshen.smartmirror.util.widget.getWidgetUpdaterForWidget
-import com.jenshen.smartmirror.util.widget.updateWidget
 import com.jenshensoft.widgetview.WidgetView
 import kotlinx.android.synthetic.main.activity_edit_mirror.*
 
@@ -213,13 +211,13 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 ?.forEach { updateWidgetPosition(createWidgetView(it), it) }
     }
 
-    override fun onWidgetUpdate(info: InfoForWidget) {
+    override fun onWidgetUpdate(infoData: WidgetData) {
         widgetContainer.widgets
                 .find {
                     val widgetKey = it.tag as WidgetKey
-                    (widgetKey.key == info.widgetKey.key) && widgetKey.number == info.widgetKey.number
+                    (widgetKey.key == infoData.widgetKey.key) && widgetKey.number == infoData.widgetKey.number
                 }
-                ?.apply { updateWidget(info, getChildAt(0) as Widget<*>) }
+                ?.apply { presenter.updateWidget(infoData, getChildAt(0) as Widget<*>) }
     }
 
     /* private methods */
@@ -281,7 +279,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     private fun createWidgetView(widgetModel: WidgetConfigurationModel): WidgetView {
         widgetModel.widgetKey.number = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == widgetModel.widgetKey.key }.size
-        presenter.addWidgetUpdater(getWidgetUpdaterForWidget(widgetModel.widgetKey))
+        presenter.addWidgetUpdater(widgetModel.widgetKey)
         val widget = createWidget(widgetModel.widgetKey.key, context)
         widget.tag = widgetModel.widgetKey
         return widget

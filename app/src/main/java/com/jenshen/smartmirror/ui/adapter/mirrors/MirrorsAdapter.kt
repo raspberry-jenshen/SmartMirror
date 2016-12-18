@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.data.model.MirrorModel
+import com.jenshen.smartmirror.data.model.mirror.MirrorModel
 import com.jenshen.smartmirror.ui.adapter.SwipeToDeleteAdapter
 import com.jenshen.smartmirror.ui.holder.mirrors.MirrorHolder
 

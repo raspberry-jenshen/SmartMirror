@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.data.entity.widget.info
+package com.jenshen.smartmirror.data.model.widget
 
 import android.os.Parcel
 import android.os.Parcelable

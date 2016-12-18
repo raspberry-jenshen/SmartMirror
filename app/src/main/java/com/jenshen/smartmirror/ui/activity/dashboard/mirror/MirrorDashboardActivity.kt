@@ -11,8 +11,8 @@ import com.jenshen.awesomeanimation.AwesomeAnimation.SizeMode.SCALE
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.data.entity.widget.info.InfoForWidget
-import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
+import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
+import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.di.component.activity.dashboard.mirror.MirrorDashboardComponent
@@ -21,8 +21,6 @@ import com.jenshen.smartmirror.ui.mvp.presenter.dashboard.mirror.MirrorDashboard
 import com.jenshen.smartmirror.ui.mvp.view.dashboard.mirror.MirrorDashboardView
 import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshen.smartmirror.util.widget.createWidget
-import com.jenshen.smartmirror.util.widget.getWidgetUpdaterForWidget
-import com.jenshen.smartmirror.util.widget.updateWidget
 import kotlinx.android.synthetic.main.activity_dashboard_mirror.*
 
 
@@ -58,13 +56,13 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
         startActivity(intent)
     }
 
-    override fun onWidgetUpdate(info: InfoForWidget) {
+    override fun onWidgetUpdate(infoData: WidgetData) {
         widgetContainer.widgets
                 .find {
                     val widgetKey = it.tag as WidgetKey
-                    (widgetKey.key == info.widgetKey.key) && widgetKey.number == info.widgetKey.number
+                    (widgetKey.key == infoData.widgetKey.key) && widgetKey.number == infoData.widgetKey.number
                 }
-                ?.apply { updateWidget(info, getChildAt(0) as Widget<*>) }
+                ?.apply { presenter.updateWidget(infoData, getChildAt(0) as Widget<*>) }
     }
 
     override fun updateMirrorConfiguration(mirrorConfiguration: MirrorConfiguration) {
@@ -102,7 +100,7 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
         val sameWidgetsCount = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == configuration.widgetKey }.size
         val widgetKey = WidgetKey(configuration.widgetKey, sameWidgetsCount)
         widget.tag = widgetKey
-        presenter.addWidgetUpdater(getWidgetUpdaterForWidget(widgetKey))
+        presenter.addWidgetUpdater(widgetKey)
 
         val position = widget.widgetPosition
 

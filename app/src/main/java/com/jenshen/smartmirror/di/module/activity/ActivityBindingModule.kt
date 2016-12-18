@@ -1,13 +1,13 @@
 package com.jenshen.smartmirror.di.module.activity
 
 import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
-import com.jenshen.smartmirror.di.component.activity.signUp.mirror.SignUpMirrorComponent
 import com.jenshen.smartmirror.di.component.activity.signIn.SignInComponent
+import com.jenshen.smartmirror.di.component.activity.signUp.mirror.SignUpMirrorComponent
 import com.jenshen.smartmirror.di.component.activity.signUp.tuner.SignUpTunerComponent
 import com.jenshen.smartmirror.di.component.activity.start.splash.SplashComponent
 import com.jenshen.smartmirror.di.multibuildings.ActivityKey
-import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
 import com.jenshen.smartmirror.ui.activity.signIn.SignInTunerActivity
+import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
 import com.jenshen.smartmirror.ui.activity.signup.tuner.SignUpTunerActivity
 import com.jenshen.smartmirror.ui.activity.splash.SplashActivity
 import dagger.Binds
@@ -20,7 +20,7 @@ import dagger.multibindings.IntoMap
         SignInComponent::class,
         SignUpTunerComponent::class,
         SignUpMirrorComponent::class))
-abstract class  ActivityBindingModule {
+abstract class ActivityBindingModule {
 
     @Binds
     @IntoMap

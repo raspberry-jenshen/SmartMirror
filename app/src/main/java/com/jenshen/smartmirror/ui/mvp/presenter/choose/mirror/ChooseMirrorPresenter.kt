@@ -2,7 +2,7 @@ package com.jenshen.smartmirror.ui.mvp.presenter.choose.mirror
 
 
 import com.jenshen.compat.base.presenter.MvpLceRxPresenter
-import com.jenshen.smartmirror.data.model.MirrorModel
+import com.jenshen.smartmirror.data.model.mirror.MirrorModel
 import com.jenshen.smartmirror.interactor.firebase.api.tuner.TunerApiInteractor
 import com.jenshen.smartmirror.ui.mvp.view.choose.mirror.ChooseMirrorView
 import com.jenshen.smartmirror.util.reactive.applyProgress

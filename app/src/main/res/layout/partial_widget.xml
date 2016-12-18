@@ -32,7 +32,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_textView"
-        tools:text="Device info"
+        tools:text="Device infoData"
         app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginTop="8dp" />
 

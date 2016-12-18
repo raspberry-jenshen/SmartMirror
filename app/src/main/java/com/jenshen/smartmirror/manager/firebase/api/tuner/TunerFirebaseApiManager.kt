@@ -142,7 +142,7 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .getWidgetsRef()
                 .map { it.push() }
                 .flatMap {
-                    it.uploadValue(WidgetInfo)
+                    it.uploadValue(widgetInfo)
                             .toSingle { it.key }
                 }
     }

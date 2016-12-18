@@ -5,9 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.data.entity.widget.info.InfoForClockWidget
-import com.jenshen.smartmirror.data.entity.widget.info.InfoForWidget
-import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
+import com.jenshen.smartmirror.data.entity.widget.info.ClockWidgetData
+import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
+import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.entity.widget.updater.ClockWidgetUpdater
 import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
@@ -16,15 +16,6 @@ import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshensoft.widgetview.WidgetView
 
 
-fun getWidgetUpdaterForWidget(widgetKey: WidgetKey): WidgetUpdater<*> {
-    return when (widgetKey.key) {
-        WidgetInfo.CLOCK_WIDGET_KEY -> {
-            ClockWidgetUpdater(widgetKey)
-        }
-        else -> throw RuntimeException("Can't support this widget")
-    }
-}
-
 fun createWidget(widgetKey: String, context: Context): WidgetView {
     val view = getViewForWidget(widgetKey, context)
     val widgetView = WidgetView(context)
@@ -32,12 +23,6 @@ fun createWidget(widgetKey: String, context: Context): WidgetView {
     widgetView.layoutParams = FrameLayout.LayoutParams(context.resources.getDimensionPixelOffset(R.dimen.widget_clock_width),
             context.resources.getDimensionPixelOffset(R.dimen.widget_clock_height))
     return widgetView
-}
-
-fun updateWidget(info: InfoForWidget, widget: Widget<*>) {
-    if (widget is ClockView && info is InfoForClockWidget) {
-        widget.updateWidget(info)
-    }
 }
 
 fun getViewForWidget(widgetKey: String, context: Context): View {

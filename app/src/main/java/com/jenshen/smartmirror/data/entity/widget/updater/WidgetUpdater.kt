@@ -1,11 +1,11 @@
 package com.jenshen.smartmirror.data.entity.widget.updater
 
-import com.jenshen.smartmirror.data.entity.widget.info.InfoForWidget
-import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
+import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
+import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import io.reactivex.Observable
 
 
-abstract class WidgetUpdater<Info : InfoForWidget>(val widgetKey: WidgetKey) {
+abstract class WidgetUpdater<Info : WidgetData>(val widgetKey: WidgetKey) {
 
     protected var isDisposed = false
 

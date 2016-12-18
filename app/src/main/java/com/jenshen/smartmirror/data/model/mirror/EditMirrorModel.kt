@@ -1,7 +1,8 @@
-package com.jenshen.smartmirror.data.model
+package com.jenshen.smartmirror.data.model.mirror
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
 
 data class EditMirrorModel(val mirrorKey: String,
                            val columnsCount: Int,

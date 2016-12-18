@@ -14,12 +14,12 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.jenshen.smartmirror.R;
-import com.jenshen.smartmirror.data.entity.widget.info.InfoForClockWidget;
+import com.jenshen.smartmirror.data.entity.widget.info.ClockWidgetData;
 
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ClockView extends View implements Widget<InfoForClockWidget> {
+public class ClockView extends View implements Widget<ClockWidgetData> {
 
     private static final float SEC_RAD = 2 * (float) Math.PI / 60;
     private static final float MIN_RAD = 2 * (float) Math.PI / 60;
@@ -75,15 +75,15 @@ public class ClockView extends View implements Widget<InfoForClockWidget> {
     }
 
     @Override
-    public void updateWidget(InfoForClockWidget infoForClockWidget) {
-        if (hour != infoForClockWidget.getHours()) {
-            setHour(infoForClockWidget.getHours());
+    public void updateWidget(ClockWidgetData clockWidgetInfo) {
+        if (hour != clockWidgetInfo.getHours()) {
+            setHour(clockWidgetInfo.getHours());
         }
-        if (minute != infoForClockWidget.getMinutes()) {
-            setMinute(infoForClockWidget.getMinutes());
+        if (minute != clockWidgetInfo.getMinutes()) {
+            setMinute(clockWidgetInfo.getMinutes());
         }
-        if (second != infoForClockWidget.getSeconds()) {
-            setSecond(infoForClockWidget.getSeconds());
+        if (second != clockWidgetInfo.getSeconds()) {
+            setSecond(clockWidgetInfo.getSeconds());
         }
     }
 

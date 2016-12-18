@@ -14,5 +14,4 @@ class LaunchAppBroadcast : BroadcastReceiver() {
             context.startService(Intent(context, StartMirrorService::class.java))
         }
     }
-
 }

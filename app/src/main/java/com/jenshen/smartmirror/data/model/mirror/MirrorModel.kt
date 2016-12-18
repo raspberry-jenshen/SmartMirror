@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.data.model
+package com.jenshen.smartmirror.data.model.mirror
 
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription

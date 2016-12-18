@@ -1,8 +1,8 @@
 package com.jenshen.smartmirror.interactor.firebase.api.tuner
 
-import com.jenshen.smartmirror.data.model.EditMirrorModel
-import com.jenshen.smartmirror.data.model.MirrorModel
-import com.jenshen.smartmirror.data.model.WidgetModel
+import com.jenshen.smartmirror.data.model.mirror.EditMirrorModel
+import com.jenshen.smartmirror.data.model.mirror.MirrorModel
+import com.jenshen.smartmirror.data.model.widget.WidgetModel
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

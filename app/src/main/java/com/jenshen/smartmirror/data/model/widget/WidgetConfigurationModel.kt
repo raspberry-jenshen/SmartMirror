@@ -1,9 +1,9 @@
-package com.jenshen.smartmirror.data.model
+package com.jenshen.smartmirror.data.model.widget
 
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.jenshen.smartmirror.data.entity.widget.info.WidgetKey
+import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshensoft.widgetview.entity.WidgetPosition
 
