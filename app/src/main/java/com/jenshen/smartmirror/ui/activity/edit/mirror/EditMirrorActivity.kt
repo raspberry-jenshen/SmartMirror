@@ -1,10 +1,12 @@
 package com.jenshen.smartmirror.ui.activity.edit.mirror
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.RequiresPermission
 import android.support.v4.app.NavUtils
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
@@ -27,6 +29,7 @@ import com.jenshen.smartmirror.ui.mvp.view.edit.mirror.EditMirrorView
 import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshen.smartmirror.util.widget.createWidget
 import com.jenshensoft.widgetview.WidgetView
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_edit_mirror.*
 
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
@@ -38,10 +41,22 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         private val IS_SAVED_KEY = "IS_SAVED_KEY"
 
         fun start(context: Context, mirrorKey: String, configurationKey: String? = null) {
-            val intent = Intent(context, EditMirrorActivity::class.java)
-            intent.putExtra(EXTRA_MIRROR_KEY, mirrorKey)
-            intent.putExtra(EXTRA_MIRROR_CONFIGURATION_KEY, configurationKey)
-            context.startActivity(intent)
+            RxPermissions.getInstance(context)
+                    .request(Manifest.permission.ACCESS_FINE_LOCATION)
+                    .subscribe { granted ->
+                        if (granted) {
+                            val intent = Intent(context, EditMirrorActivity::class.java)
+                            intent.putExtra(EXTRA_MIRROR_KEY, mirrorKey)
+                            intent.putExtra(EXTRA_MIRROR_CONFIGURATION_KEY, configurationKey)
+                            context.startActivity(intent)
+                        } else {
+                            AlertDialog.Builder(context)
+                                    .setTitle(R.string.warning)
+                                    .setMessage(R.string.error_location_permission)
+                                    .setPositiveButton(R.string.ok, null)
+                                    .show()
+                        }
+                    }
         }
     }
 
@@ -165,8 +180,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.addWidget_item_menu -> {
-                val intent = Intent(this, ChooseWidgetActivity::class.java)
-                startActivityForResult(intent, ChooseWidgetActivity.RESULT_KEY_CHOSE_WIDGET)
+                ChooseWidgetActivity.startForResult(this)
                 return true
             }
             R.id.save_item_menu -> {

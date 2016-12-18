@@ -1,6 +1,6 @@
 package com.jenshen.smartmirror.data.api
 
-import com.jenshen.smartmirror.data.entity.WeatherResponse
+import com.jenshen.smartmirror.data.entity.weather.WeatherResponse
 import io.reactivex.Single
 import retrofit2.http.PUT
 import retrofit2.http.Query
@@ -10,9 +10,15 @@ interface WeatherApi {
 
     companion object {
         const val API_URL = "http://api.openweathermap.org/data/2.5/"
+        const val IMAGE_PATH_URL = "http://openweathermap.org/img/w/"
+
+        const val METRIC_FORMAT = "metric"
     }
 
     @PUT("weather")
-    fun getWeathrForCity(@Query("lat") lat: Double, @Query("lon") lon: Double, @Query("APPID") apiKey: String): Single<WeatherResponse>
+    fun getWeatherForCity(@Query("lat") lat: Double,
+                          @Query("lon") lon: Double,
+                          @Query("units") metric: String,
+                          @Query("lang") lang: String): Single<WeatherResponse>
 
 }

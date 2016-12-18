@@ -5,6 +5,8 @@
 
     <permission android:name="android.permission.CAMERA" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -81,6 +83,7 @@
         </activity>
         <activity
             android:name=".ui.activity.choose.widget.ChooseWidgetActivity"
+            android:label="@string/chooseWidget"
             android:theme="@style/App.Theme.ChooseWidget.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

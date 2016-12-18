@@ -27,6 +27,8 @@
     <dimen name="textSize_normal">15sp</dimen>
     <dimen name="textSize_large1">20sp</dimen>
     <dimen name="textSize_large2">25sp</dimen>
+    <dimen name="textSize_large3">30sp</dimen>
+    <dimen name="textSize_large4">35sp</dimen>
 
     <!-- animations -->
 

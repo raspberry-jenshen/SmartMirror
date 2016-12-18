@@ -7,6 +7,7 @@ import com.jenshen.smartmirror.di.module.activity.SessionActivityBindingModule
 import com.jenshen.smartmirror.di.module.interactor.firebase.api.mirror.MirrorApiInteractorModule
 import com.jenshen.smartmirror.di.module.interactor.firebase.api.tuner.TunerApiInteractorModule
 import com.jenshen.smartmirror.di.module.manager.api.WeatherApiModule
+import com.jenshen.smartmirror.di.module.manager.location.LocationModule
 import com.jenshen.smartmirror.di.module.manager.session.SessionModule
 import com.jenshen.smartmirror.di.module.manager.session.UserSessionModule
 import com.jenshen.smartmirror.di.scope.SessionScope
@@ -18,6 +19,7 @@ import dagger.Subcomponent
         SessionModule::class,
         WeatherApiModule::class,
         UserSessionModule::class,
+        LocationModule::class,
         MirrorApiInteractorModule::class,
         TunerApiInteractorModule::class,
         SessionActivityBindingModule::class))
@@ -25,7 +27,6 @@ interface SessionComponent {
 
     @Subcomponent.Builder
     interface Builder {
-
         fun build(): SessionComponent
     }
 

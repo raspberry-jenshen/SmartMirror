@@ -1,15 +1,20 @@
 package com.jenshen.smartmirror.ui.activity.qrScan
 
+import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.hardware.Camera
 import android.os.Bundle
 import android.support.v4.app.NavUtils
+import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import com.google.zxing.Result
 import com.jenshen.compat.base.view.impl.BaseActivity
 import com.jenshen.smartmirror.R
+import com.jenshen.smartmirror.ui.activity.edit.mirror.EditMirrorActivity
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_qr_scanner.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
@@ -23,6 +28,23 @@ class QRCodeScanActivity : BaseActivity(), ZXingScannerView.ResultHandler {
         val RESULT_EXTRA_MIRROR_ID = "RESULT_EXTRA_MIRROR_ID"
         private val FLASH_STATE = "FLASH_STATE"
         private val CAMERA_ID = "CAMERA_ID"
+
+        fun startForResult(activity: Activity) {
+            RxPermissions.getInstance(activity)
+                    .request(Manifest.permission.CAMERA)
+                    .subscribe { granted ->
+                        if (granted) {
+                            val intent = Intent(activity, QRCodeScanActivity::class.java)
+                            activity.startActivityForResult(intent, QRCodeScanActivity.RESULT_KEY_QR_CODE)
+                        } else {
+                            AlertDialog.Builder(activity)
+                                    .setTitle(R.string.warning)
+                                    .setMessage(R.string.error_camera_permission)
+                                    .setPositiveButton(R.string.ok, null)
+                                    .show()
+                        }
+                    }
+        }
     }
 
     private var flash: Boolean = false

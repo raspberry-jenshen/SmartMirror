@@ -67,6 +67,7 @@ android {
         multiDexEnabled true
 
         buildConfigField 'String', 'WEATHER_API_KEY', '\"ca28542db9f3ace087694d08e452d069\"'
+        buildConfigField 'boolean', 'IS_PRODUCTION_VERSION', 'true'
     }
     buildTypes {
         release {
@@ -77,16 +78,18 @@ android {
     }
 
     productFlavors {
-        production {
-            buildConfigField 'boolean', 'IS_PRODUCTION_VERSION', 'true'
+        tuner {
         }
+        mirror {
+            targetSdkVersion 21
+        }
+
         development {
             versionName "0.5"
             // dev utilizes minSDKVersion = 21 to allow the Android gradle plugin
             // to pre-dex each module and produce an APK that can be tested on
             // Android Lollipop without time consuming dex merging processes.
             minSdkVersion 21
-            buildConfigField 'boolean', 'IS_PRODUCTION_VERSION', 'false'
         }
     }
 

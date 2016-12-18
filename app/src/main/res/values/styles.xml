@@ -85,6 +85,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="App.Theme.TextViewLight">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="Widget.AppCompat.Toolbar.Transparent" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:background">@color/black_with_alpha</item>
     </style>

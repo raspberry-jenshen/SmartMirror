@@ -99,20 +99,7 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
                 return true
             }
             R.id.scan_QrCode_item_menu -> {
-                RxPermissions.getInstance(this)
-                        .request(Manifest.permission.CAMERA)
-                        .subscribe { granted ->
-                            if (granted) {
-                                val intent = Intent(this, QRCodeScanActivity::class.java)
-                                startActivityForResult(intent, QRCodeScanActivity.RESULT_KEY_QR_CODE)
-                            } else {
-                                AlertDialog.Builder(this)
-                                        .setTitle(R.string.warning)
-                                        .setMessage(R.string.error_camera_permission)
-                                        .setPositiveButton(R.string.ok, null)
-                                        .show()
-                            }
-                        }
+                QRCodeScanActivity.startForResult(this)
                 return true
             }
         }

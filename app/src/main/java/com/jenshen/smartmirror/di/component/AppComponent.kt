@@ -15,6 +15,7 @@ import com.jenshen.smartmirror.di.module.interactor.firebase.api.ApiInteractorMo
 import com.jenshen.smartmirror.di.module.interactor.firebase.auth.AuthInteractorModule
 import com.jenshen.smartmirror.di.module.manager.PreferenceModule
 import com.jenshen.smartmirror.di.module.manager.firebase.database.RealtimeDatabaseModule
+import com.jenshen.smartmirror.di.module.manager.location.LocationModule
 import com.jenshen.smartmirror.interactor.firebase.api.ApiInteractor
 import com.jenshen.smartmirror.interactor.firebase.auth.AuthInteractor
 import com.jenshen.smartmirror.manager.fabric.FabricManager

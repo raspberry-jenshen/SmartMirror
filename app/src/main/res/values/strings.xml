@@ -21,11 +21,11 @@
     <string name="error.invalid_password">Your password must contains at least 6 symbols</string>
     <string name="error.invalid_confirm_password">The confirm password mast be the same with the password</string>
     <string name="error.camera.permission">You need to allow the camera permission for register your Mirror</string>
+    <string name="error.location.permission">You need to allow the location permission for widgets that your location</string>
     <string name="error.cant_find_mirror">Can\'t find mirror</string>
     <string name="error.cant_be_empty">Can\'t be empty</string>
     <string name="error.finish_editing">Please, finish editing</string>
     <string name="error.not_save">Are you sure that you want to exit without save a mirror configuration?</string>
-
 
     <!--sign in-->
     <string name="signIn">SignIn</string>
@@ -76,5 +76,12 @@
     <string name="editMirror.rows_count">7</string>
     <string name="editMirror.news">News</string>
 
+    <!-- choose widget-->
+    <string name="chooseWidget">Choose Widget</string>
+
+    <!-- widgets-->
+    <!--weather-->
+    <string name="widget.weather.pressure">Pressure</string>
+    <string name="widget.weather.humidity">Humidity</string>
 
 </resources>
