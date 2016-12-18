@@ -7,11 +7,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.data.entity.widget.info.WeatherWidgetData
+import com.jenshen.smartmirror.data.entity.widget.info.CurrentWeatherWidgetData
 import com.jenshen.smartmirror.util.toBaseFormat
 import kotlinx.android.synthetic.main.view_weather.view.*
 
-class WeatherView : CoordinatorLayout, Widget<WeatherWidgetData> {
+class CurrentWeatherView : CoordinatorLayout, Widget<CurrentWeatherWidgetData> {
 
     constructor(context: Context) : super(context) {
         init()
@@ -25,12 +25,12 @@ class WeatherView : CoordinatorLayout, Widget<WeatherWidgetData> {
         init()
     }
 
-    override fun updateWidget(weatherWidgetData: WeatherWidgetData) {
+    override fun updateWidget(currentWeatherWidgetData: CurrentWeatherWidgetData) {
         Glide.with(context)
-                .load(weatherWidgetData.iconUrl)
+                .load(currentWeatherWidgetData.iconUrl)
                 .into(this.weatherIcon)
 
-        val response = weatherWidgetData.weatherResponse
+        val response = currentWeatherWidgetData.weatherResponse
         val weather = response.weathersList.iterator().next()
         this.country.text = "${response.name}, ${response.sys.country}"
         this.lastTimeUpdate.text = response.date.toBaseFormat()

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.RequiresPermission
 import android.support.v4.app.NavUtils
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
@@ -19,9 +18,9 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
-import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.model.mirror.EditMirrorModel
 import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
+import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.di.component.activity.edit.mirror.EditMirrorComponent
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.edit.mirror.EditMirrorPresenter
