@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface WeatherApi {
 
     companion object {
-        const val API_URL = "api.openweathermap.org/data/2.5/"
+        const val API_URL = "http://api.openweathermap.org/data/2.5/"
     }
 
     @PUT("weather")

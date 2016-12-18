@@ -36,6 +36,8 @@ class ApiModule(private val baseUrl: String) {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient).baseUrl(baseUrl).build()
+                .client(okHttpClient)
+                .baseUrl(baseUrl)
+                .build()
     }
 }
