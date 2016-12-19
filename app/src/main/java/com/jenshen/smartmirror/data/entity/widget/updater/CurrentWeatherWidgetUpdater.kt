@@ -27,7 +27,7 @@ class CurrentWeatherWidgetUpdater(widgetKey: WidgetKey,
         return Observable.interval(0, 3, TimeUnit.HOURS)
                 .takeWhile { !isDisposed }
                 .flatMap {
-                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         Single.fromCallable { findLocationManagerLazy.get() }
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .flatMapObservable { it.fetchCurrentLocation() }
@@ -39,7 +39,7 @@ class CurrentWeatherWidgetUpdater(widgetKey: WidgetKey,
                 }
                 .flatMapSingle { weatherApiLazy.get().getCurrentWeather(it.lat, it.lon) }
                 .map {
-                    CurrentWeatherWidgetData(widgetKey, IMAGE_PATH_URL + it.weathersList.iterator().next().icon + ".png", it)
+                    CurrentWeatherWidgetData(widgetKey, it)
                 }
     }
 

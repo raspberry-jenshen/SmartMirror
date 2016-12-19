@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:background="@color/gray">
 
     <ImageView
         android:id="@+id/weatherIcon"
@@ -18,8 +19,7 @@
         app:layout_constraintBottom_toTopOf="@+id/temp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_add"
-        app:layout_constraintVertical_chainStyle="spread" />
+        tools:src="@drawable/ic_add" />
 
     <TextView
         android:id="@+id/country"
@@ -27,17 +27,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textSize="@dimen/textSize_large2"
         app:layout_constraintBottom_toTopOf="@+id/lastTimeUpdate"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@+id/weatherIcon"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Kharkiv, UA"
-        app:layout_constraintLeft_toRightOf="@+id/weatherIcon"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintHorizontal_bias="1.0" />
+        tools:text="Kharkiv, UA" />
 
     <TextView
         android:id="@+id/lastTimeUpdate"
@@ -45,16 +45,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/pressure"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@+id/temp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/country"
-        tools:text="today"
-        app:layout_constraintLeft_toRightOf="@+id/temp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintHorizontal_bias="1.0" />
+        tools:text="today" />
 
     <TextView
         android:id="@+id/pressure"
@@ -62,16 +62,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/humidity"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@+id/temp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lastTimeUpdate"
-        tools:text="1004 pa"
-        app:layout_constraintLeft_toRightOf="@+id/temp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintHorizontal_bias="1.0" />
+        tools:text="1004 pa" />
 
     <TextView
         android:id="@+id/humidity"
@@ -80,16 +80,16 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="7dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="7dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/description"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@+id/description"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pressure"
-        tools:text="80 %"
-        app:layout_constraintLeft_toRightOf="@+id/description"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintHorizontal_bias="1.0" />
+        tools:text="80 %" />
 
     <TextView
         android:id="@+id/description"

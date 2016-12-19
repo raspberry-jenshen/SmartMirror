@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@color/gray"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/weatherIcon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="@dimen/offset_small1"
+        android:contentDescription="@null"
+        tools:src="@drawable/ic_add" />
+
+    <TextView
+        android:id="@+id/pressure"
+        style="@style/App.Theme.TextViewLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/offset_small1"
+        tools:text="1004 pa" />
+
+    <TextView
+        android:id="@+id/humidity"
+        style="@style/App.Theme.TextViewLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/offset_small1"
+        tools:text="80 %" />
+
+    <TextView
+        android:id="@+id/description"
+        style="@style/App.Theme.TextViewLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/offset_small1"
+        android:textSize="@dimen/textSize_small1"
+        tools:text="Clouds" />
+
+
+    <TextView
+        android:id="@+id/temp"
+        style="@style/App.Theme.TextViewLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/offset_small1"
+        android:layout_marginTop="@dimen/offset_small1"
+        android:textSize="@dimen/textSize_large4"
+        tools:text="25" />
+
+</LinearLayout>

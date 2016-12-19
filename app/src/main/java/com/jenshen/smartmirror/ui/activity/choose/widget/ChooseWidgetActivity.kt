@@ -21,7 +21,7 @@ import com.jenshen.smartmirror.ui.mvp.presenter.choose.widget.ChooseWidgetPresen
 import com.jenshen.smartmirror.ui.mvp.view.choose.widget.ChooseWidgetView
 import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.activity_qr_scanner.*
+import kotlinx.android.synthetic.main.activity_choose_widget.*
 
 
 class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
