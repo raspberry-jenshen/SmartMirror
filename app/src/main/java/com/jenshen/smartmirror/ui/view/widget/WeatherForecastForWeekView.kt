@@ -10,12 +10,12 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.data.entity.widget.info.WeatherForecastWidgetData
+import com.jenshen.smartmirror.data.entity.widget.info.weather.WeatherForecastWidgetData
 import com.jenshen.smartmirror.util.toDayMonth
 import kotlinx.android.synthetic.main.partial_weather_for_day.view.*
 import kotlinx.android.synthetic.main.view_forecast.view.*
 
-class WeatherForecastView : CoordinatorLayout, Widget<WeatherForecastWidgetData> {
+class WeatherForecastForWeekView : CoordinatorLayout, Widget<WeatherForecastWidgetData> {
 
     constructor(context: Context) : super(context) {
         init()
@@ -54,9 +54,9 @@ class WeatherForecastView : CoordinatorLayout, Widget<WeatherForecastWidgetData>
 
                     it.date.let { weatherView.lastTimeUpdate.text = it?.toDayMonth() }
                     it.temperatureConditions?.let {
-                        weatherView.pressure.text = context.getString(R.string.widget_weather_pressure) + ": ${it.pressure} hPa"
-                        weatherView.humidity.text = context.getString(R.string.widget_weather_humidity) + ": ${it.humidity} %"
-                        weatherView.temp.text = it.temp.toString()
+                        it.pressure.let {  weatherView.pressure.text = context.getString(R.string.widget_weather_pressure) + ": ${Math.round(it!!)} hPa" }
+                        it.humidity.let {  weatherView.humidity.text = context.getString(R.string.widget_weather_humidity) + ": ${Math.round(it!!)} %" }
+                        it.temp.let { weatherView.temp.text = Math.round(it!!).toString() }
                     }
                     this.dayContainer.addView(weatherView)
                 }

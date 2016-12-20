@@ -83,7 +83,6 @@
         </activity>
         <activity
             android:name=".ui.activity.choose.widget.ChooseWidgetActivity"
-            android:label="@string/chooseWidget"
             android:theme="@style/App.Theme.ChooseWidget.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

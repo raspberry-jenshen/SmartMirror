@@ -8,7 +8,7 @@ import java.util.Calendar.*
 import java.util.concurrent.TimeUnit
 
 
-class ClockWidgetUpdater(widgetKey: WidgetKey) : WidgetUpdater<ClockWidgetData>(widgetKey) {
+class ClockUpdater(widgetKey: WidgetKey) : WidgetUpdater<ClockWidgetData>(widgetKey) {
 
     override fun startUpdate(): Observable<ClockWidgetData> {
 

@@ -71,7 +71,7 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_choose_mirror)
+        setContentView(R.layout.activity_choose_widget)
         setupToolbar()
         adapter = WidgetsAdapter(context, {
             val intent = Intent()

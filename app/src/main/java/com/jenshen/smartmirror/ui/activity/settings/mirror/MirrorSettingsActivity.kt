@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_mirror_settings.*
 
 class MirrorSettingsActivity : BaseDiMvpActivity<MirrorSettingsComponent, MirrorSettingsView, MirrorSettingsPresenter>(), MirrorSettingsView {
 
-
     companion object {
         private val EXTRA_MIRROR_CONFIGURATION_KEY = "EXTRA_MIRROR_CONFIGURATION_KEY"
 

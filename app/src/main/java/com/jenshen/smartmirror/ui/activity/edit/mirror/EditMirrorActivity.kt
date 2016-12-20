@@ -294,7 +294,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     private fun createWidgetView(widgetModel: WidgetConfigurationModel): WidgetView {
         widgetModel.widgetKey.number = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == widgetModel.widgetKey.key }.size
         presenter.addWidgetUpdater(widgetModel.widgetKey)
-        val widget = createWidget(widgetModel.widgetKey.key, context)
+        val widget = createWidget(widgetModel.widgetKey.key, widgetModel.widgetInfo.defaultSize, context)
         widget.tag = widgetModel.widgetKey
         return widget
     }

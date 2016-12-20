@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.data.entity.widget.updater
+package com.jenshen.smartmirror.data.entity.widget.updater.weather
 
 import android.Manifest
 import android.content.Context
@@ -6,20 +6,22 @@ import android.content.pm.PackageManager
 import android.support.annotation.RequiresPermission
 import android.support.v4.content.ContextCompat
 import com.jenshen.smartmirror.data.api.WeatherApi.Companion.IMAGE_PATH_URL
-import com.jenshen.smartmirror.data.entity.widget.info.CurrentWeatherWidgetData
+import com.jenshen.smartmirror.data.entity.widget.info.weather.CurrentWeatherWidgetData
+import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.manager.api.IWeatherApiManager
 import com.jenshen.smartmirror.manager.location.IFindLocationManager
+import dagger.Lazy
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class CurrentWeatherWidgetUpdater(widgetKey: WidgetKey,
-                                  private val context: Context,
-                                  private val weatherApiLazy: dagger.Lazy<IWeatherApiManager>,
-                                  private val findLocationManagerLazy: dagger.Lazy<IFindLocationManager>) : WidgetUpdater<CurrentWeatherWidgetData>(widgetKey) {
+class CurrentWeatherUpdater(widgetKey: WidgetKey,
+                            private val context: Context,
+                            private val weatherApiLazy: Lazy<IWeatherApiManager>,
+                            private val findLocationManagerLazy: Lazy<IFindLocationManager>) : WidgetUpdater<CurrentWeatherWidgetData>(widgetKey) {
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     override fun startUpdate(): Observable<CurrentWeatherWidgetData> {

@@ -7,7 +7,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.data.entity.widget.info.CurrentWeatherWidgetData
+import com.jenshen.smartmirror.data.entity.widget.info.weather.CurrentWeatherWidgetData
 import com.jenshen.smartmirror.util.toDayMonth
 import kotlinx.android.synthetic.main.view_weather.view.*
 
@@ -38,9 +38,9 @@ class CurrentWeatherView : CoordinatorLayout, Widget<CurrentWeatherWidgetData> {
         this.country.text = "${response.name}, ${response.sys?.country}"
 
         response.temperatureConditions?.let {
-            this.pressure.text = context.getString(R.string.widget_weather_pressure) + ": ${it.pressure} hPa"
-            this.humidity.text = context.getString(R.string.widget_weather_humidity) + ": ${it.humidity} %"
-            this.temp.text = it.temp.toString()
+            it.pressure.let {  this.pressure.text = context.getString(R.string.widget_weather_pressure) + ": ${Math.round(it!!)} hPa" }
+            it.humidity.let {  this.humidity.text = context.getString(R.string.widget_weather_humidity) + ": ${Math.round(it!!)} %" }
+            it.temp.let { this.temp.text = it.toString() }
         }
     }
 

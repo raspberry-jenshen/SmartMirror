@@ -21,6 +21,7 @@
 
     <!-- textSizes -->
 
+    <dimen name="textSize_small4">7sp</dimen>
     <dimen name="textSize_small3">10sp</dimen>
     <dimen name="textSize_small2">12sp</dimen>
     <dimen name="textSize_small1">13sp</dimen>
@@ -37,6 +38,5 @@
     <dimen name="default_velocity_fast">200dp</dimen>
 
     <!-- widgets -->
-    <dimen name="widget.clock_width">100dp</dimen>
-    <dimen name="widget.clock_height">100dp</dimen>
+    <dimen name="widget.size">50dp</dimen>
 </resources>

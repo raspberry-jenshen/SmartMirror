@@ -15,6 +15,7 @@ import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
+import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
 import com.jenshen.smartmirror.di.component.activity.dashboard.mirror.MirrorDashboardComponent
 import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.dashboard.mirror.MirrorDashboardPresenter
@@ -96,7 +97,7 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
     /* private methods */
 
     private fun configureWidget(configuration: WidgetConfiguration) {
-        val widget = createWidget(configuration.widgetKey, context)
+        val widget = createWidget(configuration.widgetKey, WidgetSize(), context)
         val sameWidgetsCount = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == configuration.widgetKey }.size
         val widgetKey = WidgetKey(configuration.widgetKey, sameWidgetsCount)
         widget.tag = widgetKey

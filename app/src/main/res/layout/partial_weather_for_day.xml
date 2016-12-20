@@ -24,26 +24,11 @@
         tools:src="@drawable/ic_add" />
 
     <TextView
-        android:id="@+id/pressure"
-        style="@style/App.Theme.TextViewLight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/textSize_small3"
-        tools:text="1004 pa" />
-
-    <TextView
-        android:id="@+id/humidity"
-        style="@style/App.Theme.TextViewLight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/textSize_small3"
-        tools:text="80 %" />
-
-    <TextView
         android:id="@+id/description"
         style="@style/App.Theme.TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="@dimen/textSize_small3"
         tools:text="Clouds" />
 
@@ -52,7 +37,26 @@
         style="@style/App.Theme.TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="@dimen/textSize_large1"
         tools:text="25" />
+
+    <TextView
+        android:id="@+id/pressure"
+        style="@style/App.Theme.TextViewLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="@dimen/textSize_small4"
+        tools:text="1004 pa" />
+
+    <TextView
+        android:id="@+id/humidity"
+        style="@style/App.Theme.TextViewLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="@dimen/textSize_small4"
+        tools:text="80 %" />
 
 </LinearLayout>

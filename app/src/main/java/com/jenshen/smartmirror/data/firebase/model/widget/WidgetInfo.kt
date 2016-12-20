@@ -19,7 +19,8 @@ data class WidgetInfo(@set:PropertyName(FirebaseConstant.Widget.NAME)
 
         const val CLOCK_WIDGET_KEY = "-KXmMIRVjA3K4zSPwsYv"
         const val CURRENT_WEATHER_WIDGET_KEY = "-KZEODMZZ-Bx87mu1JoR"
-        const val WEATHER_FORECAST_WIDGET_KEY = "-KZLq6Oq9ydOvRYpgYOm"
+        const val WEATHER_FORECAST_FOR_DAY_WIDGET_KEY = "-KZLq6Oq9ydOvRYpgYOm"
+        const val WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY = "-KZTABib6OSjnBn79_8O"
 
         @JvmField val CREATOR: Parcelable.Creator<WidgetInfo> = object : Parcelable.Creator<WidgetInfo> {
             override fun createFromParcel(source: Parcel): WidgetInfo = WidgetInfo(source)

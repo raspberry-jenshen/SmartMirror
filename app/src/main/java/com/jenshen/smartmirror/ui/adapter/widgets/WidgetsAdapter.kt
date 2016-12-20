@@ -23,7 +23,8 @@ class WidgetsAdapter(private val context: Context,
     companion object {
         const val ITEM_CLOCK = 0
         const val ITEM_CURRENT_WEATHER = 1
-        const val ITEM_WEATHER_FORECAST = 2
+        const val ITEM_WEATHER_FORECAST_FOR_DAY = 2
+        const val ITEM_WEATHER_FORECAST_FOR_WEEK = 3
     }
 
     init {
@@ -34,7 +35,8 @@ class WidgetsAdapter(private val context: Context,
         return when (position) {
             0 -> ITEM_CLOCK
             1 -> ITEM_CURRENT_WEATHER
-            2 -> ITEM_WEATHER_FORECAST
+            2 -> ITEM_WEATHER_FORECAST_FOR_DAY
+            3 -> ITEM_WEATHER_FORECAST_FOR_WEEK
             else -> {
                 throw RuntimeException("Can't support this type ")
             }
@@ -83,7 +85,8 @@ class WidgetsAdapter(private val context: Context,
         return when (type) {
             ITEM_CLOCK -> WidgetInfo.CLOCK_WIDGET_KEY
             ITEM_CURRENT_WEATHER -> WidgetInfo.CURRENT_WEATHER_WIDGET_KEY
-            ITEM_WEATHER_FORECAST -> WidgetInfo.WEATHER_FORECAST_WIDGET_KEY
+            ITEM_WEATHER_FORECAST_FOR_DAY -> WidgetInfo.WEATHER_FORECAST_FOR_DAY_WIDGET_KEY
+            ITEM_WEATHER_FORECAST_FOR_WEEK -> WidgetInfo.WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY
             else -> {
                 throw RuntimeException("Can't support this widget type")
             }
