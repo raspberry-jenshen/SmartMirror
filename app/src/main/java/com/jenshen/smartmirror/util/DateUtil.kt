@@ -6,11 +6,17 @@ import java.util.*
 class DateUtil {
 
     companion object {
-        private val BASE_DATE_FORMAT = "dd.MM.yyyy"
-        val baseFormat = SimpleDateFormat(BASE_DATE_FORMAT, Locale.getDefault())
+        val BASE_DATE_FORMAT = "dd.MM.yyyy"
+        val DAT_MONTH = "dd.MM"
     }
 }
 
-fun Date.toSimpleFormat(): String {
-    return DateUtil.baseFormat.format(this)
+fun Date.toDayMonthYear(): String {
+    val baseFormat = SimpleDateFormat(DateUtil.BASE_DATE_FORMAT, Locale.getDefault())
+    return baseFormat.format(this)
+}
+
+fun Date.toDayMonth(): String {
+    val baseFormat = SimpleDateFormat(DateUtil.DAT_MONTH, Locale.getDefault())
+    return baseFormat.format(this)
 }

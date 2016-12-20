@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.widget.info.CurrentWeatherWidgetData
+import com.jenshen.smartmirror.util.toDayMonth
 import kotlinx.android.synthetic.main.view_weather.view.*
 
 class CurrentWeatherView : CoordinatorLayout, Widget<CurrentWeatherWidgetData> {
@@ -33,7 +34,7 @@ class CurrentWeatherView : CoordinatorLayout, Widget<CurrentWeatherWidgetData> {
                     .load(weather?.iconUrl)
                     .into(this.weatherIcon)
         }
-        response.date?.let { this.lastTimeUpdate.text = it.toString() }
+        response.date?.let { this.lastTimeUpdate.text = it.toDayMonth() }
         this.country.text = "${response.name}, ${response.sys?.country}"
 
         response.temperatureConditions?.let {

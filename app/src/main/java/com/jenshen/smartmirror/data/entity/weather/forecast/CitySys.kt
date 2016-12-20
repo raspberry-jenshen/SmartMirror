@@ -1,4 +1,4 @@
 package com.jenshen.smartmirror.data.entity.weather.forecast
 
 
-class CitySys(population: Int)
+class CitySys(val population: Int)

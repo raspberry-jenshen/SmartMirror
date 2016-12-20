@@ -100,4 +100,14 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
         return getMirrorConfigurationWidgetsRef(configurationKey)
                 .map { it.child(widgetKey) }
     }
+
+    override fun getMirrorConfigurationUserInfoKeyRef(configurationKey: String): Single<DatabaseReference> {
+        return getMirrorConfigurationRef(configurationKey)
+                .map { it.child(FirebaseConstant.MirrorConfiguration.USER_INFO_KEY) }
+    }
+
+    override fun getMirrorConfigurationIsEnablePrecipitationRef(configurationKey: String): Single<DatabaseReference> {
+        return getMirrorConfigurationRef(configurationKey)
+                .map { it.child(FirebaseConstant.MirrorConfiguration.IS_ENABLE_PRECIPITATION) }
+    }
 }

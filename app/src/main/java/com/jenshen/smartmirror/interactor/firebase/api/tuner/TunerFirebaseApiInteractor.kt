@@ -3,7 +3,6 @@ package com.jenshen.smartmirror.interactor.firebase.api.tuner
 import android.content.Context
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
-import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.model.configuration.ContainerSize
@@ -17,6 +16,7 @@ import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
 import com.jenshen.smartmirror.data.model.mirror.EditMirrorModel
 import com.jenshen.smartmirror.data.model.mirror.MirrorModel
 import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
+import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.model.widget.WidgetModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.mirror.MirrorApiManager
@@ -180,6 +180,27 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                             }
                 }
     }
+
+    override fun isEnablePrecipitationOnMirror(configurationKey: String): Single<Boolean> {
+        return tunerApiManager.isEnablePrecipitationInConfiguration(configurationKey)
+    }
+
+    override fun isUserInfoOnMirror(configurationKey: String): Single<Boolean> {
+        return tunerApiManager.getUserInfoKeyInConfiguration(configurationKey)
+                .isEmpty
+                .map { !it }
+    }
+
+    override fun setEnablePrecipitationOnMirror(configurationKey: String, isEnable: Boolean): Completable {
+        return tunerApiManager.setEnablePrecipitationInConfiguration(configurationKey, isEnable)
+    }
+
+    override fun setEnableUserInfoOnMirror(configurationKey: String, isEnable: Boolean): Completable {
+        return Single.fromCallable { preferencesManager.getSession()!! }
+                .cast(TunerSession::class.java)
+                .flatMapCompletable { tunerApiManager.setUserInfoKeyInConfiguration(configurationKey, if (isEnable) it.key else null) }
+    }
+
 
     /* private methods */
 

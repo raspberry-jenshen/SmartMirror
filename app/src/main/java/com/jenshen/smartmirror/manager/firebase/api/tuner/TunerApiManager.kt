@@ -45,4 +45,8 @@ interface TunerApiManager {
     fun createWidgetInConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String>
     fun editWidgetInConfiguration(configurationsKey: String, keyWidget: String, widgetConfiguration: WidgetConfiguration): Completable
     fun deleteWidgetInConfiguration(configurationsKey: String, keyWidget: String): Completable
+    fun isEnablePrecipitationInConfiguration(configurationsKey: String) : Single<Boolean>
+    fun setEnablePrecipitationInConfiguration(configurationsKey: String, enabled: Boolean) : Completable
+    fun getUserInfoKeyInConfiguration(configurationsKey: String) : Maybe<String>
+    fun setUserInfoKeyInConfiguration(configurationsKey: String, userInfoKey: String?) : Completable
 }

@@ -3,16 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@color/gray"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:background="@color/gray">
+
+    <TextView
+        android:id="@+id/lastTimeUpdate"
+        style="@style/App.Theme.TextViewLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSize_small3"
+        tools:text="today" />
 
     <ImageView
         android:id="@+id/weatherIcon"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="@dimen/offset_small1"
+        android:layout_width="@dimen/offset_small1_plus_normal"
+        android:layout_height="@dimen/offset_small1_plus_normal"
         android:contentDescription="@null"
+        android:textSize="@dimen/textSize_small3"
         tools:src="@drawable/ic_add" />
 
     <TextView
@@ -20,7 +28,7 @@
         style="@style/App.Theme.TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/offset_small1"
+        android:textSize="@dimen/textSize_small3"
         tools:text="1004 pa" />
 
     <TextView
@@ -28,7 +36,7 @@
         style="@style/App.Theme.TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/offset_small1"
+        android:textSize="@dimen/textSize_small3"
         tools:text="80 %" />
 
     <TextView
@@ -36,19 +44,15 @@
         style="@style/App.Theme.TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/offset_small1"
-        android:textSize="@dimen/textSize_small1"
+        android:textSize="@dimen/textSize_small3"
         tools:text="Clouds" />
-
 
     <TextView
         android:id="@+id/temp"
         style="@style/App.Theme.TextViewLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/offset_small1"
-        android:layout_marginTop="@dimen/offset_small1"
-        android:textSize="@dimen/textSize_large4"
+        android:textSize="@dimen/textSize_large1"
         tools:text="25" />
 
 </LinearLayout>

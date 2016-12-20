@@ -186,9 +186,42 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
                 .flatMapCompletable { it.uploadValue(widgetConfiguration) }
     }
 
-    override fun deleteWidgetInConfiguration(configurationsKey: String, keyWidget: String) :Completable {
+    override fun deleteWidgetInConfiguration(configurationsKey: String, keyWidget: String): Completable {
         return fireBaseDatabase
                 .getMirrorConfigurationWidgetRef(keyWidget, configurationsKey)
                 .flatMapCompletable { it.clearValue() }
+    }
+
+    override fun isEnablePrecipitationInConfiguration(configurationsKey: String): Single<Boolean> {
+        return fireBaseDatabase
+                .getMirrorConfigurationIsEnablePrecipitationRef(configurationsKey)
+                .flatMap { it.loadValue() }
+                .map {
+                    if (it.exists()) {
+                        it.getValue(Boolean::class.java)
+                    } else {
+                        false
+                    }
+                }
+    }
+
+    override fun setEnablePrecipitationInConfiguration(configurationsKey: String, enabled: Boolean): Completable {
+        return fireBaseDatabase
+                .getMirrorConfigurationIsEnablePrecipitationRef(configurationsKey)
+                .flatMapCompletable { it.uploadValue(enabled) }
+    }
+
+    override fun getUserInfoKeyInConfiguration(configurationsKey: String): Maybe<String> {
+        return fireBaseDatabase
+                .getMirrorConfigurationUserInfoKeyRef(configurationsKey)
+                .flatMap { it.loadValue() }
+                .filter { it.exists() }
+                .map { it.getValue(String::class.java) }
+    }
+
+    override fun setUserInfoKeyInConfiguration(configurationsKey: String, userInfoKey: String?): Completable {
+        return fireBaseDatabase
+                .getMirrorConfigurationUserInfoKeyRef(configurationsKey)
+                .flatMapCompletable { it.uploadValue(userInfoKey) }
     }
 }

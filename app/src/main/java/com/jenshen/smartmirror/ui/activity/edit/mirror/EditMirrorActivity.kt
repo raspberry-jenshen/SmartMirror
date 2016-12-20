@@ -23,6 +23,7 @@ import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.di.component.activity.edit.mirror.EditMirrorComponent
 import com.jenshen.smartmirror.ui.activity.choose.widget.ChooseWidgetActivity
+import com.jenshen.smartmirror.ui.activity.settings.mirror.MirrorSettingsActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.edit.mirror.EditMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.edit.mirror.EditMirrorView
 import com.jenshen.smartmirror.ui.view.widget.Widget
@@ -187,7 +188,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 return true
             }
             R.id.configurationSettings_item_menu -> {
-                saveConfiguration()
+                MirrorSettingsActivity.start(context, editMirrorModel!!.configurationKey!!)
                 return true
             }
             android.R.id.home -> {

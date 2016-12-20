@@ -76,6 +76,10 @@
     <string name="editMirror.rows_count">7</string>
     <string name="editMirror.news">News</string>
 
+    <!-- mirror settings-->
+    <string name="mirror_settings.show_user_info_on_mirror">Show user info on the mirror</string>
+    <string name="mirror_settings.enable_precipitation_on_mirror">Enable precipitation on the mirror</string>
+
     <!-- choose widget-->
     <string name="chooseWidget">Choose Widget</string>
 

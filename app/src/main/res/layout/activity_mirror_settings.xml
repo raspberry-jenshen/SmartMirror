@@ -24,6 +24,7 @@
 
         <TextView
             android:layout_weight="1"
+            android:text="@string/mirror_settings.enable_precipitation_on_mirror"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
@@ -43,6 +44,7 @@
 
         <TextView
             android:layout_weight="1"
+            android:text="@string/mirror_settings.show_user_info_on_mirror"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 

@@ -15,6 +15,8 @@ interface FirebaseConstant {
             const val TITLE = "title"
             const val CONTAINER_SIZE = "container_size"
             const val WIDGETS = "widgets"
+            const val USER_INFO_KEY = "user_info_key"
+            const val IS_ENABLE_PRECIPITATION = "is_enable_precipitation"
         }
 
         interface ContainerSize {
