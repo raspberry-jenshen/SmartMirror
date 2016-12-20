@@ -21,8 +21,9 @@ class WidgetsAdapter(private val context: Context,
     private val itemList: MutableList<WidgetModel>
 
     companion object {
-        const val ITEM_WEATHER = 0
-        const val ITEM_CLOCK = 1
+        const val ITEM_CLOCK = 0
+        const val ITEM_CURRENT_WEATHER = 1
+        const val ITEM_WEATHER_FORECAST = 2
     }
 
     init {
@@ -31,8 +32,9 @@ class WidgetsAdapter(private val context: Context,
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
-            0 -> ITEM_WEATHER
-            1 -> ITEM_CLOCK
+            0 -> ITEM_CLOCK
+            1 -> ITEM_CURRENT_WEATHER
+            2 -> ITEM_WEATHER_FORECAST
             else -> {
                 throw RuntimeException("Can't support this type ")
             }
@@ -61,8 +63,8 @@ class WidgetsAdapter(private val context: Context,
             itemList.add(position, model)
             notifyItemChanged(position)
         } else {
-            itemList.add(0, model)
-            notifyItemInserted(0)
+            itemList.add(model)
+            notifyItemInserted(itemList.size)
         }
     }
 
@@ -80,7 +82,8 @@ class WidgetsAdapter(private val context: Context,
     private fun getWidgetKey(type: Int): String {
         return when (type) {
             ITEM_CLOCK -> WidgetInfo.CLOCK_WIDGET_KEY
-            ITEM_WEATHER -> WidgetInfo.WEATHER_WIDGET_KEY
+            ITEM_CURRENT_WEATHER -> WidgetInfo.CURRENT_WEATHER_WIDGET_KEY
+            ITEM_WEATHER_FORECAST -> WidgetInfo.WEATHER_FORECAST_WIDGET_KEY
             else -> {
                 throw RuntimeException("Can't support this widget type")
             }

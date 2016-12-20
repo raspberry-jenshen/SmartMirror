@@ -7,11 +7,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.jenshen.smartmirror.R
-import com.jenshen.smartmirror.data.entity.widget.info.CurrentWeatherWidgetData
-import com.jenshen.smartmirror.util.toBaseFormat
-import kotlinx.android.synthetic.main.view_weather.view.*
+import com.jenshen.smartmirror.data.entity.widget.info.WeatherForecastWidgetData
+import kotlinx.android.synthetic.main.partial_weather_for_day.view.*
+import kotlinx.android.synthetic.main.view_forecast.view.*
 
-class WeatherForecastView : CoordinatorLayout, Widget<CurrentWeatherWidgetData> {
+class WeatherForecastView : CoordinatorLayout, Widget<WeatherForecastWidgetData> {
 
     constructor(context: Context) : super(context) {
         init()
@@ -25,24 +25,33 @@ class WeatherForecastView : CoordinatorLayout, Widget<CurrentWeatherWidgetData> 
         init()
     }
 
-    override fun updateWidget(currentWeatherWidgetData: CurrentWeatherWidgetData) {
-        Glide.with(context)
-                .load(currentWeatherWidgetData.iconUrl)
-                .into(this.weatherIcon)
+    override fun updateWidget(widgetData: WeatherForecastWidgetData) {
+        val response = widgetData.weatherResponse
+        this.country.text = "${response.city?.name}, ${response.city?.name}"
 
-        val response = currentWeatherWidgetData.weatherResponse
-        val weather = response.weathersList.iterator().next()
-        this.country.text = "${response.name}, ${response.sys.country}"
-        this.lastTimeUpdate.text = response.date.toBaseFormat()
-        this.pressure.text = context.getString(R.string.widget_weather_pressure) + ": ${response.temperatureConditions.pressure} hPa"
-        this.humidity.text = context.getString(R.string.widget_weather_humidity) + ": ${response.temperatureConditions.humidity} %"
-        this.description.text = weather.description
-        this.temp.text = response.temperatureConditions.temp.toString()
+        response.weathersList?.let { this.lastTimeUpdate.text = it.iterator().next().date.toString() }
+
+        response.weathersList?.forEach {
+            val weatherView = LayoutInflater.from(context).inflate(R.layout.partial_weather_for_day, this.dayContainer)
+            it.weathersList.let {
+                val weather = it?.iterator()?.next()
+                weatherView.description.text = weather?.description
+                Glide.with(context)
+                        .load(weather?.iconUrl)
+                        .into(weatherView.weatherIcon)
+            }
+
+            it.temperatureConditions?.let {
+                weatherView.pressure.text = context.getString(R.string.widget_weather_pressure) + ": ${it.pressure} hPa"
+                weatherView.humidity.text = context.getString(R.string.widget_weather_humidity) + ": ${it.humidity} %"
+                weatherView.temp.text = it.temp.toString()
+            }
+        }
     }
 
     /* private methods */
 
     private fun init() {
-        LayoutInflater.from(context).inflate(R.layout.view_weather, this)
+        LayoutInflater.from(context).inflate(R.layout.view_forecast, this)
     }
 }

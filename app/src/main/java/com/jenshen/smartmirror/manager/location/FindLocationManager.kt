@@ -28,9 +28,9 @@ class FindLocationManager(context: Context) : LocationListener, IFindLocationMan
     companion object {
 
         // The minimum distance to change Updates in meters
-        private val MIN_DISTANCE_CHANGE_FOR_UPDATES: Long = 10 // 10 meters
+        private val MIN_DISTANCE_CHANGE_FOR_UPDATES: Long = 100 // 100 meters
         // The minimum time between updates in milliseconds
-        private val MIN_TIME_BW_UPDATES = (1000 * 10).toLong() // 10 sec
+        private val MIN_TIME_BW_UPDATES = (1000 * 100).toLong() // 100 sec
     }
 
     override fun addOnLocationReceivedCallback(onLocationReceived: OnLocationReceived) {
@@ -44,7 +44,7 @@ class FindLocationManager(context: Context) : LocationListener, IFindLocationMan
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     override fun fetchCurrentLocation(): Observable<Location> {
-        return Observable.create { source ->
+       return Observable.create { source ->
             val onLocationReceived: OnLocationReceived = object : OnLocationReceived {
                 override fun onReceived(location: Location) {
                     source.onNext(location)

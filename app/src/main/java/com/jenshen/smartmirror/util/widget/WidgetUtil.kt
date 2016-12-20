@@ -8,6 +8,7 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.ui.view.widget.ClockView
 import com.jenshen.smartmirror.ui.view.widget.CurrentWeatherView
+import com.jenshen.smartmirror.ui.view.widget.WeatherForecastView
 import com.jenshensoft.widgetview.WidgetView
 
 
@@ -23,7 +24,8 @@ fun createWidget(widgetKey: String, context: Context): WidgetView {
 fun getViewForWidget(widgetKey: String, context: Context): View {
     val view: View = when (widgetKey) {
         WidgetInfo.CLOCK_WIDGET_KEY -> ClockView(context)
-        WidgetInfo.WEATHER_WIDGET_KEY -> CurrentWeatherView(context)
+        WidgetInfo.CURRENT_WEATHER_WIDGET_KEY -> CurrentWeatherView(context)
+        WidgetInfo.WEATHER_FORECAST_WIDGET_KEY -> WeatherForecastView(context)
         else -> throw RuntimeException("Can't support this widget")
     }
     view.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)

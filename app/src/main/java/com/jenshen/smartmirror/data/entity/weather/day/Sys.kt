@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.data.entity.weather
+package com.jenshen.smartmirror.data.entity.weather.day
 
 import java.util.*
 

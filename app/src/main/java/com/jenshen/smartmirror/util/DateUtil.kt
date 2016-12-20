@@ -11,6 +11,6 @@ class DateUtil {
     }
 }
 
-fun Date.toBaseFormat(): String {
+fun Date.toSimpleFormat(): String {
     return DateUtil.baseFormat.format(this)
 }
