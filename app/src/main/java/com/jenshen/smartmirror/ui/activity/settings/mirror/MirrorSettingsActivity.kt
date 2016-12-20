@@ -12,7 +12,7 @@ class MirrorSettingsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mirror_settings)
         setupToolbar()
-
+        enableWeatherAnimation.set
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

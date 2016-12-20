@@ -16,8 +16,41 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/settings" />
 
-    <FrameLayout
-        android:id="@+id/container"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:padding="@dimen/offset_small1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:layout_marginStart="@dimen/offset_small1"
+            android:id="@+id/enableWeatherAnimation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:padding="@dimen/offset_small1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:layout_marginStart="@dimen/offset_small1"
+            android:id="@+id/showAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 </LinearLayout>

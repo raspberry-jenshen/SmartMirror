@@ -60,7 +60,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     }
 
     private var editMirrorModel: EditMirrorModel? = null
-    private var isSaved = false
+    private var isSaved = true
 
     /* inject */
 

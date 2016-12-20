@@ -13,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module(includes = arrayOf(GsonModule::class))
-class ApiModule(private val baseUrl: String) {
+class ApiModule(private val baseUrl: String, private val interceptor: Interceptor) {
 
     @ApiScope
     @Provides
@@ -25,23 +25,10 @@ class ApiModule(private val baseUrl: String) {
 
     @ApiScope
     @Provides
-    fun provideInterceptor(): Interceptor {
-        return Interceptor { chain ->
-            val original = chain.request()
-
-            val request = original.newBuilder()
-            request.addHeader("Content-type", "application/json")
-            request.addHeader("x-api-key", BuildConfig.WEATHER_API_KEY)
-            chain.proceed(request.method(original.method(), original.body()).build())
-        }
-    }
-
-    @ApiScope
-    @Provides
-    fun provideOkHttpClient(headersInterceptor: Interceptor, loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-                .addInterceptor(headersInterceptor)
+                .addInterceptor(interceptor)
                 .build()
         return client
     }
