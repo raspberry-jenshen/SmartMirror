@@ -1,6 +1,7 @@
 package com.jenshen.smartmirror.interactor.firebase.auth
 
 import android.content.Context
+import android.net.Uri
 import android.provider.Settings
 import com.google.firebase.auth.FirebaseUser
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
@@ -26,7 +27,7 @@ class FirebaseAuthInteractor @Inject constructor(private val context: Context,
                         //todo val iid = InstanceID.getInstance(context).getId()
                         session = MirrorSession(getDeviceUniqueID(context))
                     } else {
-                        session = TunerSession(it.uid, it.email)
+                        session = TunerSession(it.uid, it.email!!, it.displayName, it.photoUrl)
                     }
                     preferencesManager.sighIn(session, it.isAnonymous)
                 }
@@ -38,6 +39,10 @@ class FirebaseAuthInteractor @Inject constructor(private val context: Context,
 
     override fun signInMirror(): Completable {
         return authManager.signInAnonymously()
+    }
+
+    override fun editUserInfo(name: String, uri: Uri): Completable {
+        return authManager.updateProfile(name, uri)
     }
 
     override fun createNewTuner(email: String, password: String): Completable {

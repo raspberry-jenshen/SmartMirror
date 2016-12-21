@@ -123,6 +123,7 @@ dependencies {
     compile "com.google.firebase:firebase-core:${lib.google_play_version}"
     compile "com.google.firebase:firebase-auth:${lib.google_play_version}"
     compile "com.google.firebase:firebase-database:${lib.google_play_version}"
+    compile "com.google.firebase:firebase-storage:${lib.google_play_version}"
 
     //Retrofit
     compile "com.squareup.retrofit2:retrofit:${lib.retrofit_version}"

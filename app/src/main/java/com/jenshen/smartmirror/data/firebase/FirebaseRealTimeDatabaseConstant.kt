@@ -1,6 +1,6 @@
 package com.jenshen.smartmirror.data.firebase
 
-interface FirebaseConstant {
+interface FirebaseRealTimeDatabaseConstant {
 
     companion object {
         const val MIRRORS: String = "mirrors"
@@ -83,8 +83,16 @@ interface FirebaseConstant {
 
     interface Tuner {
         companion object {
-            const val EMAIL = "email"
+            const val TUNER_INFO = "tuner_info"
             const val SUBSCRIPTIONS = "subscriptions"
+        }
+
+        interface TunerInfo {
+            companion object {
+                const val NIKENAME = "nikename"
+                const val EMAIL = "email"
+                const val AVATAR_URL = "url"
+            }
         }
 
         interface TunerSubscription {

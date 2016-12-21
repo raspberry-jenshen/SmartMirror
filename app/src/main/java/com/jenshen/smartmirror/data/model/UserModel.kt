@@ -1,15 +1,12 @@
 package com.jenshen.smartmirror.data.model
 
+import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
-import com.nguyenhoanglam.imagepicker.model.Image
 
-data class UserModel(var email: String?,
-                     var password: String?,
-                     var name: String?,
-                     var avatarImage: Image?) : Parcelable {
-
-    constructor() : this(null, null, null, null)
+data class UserModel(var email: String? = null,
+                     var name: String? = null,
+                     var avatarImage: Uri? = null) : Parcelable {
 
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<UserModel> = object : Parcelable.Creator<UserModel> {
@@ -18,13 +15,12 @@ data class UserModel(var email: String?,
         }
     }
 
-    constructor(source: Parcel) : this(source.readString(), source.readString(), source.readString(), source.readParcelable<Image>(Image::class.java.classLoader))
+    constructor(source: Parcel) : this(source.readString(), source.readString(), source.readParcelable<Uri?>(Uri::class.java.classLoader))
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
         dest?.writeString(email)
-        dest?.writeString(password)
         dest?.writeString(name)
         dest?.writeParcelable(avatarImage, 0)
     }

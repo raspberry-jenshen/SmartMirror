@@ -4,15 +4,15 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName
-import com.jenshen.smartmirror.data.firebase.FirebaseConstant
+import com.jenshen.smartmirror.data.firebase.FirebaseRealTimeDatabaseConstant
 
 
 @IgnoreExtraProperties
-data class WidgetInfo(@set:PropertyName(FirebaseConstant.Widget.NAME)
-                      @get:PropertyName(FirebaseConstant.Widget.NAME)
+data class WidgetInfo(@set:PropertyName(FirebaseRealTimeDatabaseConstant.Widget.NAME)
+                      @get:PropertyName(FirebaseRealTimeDatabaseConstant.Widget.NAME)
                       var name: String = "widget",
-                      @set:PropertyName(FirebaseConstant.Widget.DEFAULT_SIZE)
-                      @get:PropertyName(FirebaseConstant.Widget.DEFAULT_SIZE)
+                      @set:PropertyName(FirebaseRealTimeDatabaseConstant.Widget.DEFAULT_SIZE)
+                      @get:PropertyName(FirebaseRealTimeDatabaseConstant.Widget.DEFAULT_SIZE)
                       var defaultSize: WidgetSize = WidgetSize()) : Parcelable {
 
     companion object {

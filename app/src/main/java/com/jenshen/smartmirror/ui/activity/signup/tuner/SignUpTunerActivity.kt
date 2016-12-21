@@ -2,6 +2,7 @@ package com.jenshen.smartmirror.ui.activity.signup.tuner
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.v4.app.NavUtils
@@ -83,6 +84,7 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
+        updateModel()
         outState?.putParcelable(KEY_USER_MODEL, userModel)
     }
 
@@ -104,8 +106,8 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
             val iterator = images.iterator()
             if (iterator.hasNext()) {
                 val image = iterator.next() as Image
-                userModel.avatarImage = image
-                loadAvatar(image)
+                userModel.avatarImage = Uri.fromFile(File(image.path))
+                loadAvatar(userModel.avatarImage)
             } else {
                 Log.e("SmartMirror", "Can't load an image")
             }
@@ -150,11 +152,11 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
     }
 
     override fun onCreateAccountClicked() {
+        updateModel()
         presenter.createAccount(
-                nameEdit.text.toString().trim(),
-                emailEdit.text.toString(),
                 passwordEdit.text.toString(),
-                confirmPasswordEdit.text.toString())
+                confirmPasswordEdit.text.toString(),
+                userModel)
     }
 
     override fun onCreateAccountSuccess() {
@@ -165,15 +167,20 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
 
     /* private methods */
 
-    private fun loadAvatar(image: Image?) {
-        if (image == null) {
+    private fun loadAvatar(uri: Uri?) {
+        if (uri == null) {
             avatar.setImageBitmap(getBitmap(context, R.drawable.ic_demo_avatar).asCircleBitmap())
         } else {
             Glide.with(context)
-                    .load(File(image.path))
+                    .load(uri)
                     .bitmapTransform(CropCircleTransformation(context))
                     .into(avatar)
         }
+    }
+
+    private fun updateModel() {
+        userModel.name =  nameEdit.text.toString().trim()
+        userModel.email =  emailEdit.text.toString()
     }
 
     private fun setupToolbar() {

@@ -2,7 +2,7 @@ package com.jenshen.smartmirror.manager.firebase.database
 
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.jenshen.smartmirror.data.firebase.FirebaseConstant
+import com.jenshen.smartmirror.data.firebase.FirebaseRealTimeDatabaseConstant
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
 
     override fun getMirrorsRef(): Single<DatabaseReference> {
         return Single.fromCallable { fireBaseDatabase.reference }
-                .map { it.child(FirebaseConstant.MIRRORS) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.MIRRORS) }
     }
 
     override fun getMirrorRef(mirrorKey: String): Single<DatabaseReference> {
@@ -22,22 +22,22 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
 
     override fun getIsWaitingForTunerFlagRef(mirrorKey: String): Single<DatabaseReference> {
         return getMirrorRef(mirrorKey)
-                .map { it.child(FirebaseConstant.Mirror.IS_WAITING_FOR_TUNER) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.Mirror.IS_WAITING_FOR_TUNER) }
     }
 
     override fun getSelectedConfigurationRef(mirrorKey: String): Single<DatabaseReference> {
         return getMirrorRef(mirrorKey)
-                .map { it.child(FirebaseConstant.Mirror.SELECTED_CONFIGURATION_ID) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.Mirror.SELECTED_CONFIGURATION_ID) }
     }
 
     override fun getMirrorSubscribersRef(mirrorKey: String): Single<DatabaseReference> {
         return getMirrorRef(mirrorKey)
-                .map { it.child(FirebaseConstant.Mirror.SUBSCRIBERS) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.Mirror.SUBSCRIBERS) }
     }
 
     override fun getMirrorConfigurationsInfoRef(mirrorKey: String): Single<DatabaseReference> {
         return getMirrorRef(mirrorKey)
-                .map { it.child(FirebaseConstant.Mirror.CONFIGURATIONS) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.Mirror.CONFIGURATIONS) }
     }
 
     override fun getMirrorConfigurationInfoRef(configurationKey: String, mirrorKey: String): Single<DatabaseReference> {
@@ -49,7 +49,7 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
 
     override fun getTunersRef(): Single<DatabaseReference> {
         return Single.fromCallable { fireBaseDatabase.reference }
-                .map { it.child(FirebaseConstant.TUNERS) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.TUNERS) }
     }
 
     override fun getTunerRef(tunerKey: String): Single<DatabaseReference> {
@@ -59,7 +59,7 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
 
     override fun getTunerSubscriptionsRef(tunerKey: String): Single<DatabaseReference> {
         return getTunerRef(tunerKey)
-                .map { it.child(FirebaseConstant.Tuner.SUBSCRIPTIONS) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.Tuner.SUBSCRIPTIONS) }
     }
 
     override fun getTunerSubscriptionRef(mirrorKey: String, tunerKey: String): Single<DatabaseReference> {
@@ -71,7 +71,7 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
 
     override fun getWidgetsRef(): Single<DatabaseReference> {
         return Single.fromCallable { fireBaseDatabase.reference }
-                .map { it.child(FirebaseConstant.WIDGETS) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.WIDGETS) }
     }
 
     override fun getWidgetRef(widgetKey: String): Single<DatabaseReference> {
@@ -83,7 +83,7 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
 
     override fun getMirrorsConfigurationsRef(): Single<DatabaseReference> {
         return Single.fromCallable { fireBaseDatabase.reference }
-                .map { it.child(FirebaseConstant.MIRROR_CONFIGURATIONS) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.MIRROR_CONFIGURATIONS) }
     }
 
     override fun getMirrorConfigurationRef(configurationKey: String): Single<DatabaseReference> {
@@ -93,7 +93,7 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
 
     override fun getMirrorConfigurationWidgetsRef(configurationKey: String): Single<DatabaseReference> {
         return getMirrorConfigurationRef(configurationKey)
-                .map { it.child(FirebaseConstant.MirrorConfiguration.WIDGETS) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.WIDGETS) }
     }
 
     override fun getMirrorConfigurationWidgetRef(widgetKey: String, configurationKey: String): Single<DatabaseReference> {
@@ -103,11 +103,11 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
 
     override fun getMirrorConfigurationUserInfoKeyRef(configurationKey: String): Single<DatabaseReference> {
         return getMirrorConfigurationRef(configurationKey)
-                .map { it.child(FirebaseConstant.MirrorConfiguration.USER_INFO_KEY) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.USER_INFO_KEY) }
     }
 
     override fun getMirrorConfigurationIsEnablePrecipitationRef(configurationKey: String): Single<DatabaseReference> {
         return getMirrorConfigurationRef(configurationKey)
-                .map { it.child(FirebaseConstant.MirrorConfiguration.IS_ENABLE_PRECIPITATION) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.IS_ENABLE_PRECIPITATION) }
     }
 }

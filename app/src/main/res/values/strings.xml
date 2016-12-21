@@ -22,7 +22,8 @@
     <string name="error.invalid_confirm_password">The confirm password mast be the same with the password</string>
     <string name="error.camera.permission">You need to allow the camera permission for register your Mirror</string>
     <string name="error.location.permission">You need to allow the location permission for widgets that your location</string>
-    <string name="error.cant_find_mirror">Can\'t find mirror</string>
+    <string name="error.cant_find_mirror">Can\'t find the mirror</string>
+    <string name="error.cant_find_user">Can\'t find the user</string>
     <string name="error.cant_be_empty">Can\'t be empty</string>
     <string name="error.finish_editing">Please, finish editing</string>
     <string name="error.not_save">Are you sure that you want to exit without save a mirror configuration?</string>

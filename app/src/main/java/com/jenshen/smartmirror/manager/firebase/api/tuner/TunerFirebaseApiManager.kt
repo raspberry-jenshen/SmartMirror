@@ -4,7 +4,7 @@ import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ServerValue
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
-import com.jenshen.smartmirror.data.firebase.FirebaseConstant
+import com.jenshen.smartmirror.data.firebase.FirebaseRealTimeDatabaseConstant
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
@@ -103,7 +103,7 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
     override fun updateSubscriptionInTuner(tunerKey: String, mirrorKey: String): Completable {
         return fireBaseDatabase
                 .getTunerSubscriptionRef(mirrorKey, tunerKey)
-                .map { it.child(FirebaseConstant.Tuner.TunerSubscription.LAST_TIME_UPDATE) }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.Tuner.TunerSubscription.LAST_TIME_UPDATE) }
                 .flatMapCompletable { it.uploadValue(ServerValue.TIMESTAMP) }
     }
 

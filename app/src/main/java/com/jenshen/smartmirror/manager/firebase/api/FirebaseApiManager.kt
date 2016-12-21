@@ -5,6 +5,7 @@ import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
 import com.jenshen.smartmirror.data.firebase.model.tuner.Tuner
+import com.jenshen.smartmirror.data.firebase.model.tuner.TunerInfo
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
 import com.jenshen.smartmirror.util.reactive.firebase.loadValue
 import com.jenshen.smartmirror.util.reactive.firebase.observeValue
@@ -22,7 +23,7 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
     override fun createTuner(tunerSession: TunerSession): Single<Tuner> {
         return fireBaseDatabase.getTunerRef(tunerSession.key)
                 .flatMap { reference ->
-                    Single.fromCallable { Tuner(tunerSession.email) }
+                    Single.fromCallable { Tuner(TunerInfo(tunerSession.nikeName!!, tunerSession.email, tunerSession.avatar.toString())) }
                             .flatMap { tuner ->
                                 reference.uploadValue(tuner)
                                         .toSingle { tuner }

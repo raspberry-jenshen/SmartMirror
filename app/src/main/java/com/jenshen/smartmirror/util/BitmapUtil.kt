@@ -9,6 +9,7 @@ import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.support.v4.content.ContextCompat
 
+
 fun Bitmap.asCircleBitmap(): Bitmap {
     val output = Bitmap.createBitmap(this.width,
             this.height, Bitmap.Config.ARGB_8888)
@@ -25,6 +26,15 @@ fun Bitmap.asCircleBitmap(): Bitmap {
     paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
     canvas.drawBitmap(this, rect, rect, paint)
     this.recycle()
+    return output
+}
+
+fun Bitmap.scale(wantedWidth: Int, wantedHeight: Int): Bitmap {
+    val output = Bitmap.createBitmap(wantedWidth, wantedHeight, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(output)
+    val m = Matrix()
+    m.setScale(wantedWidth.toFloat() / this.width, wantedHeight.toFloat() / this.height)
+    canvas.drawBitmap(this, m, Paint())
     return output
 }
 
