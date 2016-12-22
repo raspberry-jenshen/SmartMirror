@@ -23,7 +23,12 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
     override fun createTuner(tunerSession: TunerSession): Single<Tuner> {
         return fireBaseDatabase.getTunerRef(tunerSession.key)
                 .flatMap { reference ->
-                    Single.fromCallable { Tuner(TunerInfo(tunerSession.nikeName!!, tunerSession.email, tunerSession.avatar.toString())) }
+                    Single.fromCallable {
+                        Tuner(TunerInfo(
+                                tunerSession.nikeName!!,
+                                tunerSession.email,
+                                tunerSession.avatar))
+                    }
                             .flatMap { tuner ->
                                 reference.uploadValue(tuner)
                                         .toSingle { tuner }

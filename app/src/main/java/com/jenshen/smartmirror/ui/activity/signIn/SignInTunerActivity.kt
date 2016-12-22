@@ -78,6 +78,16 @@ class SignInTunerActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignI
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.onStartFetchAuth()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.onStopFetchAuth()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -112,9 +122,7 @@ class SignInTunerActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignI
     }
 
     override fun onLoginSuccess() {
-        val intent = Intent(context, ChooseMirrorActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
+        ChooseMirrorActivity.start(context)
     }
 
     override fun setLoginButtonState(isEnabled: Boolean) {

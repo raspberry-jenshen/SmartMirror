@@ -15,6 +15,7 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Action
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
@@ -24,13 +25,23 @@ import javax.inject.Inject
 
 class SignInPresenter @Inject constructor(private val preferencesManager: PreferencesManager,
                                           private val authInteractor: FirebaseAuthInteractor) : MvpRxPresenter<SignInView>() {
+    var disposable: Disposable? = null
 
-    override fun attachView(view: SignInView?) {
-        super.attachView(view)
+    fun onStartFetchAuth() {
         authInteractor.fetchAuth()
                 .applySchedulers(Schedulers.io())
-                .doOnSubscribe { compositeDisposable.add(it) }
+                .doOnSubscribe {
+                    disposable = it
+                    compositeDisposable.add(disposable)
+                }
                 .subscribe({ view?.onLoginSuccess() }, { view?.handleError(it) })
+    }
+
+    fun onStopFetchAuth() {
+        if (disposable != null) {
+            compositeDisposable.remove(disposable)
+            disposable = null
+        }
     }
 
     fun initLoginButtonStateListener(onTextChangedEmail: Observable<String>, onTextChangedPassword: Observable<String>) {

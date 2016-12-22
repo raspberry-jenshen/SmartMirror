@@ -1,10 +1,9 @@
 package com.jenshen.smartmirror.ui.activity.choose.mirror
 
-import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
@@ -22,7 +21,6 @@ import com.jenshen.smartmirror.ui.adapter.mirrors.MirrorsAdapter
 import com.jenshen.smartmirror.ui.adapter.touch.SimpleItemTouchHelperCallback
 import com.jenshen.smartmirror.ui.mvp.presenter.choose.mirror.ChooseMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.choose.mirror.ChooseMirrorView
-import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_choose_mirror.*
 
 
@@ -35,6 +33,14 @@ class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
 
 
     private lateinit var adapter: MirrorsAdapter
+
+    companion object {
+        fun start(context: Context) {
+            val intent = Intent(context, ChooseMirrorActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            context.startActivity(intent)
+        }
+    }
 
     /* inject */
 

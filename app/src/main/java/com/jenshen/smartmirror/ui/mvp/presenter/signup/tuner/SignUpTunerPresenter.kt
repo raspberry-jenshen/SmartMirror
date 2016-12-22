@@ -20,6 +20,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function4
@@ -35,12 +36,23 @@ class SignUpTunerPresenter @Inject constructor(private val apiInteractor: Fireba
     private var userModel: UserModel? = null
     private var isTaskFinished = true
 
-    override fun attachView(view: SignUpTunerView?) {
-        super.attachView(view)
+    var disposable: Disposable? = null
+
+    fun onStartFetchAuth() {
         authInteractor.fetchAuth()
                 .applySchedulers(Schedulers.io())
-                .doOnSubscribe { compositeDisposable.add(it) }
+                .doOnSubscribe {
+                    disposable = it
+                    compositeDisposable.add(disposable)
+                }
                 .subscribe({ onCreateTunerAccount() }, { view?.handleError(it) })
+    }
+
+    fun onStopFetchAuth() {
+        if (disposable != null) {
+            compositeDisposable.remove(disposable)
+            disposable = null
+        }
     }
 
     fun initCreateAccountButtonStateListener(nameEdit: Observable<String>,
@@ -121,7 +133,7 @@ class SignUpTunerPresenter @Inject constructor(private val apiInteractor: Fireba
     }
 
     fun onCreateTunerAccount() {
-        updateUserSession(userModel)
+        updateTunerSession(userModel)
                 .flatMap { apiInteractor.createOrGetTuner(it) }
                 .flatMapCompletable { authInteractor.editUserInfo(it.tunerInfo.nikeName, Uri.parse(it.tunerInfo.avatarUrl)) }
                 .applySchedulers(Schedulers.io())
@@ -144,7 +156,7 @@ class SignUpTunerPresenter @Inject constructor(private val apiInteractor: Fireba
 
     /* private methods */
 
-    private fun updateUserSession(userModel: UserModel?): Single<TunerSession> {
+    private fun updateTunerSession(userModel: UserModel?): Single<TunerSession> {
         return Single.fromCallable { preferencesManager.getSession()!! }
                 .cast(TunerSession::class.java)
                 .flatMap { tunerSession ->
@@ -153,7 +165,7 @@ class SignUpTunerPresenter @Inject constructor(private val apiInteractor: Fireba
                         if (userModel.avatarImage != null) {
                             singleUserModule = storageInteractor.uploadImage(tunerSession.key, userModel.avatarImage!!)
                                     .map {
-                                        tunerSession.avatar = it
+                                        tunerSession.avatar = it.toString()
                                         return@map tunerSession
                                     }
                         } else {
@@ -162,7 +174,6 @@ class SignUpTunerPresenter @Inject constructor(private val apiInteractor: Fireba
                         return@flatMap singleUserModule
                                 .doOnSuccess {
                                     it.email = userModel.email!!
-                                    it.avatar = userModel.avatarImage
                                     it.nikeName = userModel.name
                                 }
                                 .doOnSuccess { preferencesManager.sighIn(it, false) }

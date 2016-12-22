@@ -82,6 +82,16 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
         presenter.initEditableAction(confirmPasswordEdit.onEditorAction())
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.onStartFetchAuth()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.onStopFetchAuth()
+    }
+
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         updateModel()
@@ -160,9 +170,7 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
     }
 
     override fun onCreateAccountSuccess() {
-        val intent = Intent(context, ChooseMirrorActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
+        ChooseMirrorActivity.start(context)
     }
 
     /* private methods */
