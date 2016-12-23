@@ -14,4 +14,12 @@
         android:layout_height="match_parent"
         app:widgetContainer_columnCount="7"
         app:widgetContainer_rowCount="7" />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:layout_margin="8dp"
+        android:contentDescription="@null"
+        tools:src="@drawable/ic_demo_avatar" />
 </FrameLayout>

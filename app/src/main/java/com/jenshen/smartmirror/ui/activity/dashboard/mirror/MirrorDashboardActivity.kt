@@ -3,25 +3,34 @@ package com.jenshen.smartmirror.ui.activity.dashboard.mirror
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.Window
 import android.view.WindowManager
+import com.bumptech.glide.Glide
 import com.jenshen.awesomeanimation.AwesomeAnimation
 import com.jenshen.awesomeanimation.AwesomeAnimation.SizeMode.SCALE
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
-import com.jenshen.smartmirror.data.model.widget.WidgetKey
+import com.jenshen.smartmirror.data.firebase.NullableDataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
+import com.jenshen.smartmirror.data.firebase.model.tuner.TunerInfo
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
+import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.di.component.activity.dashboard.mirror.MirrorDashboardComponent
 import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.dashboard.mirror.MirrorDashboardPresenter
 import com.jenshen.smartmirror.ui.mvp.view.dashboard.mirror.MirrorDashboardView
 import com.jenshen.smartmirror.ui.view.widget.Widget
+import com.jenshen.smartmirror.util.asCircleBitmap
+import com.jenshen.smartmirror.util.getBitmap
 import com.jenshen.smartmirror.util.widget.createWidget
+import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_dashboard_mirror.*
 
 
@@ -66,7 +75,7 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
                 ?.apply { presenter.updateWidget(infoData, getChildAt(0) as Widget<*>) }
     }
 
-    override fun updateMirrorConfiguration(mirrorConfiguration: MirrorConfiguration) {
+    override fun changeMirrorConfiguration(mirrorConfiguration: MirrorConfiguration) {
         val build = AwesomeAnimation.Builder(widgetContainer)
                 .setSizeX(SCALE, 1f, 0f)
                 .setSizeY(SCALE, 1f, 0f)
@@ -77,7 +86,6 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
                 while (widgetContainer.widgets.size != 0) {
                     widgetContainer.removeWidgetView(widgetContainer.widgets.iterator().next())
                 }
-                presenter.clearWidgetsUpdaters()
                 widgetContainer.setRowCount(mirrorConfiguration.containerSize.row)
                 widgetContainer.setColumnCount(mirrorConfiguration.containerSize.column)
                 mirrorConfiguration.widgets?.forEach { configureWidget(it.value) }
@@ -93,6 +101,28 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
         })
         build.start()
     }
+
+    override fun enablePrecipitation(enable: Boolean) {
+        presenter.enablePrecipitation(enable)
+    }
+
+    override fun enableUserInfo(userInfoData: NullableDataSnapshotWithKey<TunerInfo>) {
+        if (userInfoData.data != null) {
+            val avatarUrl = userInfoData.data.avatarUrl
+            avatar.visibility = VISIBLE
+            if (avatarUrl == null) {
+                avatar.setImageBitmap(getBitmap(context, R.drawable.ic_demo_avatar).asCircleBitmap())
+            } else {
+                Glide.with(context)
+                        .load(Uri.parse(avatarUrl))
+                        .bitmapTransform(CropCircleTransformation(context))
+                        .into(avatar)
+            }
+        } else {
+            avatar.visibility = GONE
+        }
+    }
+
 
     /* private methods */
 

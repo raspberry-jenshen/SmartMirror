@@ -179,6 +179,9 @@ dependencies {
     debugCompile "com.squareup.leakcanary:leakcanary-android:${lib.canary_leak_version}"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${lib.canary_leak_version}"
 
+    //confetti
+    compile 'com.github.jinatonic.confetti:confetti:1.1.0'
+
     //stetho
     debugCompile 'com.facebook.stetho:stetho:1.4.1'
 }

@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.support.annotation.RequiresPermission
 import android.support.v4.content.ContextCompat
-import com.jenshen.smartmirror.data.api.WeatherApi.Companion.IMAGE_PATH_URL
 import com.jenshen.smartmirror.data.entity.widget.info.weather.CurrentWeatherWidgetData
 import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
+import com.jenshen.smartmirror.data.model.widget.MirrorLocationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.manager.api.IWeatherApiManager
 import com.jenshen.smartmirror.manager.location.IFindLocationManager
@@ -34,9 +34,9 @@ class CurrentWeatherUpdater(widgetKey: WidgetKey,
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .flatMapObservable { it.fetchCurrentLocation() }
                                 .observeOn(Schedulers.io())
-                                .map { MirrorLocation(it.latitude, it.longitude) }
+                                .map { MirrorLocationModel(it.latitude, it.longitude) }
                     } else {
-                        Observable.fromCallable { MirrorLocation() }
+                        Observable.fromCallable { MirrorLocationModel() }
                     }
                 }
                 .flatMapSingle { weatherApiLazy.get().getCurrentWeather(it.lat, it.lon) }
@@ -44,8 +44,4 @@ class CurrentWeatherUpdater(widgetKey: WidgetKey,
                     CurrentWeatherWidgetData(widgetKey, it)
                 }
     }
-
-    //new york by default
-    private class MirrorLocation(val lat: Double = 40.730610,
-                                 val lon: Double = -73.935242)
 }

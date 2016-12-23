@@ -94,8 +94,7 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        updateModel()
-        outState?.putParcelable(KEY_USER_MODEL, userModel)
+        outState?.putParcelable(KEY_USER_MODEL, getModel())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -166,11 +165,16 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
         presenter.createAccount(
                 passwordEdit.text.toString(),
                 confirmPasswordEdit.text.toString(),
-                userModel)
+                getModel())
     }
 
     override fun onCreateAccountSuccess() {
         ChooseMirrorActivity.start(context)
+    }
+
+    override fun getModel(): UserModel {
+        updateModel()
+        return userModel
     }
 
     /* private methods */
