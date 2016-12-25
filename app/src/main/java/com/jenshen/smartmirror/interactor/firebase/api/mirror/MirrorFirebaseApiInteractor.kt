@@ -1,12 +1,12 @@
 package com.jenshen.smartmirror.interactor.firebase.api.mirror
 
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
-import com.jenshen.smartmirror.data.firebase.NullableDataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerInfo
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.mirror.MirrorApiManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
+import com.jenshen.smartmirror.util.Optional
 import io.reactivex.Flowable
 import javax.inject.Inject
 
@@ -29,7 +29,7 @@ class MirrorFirebaseApiInteractor @Inject constructor(private val apiManager: Ap
         return mirrorApiManager.observeIsEnablePrecipitation(configurationKey)
     }
 
-    override fun fetchIsNeedToShowUserInfo(configurationKey: String): Flowable<NullableDataSnapshotWithKey<TunerInfo>> {
+    override fun fetchIsNeedToShowUserInfo(configurationKey: String): Flowable<Optional<TunerInfo>> {
         return mirrorApiManager.observeUserInfoOnMirror(configurationKey)
     }
 }

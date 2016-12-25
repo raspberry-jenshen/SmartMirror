@@ -20,6 +20,7 @@ interface RealtimeDatabaseManager {
 
     fun getTunersRef(): Single<DatabaseReference>
     fun getTunerRef(tunerKey: String): Single<DatabaseReference>
+    fun getTunerInfoRef(tunerKey: String): Single<DatabaseReference>
     fun getTunerSubscriptionsRef(tunerKey: String): Single<DatabaseReference>
     fun getTunerSubscriptionRef(mirrorKey: String, tunerKey: String): Single<DatabaseReference>
 

@@ -16,7 +16,6 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
-import com.jenshen.smartmirror.data.firebase.NullableDataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerInfo
@@ -28,6 +27,7 @@ import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.dashboard.mirror.MirrorDashboardPresenter
 import com.jenshen.smartmirror.ui.mvp.view.dashboard.mirror.MirrorDashboardView
 import com.jenshen.smartmirror.ui.view.widget.Widget
+import com.jenshen.smartmirror.util.Optional
 import com.jenshen.smartmirror.util.asCircleBitmap
 import com.jenshen.smartmirror.util.getBitmap
 import com.jenshen.smartmirror.util.widget.createWidget
@@ -111,9 +111,9 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
 
     }
 
-    override fun enableUserInfo(userInfoData: NullableDataSnapshotWithKey<TunerInfo>) {
-        if (userInfoData.data != null) {
-            val avatarUrl = userInfoData.data.avatarUrl
+    override fun enableUserInfo(userInfoData: Optional<TunerInfo>) {
+        if (userInfoData.isPresent) {
+            val avatarUrl = userInfoData.get().avatarUrl
             avatar.visibility = VISIBLE
             if (avatarUrl == null) {
                 avatar.setImageBitmap(getBitmap(context, R.drawable.ic_demo_avatar).asCircleBitmap())

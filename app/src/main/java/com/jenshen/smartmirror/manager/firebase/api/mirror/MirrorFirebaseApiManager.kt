@@ -1,15 +1,16 @@
 package com.jenshen.smartmirror.manager.firebase.api.mirror
 
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
-import com.jenshen.smartmirror.data.firebase.NullableDataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerInfo
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
+import com.jenshen.smartmirror.util.Optional
 import com.jenshen.smartmirror.util.reactive.firebase.loadValue
 import com.jenshen.smartmirror.util.reactive.firebase.observeValue
 import io.reactivex.Flowable
 import io.reactivex.Single
+import java.util.*
 import javax.inject.Inject
 
 class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase: RealtimeDatabaseManager) : MirrorApiManager {
@@ -40,10 +41,21 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
 
     /* configurations */
 
-    override fun observeUserInfoOnMirror(configurationKey: String): Flowable<NullableDataSnapshotWithKey<TunerInfo>> {
+    override fun observeUserInfoOnMirror(configurationKey: String): Flowable<Optional<TunerInfo>> {
         return firebaseDatabase.getMirrorConfigurationUserInfoKeyRef(configurationKey)
                 .flatMapPublisher { it.observeValue() }
-                .map { NullableDataSnapshotWithKey(it.key,if (it.exists()) it.getValue(TunerInfo::class.java) else null) }
+                .flatMapSingle {
+                    if (it.exists()) {
+                        firebaseDatabase.getTunerInfoRef(it.getValue(String::class.java))
+                                .flatMap { it.loadValue() }
+                                .filter { it.exists() }
+                                .map { it.getValue(TunerInfo::class.java) }
+                                .map { Optional.of(it) }
+                                .toSingle(Optional.empty<TunerInfo>())
+                    } else {
+                        Single.fromCallable { Optional.empty<TunerInfo>() }
+                    }
+                }
     }
 
     override fun observeIsEnablePrecipitation(configurationKey: String): Flowable<Boolean> {

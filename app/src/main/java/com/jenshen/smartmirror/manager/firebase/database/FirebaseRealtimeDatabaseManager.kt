@@ -57,6 +57,11 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
                 .map { it.child(tunerKey) }
     }
 
+    override fun getTunerInfoRef(tunerKey: String): Single<DatabaseReference> {
+        return getTunerRef(tunerKey)
+                .map { it.child(FirebaseRealTimeDatabaseConstant.Tuner.TUNER_INFO) }
+    }
+
     override fun getTunerSubscriptionsRef(tunerKey: String): Single<DatabaseReference> {
         return getTunerRef(tunerKey)
                 .map { it.child(FirebaseRealTimeDatabaseConstant.Tuner.SUBSCRIPTIONS) }
