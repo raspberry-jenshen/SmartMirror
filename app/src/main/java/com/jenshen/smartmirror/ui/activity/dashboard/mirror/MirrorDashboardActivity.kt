@@ -21,6 +21,7 @@ import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfigura
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerInfo
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
+import com.jenshen.smartmirror.data.model.widget.PrecipitationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.di.component.activity.dashboard.mirror.MirrorDashboardComponent
 import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
@@ -104,6 +105,10 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
 
     override fun enablePrecipitation(enable: Boolean) {
         presenter.enablePrecipitation(enable)
+    }
+
+    override fun onPrecipitationUpdate(model: PrecipitationModel) {
+
     }
 
     override fun enableUserInfo(userInfoData: NullableDataSnapshotWithKey<TunerInfo>) {
