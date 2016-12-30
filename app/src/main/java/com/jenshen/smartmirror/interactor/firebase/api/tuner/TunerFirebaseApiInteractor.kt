@@ -132,8 +132,10 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         return Single.fromCallable {
             MirrorConfiguration(
                     editMirrorModel.mirrorKey,
+                    ContainerSize(editMirrorModel.columnsCount, editMirrorModel.rowsCount),
                     editMirrorModel.title,
-                    ContainerSize(editMirrorModel.columnsCount, editMirrorModel.rowsCount))
+                    editMirrorModel.isEnablePrecipitation,
+                    editMirrorModel.userInfoKey)
         }
                 .flatMapCompletable { mirrorConfiguration ->
                     if (editMirrorModel.configurationKey == null) {
@@ -175,8 +177,10 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                         dataSnapshotWithKey.data.containerSize.column,
                                         dataSnapshotWithKey.data.containerSize.row,
                                         dataSnapshotWithKey.data.title,
-                                        widgetModels,
-                                        dataSnapshotWithKey.key)
+                                        dataSnapshotWithKey.data.isEnablePrecipitation,
+                                        dataSnapshotWithKey.key,
+                                        dataSnapshotWithKey.data.userInfoKey,
+                                        widgetModels)
                             }
                 }
     }
@@ -195,10 +199,13 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         return tunerApiManager.setEnablePrecipitationInConfiguration(configurationKey, isEnable)
     }
 
-    override fun setEnableUserInfoOnMirror(configurationKey: String, isEnable: Boolean): Completable {
+    override fun setEnableUserInfoOnMirror(configurationKey: String, isEnable: Boolean): Single<String> {
         return Single.fromCallable { preferencesManager.getSession()!! }
                 .cast(TunerSession::class.java)
-                .flatMapCompletable { tunerApiManager.setUserInfoKeyInConfiguration(configurationKey, if (isEnable) it.key else null) }
+                .flatMap {
+                    tunerApiManager.setUserInfoKeyInConfiguration(configurationKey, if (isEnable) it.key else null)
+                            .toSingle { it.key }
+                }
     }
 
 

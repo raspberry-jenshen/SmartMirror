@@ -6,14 +6,13 @@
     </style>
 
     <style name="App.Theme.Splash.Activity">
-        <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
-    <style name="App.Theme.Start.Activity">
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
+    <style name="App.Theme.ChooseAccount.Activity">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="App.Theme.SignInTuner.Activity">
@@ -53,6 +52,11 @@
     </style>
 
     <style name="App.Theme.AddWidget.Activity">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+    <style name="App.Theme.MirrorSettings.Activity">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
     </style>

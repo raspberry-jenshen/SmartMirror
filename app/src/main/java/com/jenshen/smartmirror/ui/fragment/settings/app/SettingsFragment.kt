@@ -9,7 +9,7 @@ import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshen.smartmirror.manager.session.SessionManager
 import com.jenshen.smartmirror.ui.activity.add.widget.AddWidgetActivity
-import com.jenshen.smartmirror.ui.activity.start.StartActivity
+import com.jenshen.smartmirror.ui.activity.choose.account.ChooseAccountActivity
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -40,7 +40,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     .doOnComplete { SmartMirrorApp.releaseUserComponent() }
                     .doOnSubscribe { compositeDisposable.add(it) }
                     .subscribe({
-                        val intent = Intent(context, StartActivity::class.java)
+                        val intent = Intent(context, ChooseAccountActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)
                     }, {})

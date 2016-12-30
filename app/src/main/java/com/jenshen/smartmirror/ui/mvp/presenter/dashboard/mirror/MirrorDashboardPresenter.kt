@@ -1,9 +1,6 @@
 package com.jenshen.smartmirror.ui.mvp.presenter.dashboard.mirror
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
-import android.support.v4.content.ContextCompat
 import com.jenshen.compat.base.presenter.MvpRxPresenter
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
 import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
@@ -32,6 +29,8 @@ class MirrorDashboardPresenter @Inject constructor(private val context: Context,
                                                    private val widgetFactoryManager: WidgetFactoryManager) :
         MvpRxPresenter<MirrorDashboardView>() {
     private val updaterList: MutableList<WidgetUpdater<*>>
+    private var userInfoFlagDisposable: Disposable? = null
+    private var precipitationFlagDisposable: Disposable? = null
     private var precipitationDisposable: Disposable? = null
 
     init {
@@ -57,37 +56,6 @@ class MirrorDashboardPresenter @Inject constructor(private val context: Context,
         widgetFactoryManager.updateWidget(infoData, widget)
     }
 
-    fun enablePrecipitation(enable: Boolean) {
-        if (enable) {
-            Observable.interval(0, 3, TimeUnit.HOURS)
-                    .flatMap {
-                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                            Single.fromCallable { findLocationManagerLazy.get() }
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .flatMapObservable { it.fetchCurrentLocation() }
-                                    .observeOn(Schedulers.io())
-                                    .map { MirrorLocationModel(it.latitude, it.longitude) }
-                        } else {
-                            Observable.fromCallable { MirrorLocationModel() }
-                        }
-                    }
-                    .flatMapSingle { weatherApiManagerLazy.get().getCurrentWeather(it.lat, it.lon) }
-                    .filter { it.weathersList != null && it.weathersList.isNotEmpty() }
-                    .map { it.weathersList!!.iterator().next().id }
-                    .map { PrecipitationModel.createFromWeatherData(it) }
-                    .applySchedulers(Schedulers.io())
-                    .doOnSubscribe {
-                        precipitationDisposable = it
-                        compositeDisposable.add(it) }
-                    .subscribe({ view?.onPrecipitationUpdate(it) }, { view?.handleError(it) })
-        } else {
-            if (precipitationDisposable != null) {
-                compositeDisposable.remove(precipitationDisposable)
-                precipitationDisposable = null
-            }
-        }
-    }
-
     /* private methods */
 
     private fun fetchIsNeedToShowQrCode() {
@@ -106,25 +74,69 @@ class MirrorDashboardPresenter @Inject constructor(private val context: Context,
                 }, { view?.handleError(it) }))
     }
 
+    private fun onConfigurationChanged(configurationKey: String) {
+        if (precipitationFlagDisposable != null && !precipitationFlagDisposable!!.isDisposed) {
+            compositeDisposable.remove(precipitationFlagDisposable)
+            precipitationFlagDisposable = null
+        }
+
+        if (userInfoFlagDisposable != null && !userInfoFlagDisposable!!.isDisposed) {
+            compositeDisposable.remove(userInfoFlagDisposable)
+            userInfoFlagDisposable = null
+        }
+        fetchNeedToShowUserInfo(configurationKey)
+        fetchIsEnablePrecipitation(configurationKey)
+    }
+
     private fun fetchNeedToShowUserInfo(configurationKey: String) {
-        addDisposible(mirrorApiInteractor.fetchIsNeedToShowUserInfo(configurationKey)
+        val disposable = mirrorApiInteractor.fetchIsNeedToShowUserInfo(configurationKey)
                 .applySchedulers(Schedulers.io())
-                .subscribe({ view?.enableUserInfo(it) }, { view?.handleError(it) }))
+                .subscribe({ view?.enableUserInfo(it) }, { view?.handleError(it) })
+        userInfoFlagDisposable = disposable
+        addDisposible(disposable)
     }
 
     private fun fetchIsEnablePrecipitation(configurationKey: String) {
-        addDisposible(mirrorApiInteractor.fetchEnablePrecipitation(configurationKey)
+        val disposable = mirrorApiInteractor.fetchEnablePrecipitation(configurationKey)
                 .applySchedulers(Schedulers.io())
-                .subscribe({ view?.enablePrecipitation(it) }, { view?.handleError(it) }))
-    }
-
-    private fun onConfigurationChanged(configurationKey: String) {
-        fetchNeedToShowUserInfo(configurationKey)
-        fetchIsEnablePrecipitation(configurationKey)
+                .subscribe({ enablePrecipitation(it) }, { view?.handleError(it) })
+        precipitationFlagDisposable = disposable
+        addDisposible(disposable)
     }
 
     private fun clearWidgetsUpdaters() {
         updaterList.forEach { it.apply { clear() } }
         updaterList.clear()
+    }
+
+    private fun enablePrecipitation(enable: Boolean) {
+        if (enable) {
+            Observable.interval(0, 3, TimeUnit.HOURS)
+                    .flatMap {
+                        if (IFindLocationManager.canGetLocation(context)) {
+                            Single.fromCallable { findLocationManagerLazy.get() }
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .flatMapObservable { it.fetchCurrentLocation(1000000, 1000000) }
+                                    .observeOn(Schedulers.io())
+                                    .map { MirrorLocationModel(it.latitude, it.longitude) }
+                        } else {
+                            Observable.fromCallable { MirrorLocationModel() }
+                        }
+                    }
+                    .flatMapSingle { weatherApiManagerLazy.get().getCurrentWeather(it.lat, it.lon) }
+                    .filter { it.weathersList != null && it.weathersList.isNotEmpty() }
+                    .map { it.weathersList!!.iterator().next().id }
+                    .map { PrecipitationModel.createFromWeatherData(it) }
+                    .applySchedulers(Schedulers.io())
+                    .doOnSubscribe {
+                        precipitationDisposable = it
+                        compositeDisposable.add(it) }
+                    .subscribe({ view?.onPrecipitationUpdate(it) }, { view?.handleError(it) })
+        } else {
+            if (precipitationDisposable != null && !precipitationDisposable!!.isDisposed) {
+                compositeDisposable.remove(precipitationDisposable)
+                precipitationDisposable = null
+            }
+        }
     }
 }

@@ -21,9 +21,10 @@
 
     <style name="App.Theme.Splash.Activity" />
 
-    <style name="App.Theme.Start" />
-
-    <style name="App.Theme.Start.Activity" />
+    <style name="App.Theme.ChooseAccount" >
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+    <style name="App.Theme.ChooseAccount.Activity" />
 
     <!--tuner-->
 
@@ -73,6 +74,12 @@
     </style>
 
     <style name="App.Theme.AddWidget.Activity" />
+
+    <style name="App.Theme.MirrorSettings">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
+
+    <style name="App.Theme.MirrorSettings.Activity" />
 
     <!-- mirror -->
     <style name="App.Theme.Mirror">

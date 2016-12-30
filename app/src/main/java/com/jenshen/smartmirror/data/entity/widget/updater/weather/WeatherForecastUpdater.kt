@@ -2,10 +2,7 @@ package com.jenshen.smartmirror.data.entity.widget.updater.weather
 
 import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.support.annotation.RequiresPermission
-import android.support.v4.content.ContextCompat
-import com.jenshen.smartmirror.data.api.WeatherApi.Companion.IMAGE_PATH_URL
 import com.jenshen.smartmirror.data.entity.widget.info.weather.WeatherForecastWidgetData
 import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
@@ -28,10 +25,10 @@ class WeatherForecastUpdater(widgetKey: WidgetKey,
         return Observable.interval(0, 3, TimeUnit.HOURS)
                 .takeWhile { !isDisposed }
                 .flatMap {
-                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    if (IFindLocationManager.canGetLocation(context)) {
                         Single.fromCallable { findLocationManagerLazy.get() }
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .flatMapObservable { it.fetchCurrentLocation() }
+                                .flatMapObservable { it.fetchCurrentLocation(1000000, 1000000) }
                                 .observeOn(Schedulers.io())
                                 .map { MirrorLocation(it.latitude, it.longitude) }
                     } else {

@@ -29,13 +29,55 @@ fun Bitmap.asCircleBitmap(): Bitmap {
     return output
 }
 
-fun Bitmap.scale(wantedWidth: Int, wantedHeight: Int): Bitmap {
-    val output = Bitmap.createBitmap(wantedWidth, wantedHeight, Bitmap.Config.ARGB_8888)
+fun Bitmap.scale(wantedWidth: Float, wantedHeight: Float): Bitmap {
+    val output = Bitmap.createBitmap(wantedWidth.toInt(), wantedHeight.toInt(), Bitmap.Config.ARGB_8888)
     val canvas = Canvas(output)
     val m = Matrix()
-    m.setScale(wantedWidth.toFloat() / this.width, wantedHeight.toFloat() / this.height)
+    m.setScale(wantedWidth / this.width, wantedHeight / this.height)
     canvas.drawBitmap(this, m, Paint())
     return output
+}
+
+fun Bitmap.scaleCenterCrop(newWidth: Float, newHeight: Float): Bitmap {
+    val sourceWidth = this.width
+    val sourceHeight = this.height
+
+    // Compute the scaling factors to fit the new height and width, respectively.
+    // To cover the final image, the final scaling will be the bigger
+    // of these two.
+    val xScale = newWidth / sourceWidth
+    val yScale = newHeight / sourceHeight
+    val scale = Math.max(xScale, yScale)
+
+    // Now get the size of the source bitmap when scaled
+    val scaledWidth = scale * sourceWidth
+    val scaledHeight = scale * sourceHeight
+
+    // Let's find out the upper left coordinates if the scaled bitmap
+    // should be centered in the new size give by the parameters
+    val left = (newWidth - scaledWidth) / 2
+    val top = (newHeight - scaledHeight) / 2
+
+    // The target rectangle for the new, scaled version of the source bitmap will now
+    // be
+    val targetRect = RectF(left, top, left + scaledWidth, top + scaledHeight)
+
+    // Finally, we create a new bitmap of the specified size and draw our new,
+    // scaled bitmap onto it.
+    val dest = Bitmap.createBitmap(newWidth.toInt(), newHeight.toInt(), this.config)
+    val canvas = Canvas(dest)
+    canvas.drawBitmap(this, null, targetRect, null)
+    return dest
+}
+
+
+fun Bitmap.cutBottom(width: Int, height: Int): Bitmap {
+    val cutBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(cutBitmap)
+    val desRect = Rect(0, 0, width, height)
+    val srcRect = Rect(0, 0, this.width, this.height - (this.height - height))
+    canvas.drawBitmap(this, srcRect, desRect, null)
+    return cutBitmap
 }
 
 fun getBitmap(context: Context, drawableId: Int): Bitmap {

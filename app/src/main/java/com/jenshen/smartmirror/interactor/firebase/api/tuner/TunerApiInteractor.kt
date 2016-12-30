@@ -31,6 +31,6 @@ interface TunerApiInteractor {
     fun getMirrorConfiguration(configurationKey: String): Single<EditMirrorModel>
     fun setEnablePrecipitationOnMirror(configurationKey: String, isEnable: Boolean): Completable
     fun isEnablePrecipitationOnMirror(configurationKey: String): Single<Boolean>
-    fun setEnableUserInfoOnMirror(configurationKey: String, isEnable: Boolean): Completable
+    fun setEnableUserInfoOnMirror(configurationKey: String, isEnable: Boolean): Single<String>
     fun isUserInfoOnMirror(configurationKey: String): Single<Boolean>
 }

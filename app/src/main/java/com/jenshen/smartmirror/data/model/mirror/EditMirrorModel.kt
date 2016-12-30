@@ -8,8 +8,10 @@ data class EditMirrorModel(val mirrorKey: String,
                            val columnsCount: Int,
                            val rowsCount: Int,
                            val title: String,
-                           val widgets: MutableList<WidgetConfigurationModel> = mutableListOf(),
-                           var configurationKey: String? = null) : Parcelable {
+                           var isEnablePrecipitation: Boolean = false,
+                           var configurationKey: String? = null,
+                           var userInfoKey: String? = null,
+                           val widgets: MutableList<WidgetConfigurationModel> = mutableListOf()) : Parcelable {
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<EditMirrorModel> = object : Parcelable.Creator<EditMirrorModel> {
             override fun createFromParcel(source: Parcel): EditMirrorModel = EditMirrorModel(source)
@@ -17,11 +19,10 @@ data class EditMirrorModel(val mirrorKey: String,
         }
     }
 
-    constructor(source: Parcel) : this(source.readString(),
-            source.readInt(),
+    constructor(source: Parcel) : this(source.readString(), source.readInt(),
             source.readInt(), source.readString(),
-            source.createTypedArrayList(WidgetConfigurationModel.CREATOR),
-            source.readString())
+            1 == source.readInt(), source.readString(), source.readString(),
+            source.createTypedArrayList(WidgetConfigurationModel.CREATOR))
 
     override fun describeContents() = 0
 
@@ -30,7 +31,9 @@ data class EditMirrorModel(val mirrorKey: String,
         dest?.writeInt(columnsCount)
         dest?.writeInt(rowsCount)
         dest?.writeString(title)
-        dest?.writeTypedList(widgets)
+        dest?.writeInt((if (isEnablePrecipitation) 1 else 0))
         dest?.writeString(configurationKey)
+        dest?.writeString(userInfoKey)
+        dest?.writeTypedList(widgets)
     }
 }

@@ -12,6 +12,6 @@ abstract class WidgetUpdater<Info : WidgetData>(val widgetKey: WidgetKey) {
     abstract fun startUpdate(): Observable<Info>
 
     fun clear() {
-
+        isDisposed = true
     }
 }

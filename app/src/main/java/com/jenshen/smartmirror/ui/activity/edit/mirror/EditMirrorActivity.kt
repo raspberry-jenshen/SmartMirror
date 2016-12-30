@@ -18,6 +18,8 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
+import com.jenshen.smartmirror.data.event.PrecipitationSettings
+import com.jenshen.smartmirror.data.event.UserInfoSettings
 import com.jenshen.smartmirror.data.model.mirror.EditMirrorModel
 import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
@@ -31,6 +33,11 @@ import com.jenshen.smartmirror.util.widget.createWidget
 import com.jenshensoft.widgetview.WidgetView
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_edit_mirror.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
+
 
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
 
@@ -83,6 +90,9 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         setContentView(R.layout.activity_edit_mirror)
         setupToolbar()
         restoreExtra(savedInstanceState)
+
+        EventBus.getDefault().register(this)
+
         val mirrorId = intent.getStringExtra(EXTRA_MIRROR_KEY)
         val configurationKey = intent.getStringExtra(EXTRA_MIRROR_CONFIGURATION_KEY)
         if (configurationKey == null && editMirrorModel == null) {
@@ -128,6 +138,11 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 deletedWidgetModel.isDeleted = true
             }
         }
+    }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -200,6 +215,16 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     }
 
     /* callbacks */
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onPrecipitationMessageEvent(event: PrecipitationSettings) {
+        editMirrorModel!!.isEnablePrecipitation = event.isEnable
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUserInfoMessageEvent(event: UserInfoSettings) {
+        editMirrorModel!!.userInfoKey = event.userInfoKey
+    }
 
     override fun onSavedConfiguration() {
         isSaved = true

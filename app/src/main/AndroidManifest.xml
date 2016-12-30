@@ -24,7 +24,7 @@
             android:value="3b1adbe3949cfd0e01ca89038fa1a880df54aa38" />
 
         <activity
-            android:name=".ui.activity.splash.SplashActivity"
+            android:name="com.jenshen.smartmirror.ui.activity.start.splash.SplashActivity"
             android:noHistory="true"
             android:theme="@style/App.Theme.Splash.Activity">
             <intent-filter>
@@ -34,9 +34,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.start.StartActivity"
+            android:name=".ui.activity.choose.account.ChooseAccountActivity"
             android:launchMode="singleTop"
-            android:theme="@style/App.Theme.Start.Activity" />
+            android:theme="@style/App.Theme.ChooseAccount.Activity" />
 
         <!-- tuner -->
 
@@ -47,7 +47,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.start.StartActivity" />
+                android:value=".ui.activity.choose.account.ChooseAccountActivity" />
         </activity>
         <activity
             android:name=".ui.activity.signup.tuner.SignUpTunerActivity"
@@ -98,7 +98,7 @@
 
         <activity
             android:name=".ui.activity.settings.mirror.MirrorSettingsActivity"
-            android:theme="@style/App.Theme.AddWidget.Activity">
+            android:theme="@style/App.Theme.MirrorSettings.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.edit.mirror.EditMirrorActivity" />

@@ -1,6 +1,8 @@
 package com.jenshen.smartmirror.ui.mvp.presenter.settings.mirror
 
 import com.jenshen.compat.base.presenter.MvpRxPresenter
+import com.jenshen.smartmirror.data.event.PrecipitationSettings
+import com.jenshen.smartmirror.data.event.UserInfoSettings
 import com.jenshen.smartmirror.data.model.configuration.ConfigurationSettingsModel
 import com.jenshen.smartmirror.interactor.firebase.api.tuner.TunerApiInteractor
 import com.jenshen.smartmirror.ui.mvp.view.settings.mirror.MirrorSettingsView
@@ -11,6 +13,7 @@ import io.reactivex.functions.Action
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
 class MirrorSettingsPresenter @Inject constructor(private val tunerApiInteractor: TunerApiInteractor) : MvpRxPresenter<MirrorSettingsView>() {
@@ -31,13 +34,13 @@ class MirrorSettingsPresenter @Inject constructor(private val tunerApiInteractor
         tunerApiInteractor.setEnablePrecipitationOnMirror(configurationKey, isEnable)
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({}, { view?.handleError(it) })
+                .subscribe({ EventBus.getDefault().post(PrecipitationSettings(isEnable)) }, { view?.handleError(it) })
     }
 
     fun enableUserInfoOnMirror(configurationKey: String, isEnable: Boolean) {
         tunerApiInteractor.setEnableUserInfoOnMirror(configurationKey, isEnable)
                 .applySchedulers(Schedulers.io())
                 .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({}, { view?.handleError(it) })
+                .subscribe({ EventBus.getDefault().post(UserInfoSettings(if (isEnable) it else null)) }, { view?.handleError(it) })
     }
 }

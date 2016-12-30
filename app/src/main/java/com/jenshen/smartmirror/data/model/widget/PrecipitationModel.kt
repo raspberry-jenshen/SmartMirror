@@ -1,6 +1,7 @@
 package com.jenshen.smartmirror.data.model.widget
 
 import android.support.annotation.IntDef
+import com.jenshen.smartmirror.R
 
 class PrecipitationModel private constructor(@PrecipitationType val type: Int) {
 
@@ -12,7 +13,7 @@ class PrecipitationModel private constructor(@PrecipitationType val type: Int) {
             } else if (type >= 500 && type <= 531) {
                 return PrecipitationModel(SNOW)
             } else {
-                return PrecipitationModel(UNKNOWN)
+                return PrecipitationModel(RAIN)
             }
         }
 
@@ -25,9 +26,15 @@ class PrecipitationModel private constructor(@PrecipitationType val type: Int) {
         const val SNOW = 2
     }
 
+    fun getResId(): Int {
+        return when(type) {
+            SNOW -> R.drawable.ic_snowflake
+            RAIN -> R.drawable.ic_drop
+            else -> throw RuntimeException("Can't support this type")
+        }
+    }
+
     @IntDef(UNKNOWN.toLong(), RAIN.toLong(), SNOW.toLong())
     @Retention(AnnotationRetention.SOURCE)
     annotation class PrecipitationType
-
-
 }

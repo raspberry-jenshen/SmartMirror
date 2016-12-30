@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit
 class ClockUpdater(widgetKey: WidgetKey) : WidgetUpdater<ClockWidgetData>(widgetKey) {
 
     override fun startUpdate(): Observable<ClockWidgetData> {
-
         return Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
                 .takeWhile { !isDisposed }
                 .map {

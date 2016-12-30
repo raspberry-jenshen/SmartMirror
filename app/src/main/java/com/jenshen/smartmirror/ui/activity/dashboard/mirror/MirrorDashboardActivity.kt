@@ -3,6 +3,7 @@ package com.jenshen.smartmirror.ui.activity.dashboard.mirror
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.View.GONE
@@ -10,6 +11,9 @@ import android.view.View.VISIBLE
 import android.view.Window
 import android.view.WindowManager
 import com.bumptech.glide.Glide
+import com.github.jinatonic.confetti.ConfettiManager
+import com.github.jinatonic.confetti.ConfettiSource
+import com.github.jinatonic.confetti.confetto.BitmapConfetto
 import com.jenshen.awesomeanimation.AwesomeAnimation
 import com.jenshen.awesomeanimation.AwesomeAnimation.SizeMode.SCALE
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
@@ -30,12 +34,18 @@ import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshen.smartmirror.util.Optional
 import com.jenshen.smartmirror.util.asCircleBitmap
 import com.jenshen.smartmirror.util.getBitmap
+import com.jenshen.smartmirror.util.scale
 import com.jenshen.smartmirror.util.widget.createWidget
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_dashboard_mirror.*
 
 
 class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, MirrorDashboardView, MirrorDashboardPresenter>(), MirrorDashboardView {
+
+    private var confettiManager: ConfettiManager? = null
+
+    @PrecipitationModel.PrecipitationType
+    private var type: Int = PrecipitationModel.UNKNOWN
 
     /* inject */
 
@@ -103,12 +113,26 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
         build.start()
     }
 
-    override fun enablePrecipitation(enable: Boolean) {
-        presenter.enablePrecipitation(enable)
-    }
-
     override fun onPrecipitationUpdate(model: PrecipitationModel) {
+        if (type != model.type) {
+            if (confettiManager != null) {
+                confettiManager!!.terminate()
+            }
+            val size = resources.getDimensionPixelSize(R.dimen.big_confetti_size)
+            val bitmap = BitmapFactory.decodeResource(resources, model.getResId()).scale(size.toFloat(), size.toFloat())
+            val velocitySlow = resources.getDimensionPixelOffset(R.dimen.default_velocity_slow)
+            val velocityNormal = resources.getDimensionPixelOffset(R.dimen.default_velocity_normal)
+            val source = ConfettiSource(0, -size, container.width, -size)
 
+            val confettiManager = ConfettiManager(context, { BitmapConfetto(bitmap) }, source, container)
+                    .setVelocityX(0f, velocitySlow.toFloat())
+                    .setVelocityY(velocityNormal.toFloat(), velocitySlow.toFloat())
+                    .setRotationalVelocity(180f, 90f)
+                    .setEmissionDuration(ConfettiManager.INFINITE_DURATION)
+                    .setEmissionRate(30.toFloat())
+
+            confettiManager.animate()
+        }
     }
 
     override fun enableUserInfo(userInfoData: Optional<TunerInfo>) {
