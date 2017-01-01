@@ -5,8 +5,9 @@ import android.content.Context
 import android.support.annotation.RequiresPermission
 import com.jenshen.smartmirror.data.entity.widget.info.weather.WeatherForecastWidgetData
 import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
+import com.jenshen.smartmirror.data.model.widget.MirrorLocationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
-import com.jenshen.smartmirror.manager.api.IWeatherApiManager
+import com.jenshen.smartmirror.manager.api.weather.IWeatherApiManager
 import com.jenshen.smartmirror.manager.location.IFindLocationManager
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -19,10 +20,14 @@ class WeatherForecastUpdater(widgetKey: WidgetKey,
                              private val weatherApiLazy: dagger.Lazy<IWeatherApiManager>,
                              private val findLocationManagerLazy: dagger.Lazy<IFindLocationManager>) : WidgetUpdater<WeatherForecastWidgetData>(widgetKey) {
 
+    companion object {
+        const val HOURS_BETWEEN_UPDATES = 3L
+    }
+
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     override fun startUpdate(): Observable<WeatherForecastWidgetData> {
 
-        return Observable.interval(0, 3, TimeUnit.HOURS)
+        return Observable.interval(0, HOURS_BETWEEN_UPDATES, TimeUnit.HOURS)
                 .takeWhile { !isDisposed }
                 .flatMap {
                     if (IFindLocationManager.canGetLocation(context)) {
@@ -30,9 +35,9 @@ class WeatherForecastUpdater(widgetKey: WidgetKey,
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .flatMapObservable { it.fetchCurrentLocation(1000000, 1000000) }
                                 .observeOn(Schedulers.io())
-                                .map { MirrorLocation(it.latitude, it.longitude) }
+                                .map { MirrorLocationModel(it.latitude, it.longitude) }
                     } else {
-                        Observable.fromCallable { MirrorLocation() }
+                        Observable.fromCallable { MirrorLocationModel() }
                     }
                 }
                 .flatMapSingle { weatherApiLazy.get().getWeatherForecast(it.lat, it.lon) }
@@ -40,8 +45,4 @@ class WeatherForecastUpdater(widgetKey: WidgetKey,
                     WeatherForecastWidgetData(widgetKey, it)
                 }
     }
-
-    //new york by default
-    private class MirrorLocation(val lat: Double = 40.730610,
-                                 val lon: Double = -73.935242)
 }

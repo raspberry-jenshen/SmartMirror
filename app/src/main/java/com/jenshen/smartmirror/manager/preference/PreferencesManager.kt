@@ -1,8 +1,10 @@
 package com.jenshen.smartmirror.manager.preference
 
+import com.jenshen.smartmirror.data.entity.currency.ExchangeRatesResponse
 import com.jenshen.smartmirror.data.entity.session.Session
+import com.jenshen.smartmirror.data.entity.weather.day.WeatherForCurrentDayResponse
+import com.jenshen.smartmirror.data.entity.weather.forecast.WeatherForecastResponse
 import io.reactivex.Completable
-import io.reactivex.Single
 
 interface PreferencesManager {
 
@@ -13,4 +15,16 @@ interface PreferencesManager {
     fun getSession(): Session?
 
     fun isMirror(): Boolean
+
+    fun saveCurrentWeather(weatherForCurrentDayResponse: WeatherForCurrentDayResponse)
+
+    fun saveWeatherForecast(weatherForecastResponse: WeatherForecastResponse)
+
+    fun saveExchangeRates(exchangeRatesResponse: ExchangeRatesResponse)
+
+    fun getCurrentWeather(): WeatherForCurrentDayResponse?
+
+    fun getWeatherForecast(): WeatherForecastResponse?
+
+    fun getExchangeRates(): ExchangeRatesResponse?
 }

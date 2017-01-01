@@ -39,7 +39,7 @@ class WeatherForecastForWeekView : CoordinatorLayout, Widget<WeatherForecastWidg
         }
 
         response.weathersList
-                ?.distinctBy { it.date?.day }
+                ?.distinctBy { it.date.day }
                 ?.take(5)
                 ?.forEach {
                     val weatherView = LayoutInflater.from(context).inflate(R.layout.partial_weather_for_day, null)
@@ -52,7 +52,7 @@ class WeatherForecastForWeekView : CoordinatorLayout, Widget<WeatherForecastWidg
                                 .into(weatherView.weatherIcon)
                     }
 
-                    it.date.let { weatherView.lastTimeUpdate.text = it?.toDayMonth() }
+                    it.date.let { weatherView.lastTimeUpdate.text = it.toDayMonth() }
                     it.temperatureConditions?.let {
                         it.pressure.let {  weatherView.pressure.text = context.getString(R.string.widget_weather_pressure) + ": ${Math.round(it!!)} hPa" }
                         it.humidity.let {  weatherView.humidity.text = context.getString(R.string.widget_weather_humidity) + ": ${Math.round(it!!)} %" }

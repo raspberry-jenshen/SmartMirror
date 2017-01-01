@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.manager.api
+package com.jenshen.smartmirror.manager.api.weather
 
 import com.jenshen.smartmirror.data.entity.weather.day.WeatherForCurrentDayResponse
 import com.jenshen.smartmirror.data.entity.weather.forecast.WeatherForecastResponse

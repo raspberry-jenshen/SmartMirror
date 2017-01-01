@@ -20,11 +20,7 @@ import javax.inject.Inject
 class EditMirrorPresenter @Inject constructor(private val tunerApiInteractor: TunerApiInteractor,
                                               private val widgetFactoryManager: WidgetFactoryManager) : MvpRxPresenter<EditMirrorView>() {
 
-    private val updaterList: MutableList<WidgetUpdater<*>>
-
-    init {
-        updaterList = mutableListOf()
-    }
+    private val updaterList: MutableList<WidgetUpdater<*>> = mutableListOf()
 
     fun saveConfiguration(editMirrorModel: EditMirrorModel) {
         tunerApiInteractor.saveMirrorConfiguration(editMirrorModel)

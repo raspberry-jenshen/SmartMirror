@@ -17,7 +17,7 @@ class WeatherForCurrentDayResponse(@SerializedName("coord") val coordinates: Coo
                                    wind: Wind,
                                    rain: Rain?,
                                    snow: Snow?,
-                                   date: Date?,
+                                   date: Date,
                                    val visibility: Int?,
                                    val sys: Sys?,
                                    @SerializedName("cod") val code: Int?,

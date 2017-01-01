@@ -7,7 +7,7 @@ import com.jenshen.smartmirror.data.entity.widget.info.weather.CurrentWeatherWid
 import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
 import com.jenshen.smartmirror.data.model.widget.MirrorLocationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
-import com.jenshen.smartmirror.manager.api.IWeatherApiManager
+import com.jenshen.smartmirror.manager.api.weather.IWeatherApiManager
 import com.jenshen.smartmirror.manager.location.IFindLocationManager
 import dagger.Lazy
 import io.reactivex.Observable
@@ -21,10 +21,14 @@ class CurrentWeatherUpdater(widgetKey: WidgetKey,
                             private val weatherApiLazy: Lazy<IWeatherApiManager>,
                             private val findLocationManagerLazy: Lazy<IFindLocationManager>) : WidgetUpdater<CurrentWeatherWidgetData>(widgetKey) {
 
+    companion object {
+        const val HOURS_BETWEEN_UPDATES = 3L
+    }
+
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     override fun startUpdate(): Observable<CurrentWeatherWidgetData> {
 
-        return Observable.interval(0, 3, TimeUnit.HOURS)
+        return Observable.interval(0, HOURS_BETWEEN_UPDATES, TimeUnit.HOURS)
                 .takeWhile { !isDisposed }
                 .flatMap {
                     if (IFindLocationManager.canGetLocation(context)) {

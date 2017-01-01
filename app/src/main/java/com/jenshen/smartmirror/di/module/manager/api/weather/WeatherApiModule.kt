@@ -1,13 +1,14 @@
-package com.jenshen.smartmirror.di.module.manager.api
+package com.jenshen.smartmirror.di.module.manager.api.weather
 
 import com.jenshen.smartmirror.BuildConfig
-import com.jenshen.smartmirror.data.api.WeatherApi
+import com.jenshen.smartmirror.data.api.weather.WeatherApi
 import com.jenshen.smartmirror.di.component.ApiComponent
 import com.jenshen.smartmirror.di.module.ApiModule
 import com.jenshen.smartmirror.di.scope.ApiScope
 import com.jenshen.smartmirror.di.scope.SessionScope
-import com.jenshen.smartmirror.manager.api.IWeatherApiManager
-import com.jenshen.smartmirror.manager.api.WeatherApiManager
+import com.jenshen.smartmirror.manager.api.weather.IWeatherApiManager
+import com.jenshen.smartmirror.manager.api.weather.WeatherApiManager
+import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -32,7 +33,7 @@ class WeatherApiModule {
     @Provides
     fun provideWeatherApi(apiComponentBuilder: ApiComponent.Builder, interceptor: Interceptor): WeatherApi {
         return apiComponentBuilder
-                .apiModule(ApiModule(WeatherApi.API_URL, interceptor))
+                .apiModule(ApiModule(WeatherApi.Companion.API_URL, interceptor))
                 .build()
                 .provideRetrofit()
                 .create(WeatherApi::class.java)
@@ -40,7 +41,7 @@ class WeatherApiModule {
 
     @SessionScope
     @Provides
-    fun provideWeatherApiManager(api: WeatherApi): IWeatherApiManager {
-        return WeatherApiManager(api)
+    fun provideWeatherApiManager(api: WeatherApi, referencesManager: PreferencesManager): IWeatherApiManager {
+        return WeatherApiManager(api, referencesManager)
     }
 }

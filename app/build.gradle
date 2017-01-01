@@ -67,6 +67,7 @@ android {
         multiDexEnabled true
 
         buildConfigField 'String', 'WEATHER_API_KEY', '\"ca28542db9f3ace087694d08e452d069\"'
+        buildConfigField 'String', 'CURRENCY_API_KEY', '\"29c304f7c7164b3f98b8cb07923ff8aa\"'
         buildConfigField 'boolean', 'IS_PRODUCTION_VERSION', 'true'
     }
     buildTypes {

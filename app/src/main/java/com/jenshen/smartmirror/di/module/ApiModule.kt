@@ -2,7 +2,6 @@ package com.jenshen.smartmirror.di.module
 
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import com.jenshen.smartmirror.BuildConfig
 import com.jenshen.smartmirror.di.scope.ApiScope
 import dagger.Module
 import dagger.Provides
@@ -13,7 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module(includes = arrayOf(GsonModule::class))
-class ApiModule(private val baseUrl: String, private val interceptor: Interceptor) {
+class ApiModule(private val baseUrl: String, private val interceptor: Interceptor? = null) {
 
     @ApiScope
     @Provides
@@ -26,11 +25,12 @@ class ApiModule(private val baseUrl: String, private val interceptor: Intercepto
     @ApiScope
     @Provides
     fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-        val client = OkHttpClient.Builder()
+        val builder = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-                .addInterceptor(interceptor)
-                .build()
-        return client
+        if (interceptor != null) {
+            builder.addInterceptor(interceptor)
+        }
+        return builder.build()
     }
 
     @ApiScope

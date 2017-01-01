@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="preference_key_user" translatable="false">preference_key_user</string>
-    <string name="preference_key_is_mirror" translatable="false">preference_key_is_mirror</string>
+    <string name="preference_key_user" translatable="false">user</string>
+    <string name="preference_key_is_mirror" translatable="false">is_mirror</string>
+    <string name="preference_key_current_weather" translatable="false">current_weather</string>
+    <string name="preference_key_weather_forecast" translatable="false">weather_forecast</string>
+    <string name="preference_key_exchange_rates" translatable="false">exchange_rates</string>
     <!--screen-->
     <string name="preference_logout_key">logout</string>
     <string name="preference_add_widgets">add_widgets</string>

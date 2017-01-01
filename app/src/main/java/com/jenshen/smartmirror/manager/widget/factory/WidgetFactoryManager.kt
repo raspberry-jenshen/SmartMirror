@@ -11,7 +11,7 @@ import com.jenshen.smartmirror.data.entity.widget.updater.weather.CurrentWeather
 import com.jenshen.smartmirror.data.entity.widget.updater.weather.WeatherForecastUpdater
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
-import com.jenshen.smartmirror.manager.api.IWeatherApiManager
+import com.jenshen.smartmirror.manager.api.weather.IWeatherApiManager
 import com.jenshen.smartmirror.manager.location.IFindLocationManager
 import com.jenshen.smartmirror.ui.view.widget.*
 import javax.inject.Inject
@@ -31,6 +31,9 @@ class WidgetFactoryManager @Inject constructor(private val context: Context,
             }
             WidgetInfo.WEATHER_FORECAST_FOR_DAY_WIDGET_KEY, WidgetInfo.WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY -> {
                 WeatherForecastUpdater(widgetKey, context, weatherApiLazy, findLocationManagerLazy)
+            }
+            WidgetInfo.EXCHANGE_RATES_WIDGET_KEY -> {
+                CurrentWeatherUpdater(widgetKey, context, weatherApiLazy, findLocationManagerLazy)
             }
             else -> throw RuntimeException("Can't support this widget")
         }

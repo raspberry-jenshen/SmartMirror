@@ -8,7 +8,7 @@ import com.jenshen.smartmirror.data.model.widget.MirrorLocationModel
 import com.jenshen.smartmirror.data.model.widget.PrecipitationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.interactor.firebase.api.mirror.MirrorApiInteractor
-import com.jenshen.smartmirror.manager.api.IWeatherApiManager
+import com.jenshen.smartmirror.manager.api.weather.IWeatherApiManager
 import com.jenshen.smartmirror.manager.location.IFindLocationManager
 import com.jenshen.smartmirror.manager.widget.factory.WidgetFactoryManager
 import com.jenshen.smartmirror.ui.mvp.view.dashboard.mirror.MirrorDashboardView
@@ -28,14 +28,10 @@ class MirrorDashboardPresenter @Inject constructor(private val context: Context,
                                                    private val findLocationManagerLazy: dagger.Lazy<IFindLocationManager>,
                                                    private val widgetFactoryManager: WidgetFactoryManager) :
         MvpRxPresenter<MirrorDashboardView>() {
-    private val updaterList: MutableList<WidgetUpdater<*>>
+    private val updaterList: MutableList<WidgetUpdater<*>> = mutableListOf()
     private var userInfoFlagDisposable: Disposable? = null
     private var precipitationFlagDisposable: Disposable? = null
     private var precipitationDisposable: Disposable? = null
-
-    init {
-        updaterList = mutableListOf()
-    }
 
     override fun attachView(view: MirrorDashboardView?) {
         super.attachView(view)
@@ -130,7 +126,8 @@ class MirrorDashboardPresenter @Inject constructor(private val context: Context,
                     .applySchedulers(Schedulers.io())
                     .doOnSubscribe {
                         precipitationDisposable = it
-                        compositeDisposable.add(it) }
+                        compositeDisposable.add(it)
+                    }
                     .subscribe({ view?.onPrecipitationUpdate(it) }, { view?.handleError(it) })
         } else {
             if (precipitationDisposable != null && !precipitationDisposable!!.isDisposed) {

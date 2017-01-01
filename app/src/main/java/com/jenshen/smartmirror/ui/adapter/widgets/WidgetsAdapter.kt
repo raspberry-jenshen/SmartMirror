@@ -20,34 +20,27 @@ class WidgetsAdapter(private val context: Context,
 
     private val itemList: MutableList<WidgetModel>
 
-    companion object {
-        const val ITEM_CLOCK = 0
-        const val ITEM_CURRENT_WEATHER = 1
-        const val ITEM_WEATHER_FORECAST_FOR_DAY = 2
-        const val ITEM_WEATHER_FORECAST_FOR_WEEK = 3
-    }
-
     init {
         this.itemList = mutableListOf<WidgetModel>()
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            0 -> ITEM_CLOCK
-            1 -> ITEM_CURRENT_WEATHER
-            2 -> ITEM_WEATHER_FORECAST_FOR_DAY
-            3 -> ITEM_WEATHER_FORECAST_FOR_WEEK
-            else -> {
-                throw RuntimeException("Can't support this type ")
-            }
-        }
+        return position
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WidgetHolder {
         val view = LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.item_widget, parent, false)
-        val widgetKey = getWidgetKey(viewType)
+
+        val widgetKey =  when (viewType) {
+            0 -> WidgetInfo.CLOCK_WIDGET_KEY
+            1 -> WidgetInfo.CURRENT_WEATHER_WIDGET_KEY
+            2 -> WidgetInfo.WEATHER_FORECAST_FOR_DAY_WIDGET_KEY
+            3 -> WidgetInfo.WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY
+            4 -> WidgetInfo.EXCHANGE_RATES_WIDGET_KEY
+            else -> WidgetInfo.CLOCK_WIDGET_KEY
+        }
         onHolderCreated(widgetKey)
         return WidgetHolder(context, widgetKey, view, onWidgetUpdate)
     }
@@ -75,20 +68,6 @@ class WidgetsAdapter(private val context: Context,
             if (widgetModel.widgetDataSnapshot.key == widgetData.widgetKey.key) {
                 widgetModel.widgetData = widgetData
                 notifyItemChanged(position)
-            }
-        }
-    }
-
-    /* private methods */
-
-    private fun getWidgetKey(type: Int): String {
-        return when (type) {
-            ITEM_CLOCK -> WidgetInfo.CLOCK_WIDGET_KEY
-            ITEM_CURRENT_WEATHER -> WidgetInfo.CURRENT_WEATHER_WIDGET_KEY
-            ITEM_WEATHER_FORECAST_FOR_DAY -> WidgetInfo.WEATHER_FORECAST_FOR_DAY_WIDGET_KEY
-            ITEM_WEATHER_FORECAST_FOR_WEEK -> WidgetInfo.WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY
-            else -> {
-                throw RuntimeException("Can't support this widget type")
             }
         }
     }
