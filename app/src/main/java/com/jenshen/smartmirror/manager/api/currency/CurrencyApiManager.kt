@@ -24,7 +24,7 @@ class CurrencyApiManager(private val currencyApi: CurrencyApi, private val prefe
                 return Single.fromCallable { currentWeather }
             }
         }
-        return currencyApi.getExchangeRates(BuildConfig.CURRENCY_API_KEY, CurrencyApi.UAH_CURRENCY, "")
+        return currencyApi.getExchangeRates(BuildConfig.CURRENCY_API_KEY)
                 .doOnSuccess { preferencesManager.saveExchangeRates(it) }
     }
 }

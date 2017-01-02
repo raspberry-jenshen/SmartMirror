@@ -11,7 +11,6 @@ import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.widget.info.weather.WeatherForecastWidgetData
-import com.jenshen.smartmirror.util.toDayMonth
 import com.jenshen.smartmirror.util.toHoursMinutes
 import kotlinx.android.synthetic.main.partial_weather_for_day.view.*
 import kotlinx.android.synthetic.main.view_forecast.view.*
@@ -38,11 +37,11 @@ class WeatherForecastForDayView : CoordinatorLayout, Widget<WeatherForecastWidge
             val view = this.dayContainer.getChildAt(0)
             (view.parent as ViewGroup).removeView(view)
         }
-        val dayResponse = response.weathersList?.iterator()?.next()
+        val dayResponse = response.weathersList.iterator().next()
         response.weathersList
-                ?.filter { dayResponse?.date?.day == it.date.day }
-                ?.take(5)
-                ?.forEach {
+                .filter { dayResponse.date.day == it.date.day }
+                .take(5)
+                .forEach {
                     val weatherView = LayoutInflater.from(context).inflate(R.layout.partial_weather_for_day, null)
                     weatherView.layoutParams = LinearLayout.LayoutParams(0, MATCH_PARENT, 1f)
                     it.weathersList.let {

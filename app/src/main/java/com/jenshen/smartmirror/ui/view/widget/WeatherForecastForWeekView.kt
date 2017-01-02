@@ -39,9 +39,9 @@ class WeatherForecastForWeekView : CoordinatorLayout, Widget<WeatherForecastWidg
         }
 
         response.weathersList
-                ?.distinctBy { it.date.day }
-                ?.take(5)
-                ?.forEach {
+                .distinctBy { it.date.day }
+                .take(5)
+                .forEach {
                     val weatherView = LayoutInflater.from(context).inflate(R.layout.partial_weather_for_day, null)
                     weatherView.layoutParams = LinearLayout.LayoutParams(0, MATCH_PARENT, 1f)
                     it.weathersList.let {

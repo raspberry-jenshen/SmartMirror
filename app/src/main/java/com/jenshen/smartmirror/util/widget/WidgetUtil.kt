@@ -7,10 +7,7 @@ import android.widget.FrameLayout
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
-import com.jenshen.smartmirror.ui.view.widget.ClockView
-import com.jenshen.smartmirror.ui.view.widget.CurrentWeatherView
-import com.jenshen.smartmirror.ui.view.widget.WeatherForecastForDayView
-import com.jenshen.smartmirror.ui.view.widget.WeatherForecastForWeekView
+import com.jenshen.smartmirror.ui.view.widget.*
 import com.jenshensoft.widgetview.WidgetView
 
 
@@ -29,7 +26,8 @@ fun getViewForWidget(widgetKey: String, context: Context): View {
         WidgetInfo.CURRENT_WEATHER_WIDGET_KEY -> CurrentWeatherView(context)
         WidgetInfo.WEATHER_FORECAST_FOR_DAY_WIDGET_KEY -> WeatherForecastForDayView(context)
         WidgetInfo.WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY -> WeatherForecastForWeekView(context)
-        else -> throw RuntimeException("Can't support this widget")
+        WidgetInfo.EXCHANGE_RATES_WIDGET_KEY -> ExchangeRatesView(context)
+        else -> ClockView(context)
     }
     view.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     return view

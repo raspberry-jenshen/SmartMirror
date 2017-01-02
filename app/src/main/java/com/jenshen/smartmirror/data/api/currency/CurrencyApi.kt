@@ -14,7 +14,5 @@ interface CurrencyApi {
     }
 
     @GET("latest.json")
-    fun getExchangeRates(@Query("app_id") id: String,
-                         @Query("base") base: String,
-                         @Query("symbols") symbols: String): Single<ExchangeRatesResponse>
+    fun getExchangeRates(@Query("app_id") id: String): Single<ExchangeRatesResponse>
 }

@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textViewStyle">@style/App.Theme.TextView</item>
+        <item name="android:textViewStyle">@style/App.Theme.Widget.TextView.Light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <!-- <item name="android:windowBackground">@drawable/background</item>-->
     </style>
@@ -21,9 +21,10 @@
 
     <style name="App.Theme.Splash.Activity" />
 
-    <style name="App.Theme.ChooseAccount" >
+    <style name="App.Theme.ChooseAccount">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
+
     <style name="App.Theme.ChooseAccount.Activity" />
 
     <!--tuner-->
@@ -88,13 +89,33 @@
 
     <!-- Widget -->
 
-    <style name="App.Theme.TextView">
+    <style name="App.Theme.Widget" />
+
+    <!-- text view -->
+
+    <style name="App.Theme.Widget.TextView" />
+
+    <style name="App.Theme.Widget.TextView.Light">
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="App.Theme.TextViewLight">
+    <style name="App.Theme.Widget.TextView.Dark">
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="App.Theme.Widget.TextView.Dark.Small">
+        <item name="android:textSize">@dimen/textSize_small2</item>
+    </style>
+
+    <style name="App.Theme.Widget.TextView.Dark.Medium">
+        <item name="android:textSize">@dimen/textSize_normal</item>
+    </style>
+
+    <style name="App.Theme.Widget.TextView.Dark.Large">
+        <item name="android:textSize">@dimen/textSize_large2</item>
+    </style>
+
+    <!-- toolbar -->
 
     <style name="Widget.AppCompat.Toolbar.Transparent" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:background">@color/black_with_alpha</item>

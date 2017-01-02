@@ -4,4 +4,4 @@ import com.jenshen.smartmirror.data.entity.currency.ExchangeRatesResponse
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
 
-class CurrencyWidgetData(widgetKey: WidgetKey, val exchangeRatesResponse: ExchangeRatesResponse) : WidgetData(widgetKey)
+class ExchangeRatesWidgetData(widgetKey: WidgetKey, val exchangeRatesResponse: ExchangeRatesResponse) : WidgetData(widgetKey)

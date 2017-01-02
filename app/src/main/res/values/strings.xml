@@ -89,5 +89,10 @@
     <!--weather-->
     <string name="widget.weather.pressure">Pressure</string>
     <string name="widget.weather.humidity">Humidity</string>
+    <string name="widget.exchange_rates.currency_UAH">UAH</string>
+    <string name="widget.exchange_rates.currency_USD">USD</string>
+    <string name="widget.exchange_rates.currency_RUB">RUB</string>
+    <string name="widget.exchange_rates.currency_EUR">EUR</string>
+    <string name="widget.exchange_rates.currency_GBP">GBP</string>
 
 </resources>
