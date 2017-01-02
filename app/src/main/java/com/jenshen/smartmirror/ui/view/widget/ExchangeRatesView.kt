@@ -2,7 +2,7 @@ package com.jenshen.smartmirror.ui.view.widget
 
 
 import android.content.Context
-import android.support.design.widget.CoordinatorLayout
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.jenshen.smartmirror.R
@@ -10,7 +10,7 @@ import com.jenshen.smartmirror.data.entity.widget.info.currency.ExchangeRatesWid
 import com.jenshen.smartmirror.util.toDayMonth
 import kotlinx.android.synthetic.main.view_exchange_rates.view.*
 
-class ExchangeRatesView : CoordinatorLayout, Widget<ExchangeRatesWidgetData> {
+class ExchangeRatesView : ConstraintLayout, Widget<ExchangeRatesWidgetData> {
 
     constructor(context: Context) : super(context) {
         init()

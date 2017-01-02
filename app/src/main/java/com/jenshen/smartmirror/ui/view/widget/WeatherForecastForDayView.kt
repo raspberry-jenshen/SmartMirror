@@ -2,6 +2,7 @@ package com.jenshen.smartmirror.ui.view.widget
 
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
 import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -15,7 +16,7 @@ import com.jenshen.smartmirror.util.toHoursMinutes
 import kotlinx.android.synthetic.main.partial_weather_for_day.view.*
 import kotlinx.android.synthetic.main.view_forecast.view.*
 
-class WeatherForecastForDayView : CoordinatorLayout, Widget<WeatherForecastWidgetData> {
+class WeatherForecastForDayView : ConstraintLayout, Widget<WeatherForecastWidgetData> {
 
     constructor(context: Context) : super(context) {
         init()

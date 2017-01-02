@@ -16,11 +16,10 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/editMirror" />
 
-    <com.jenshensoft.widgetview.WidgetContainerLayout
+    <com.jenshen.smartmirror.ui.view.WidgetScaleLayout
         android:id="@+id/widgetContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </com.jenshensoft.widgetview.WidgetContainerLayout>
+        android:layout_height="match_parent"
+        app:scale_textSize_multiplier="0.2"/>
 
 </LinearLayout>
