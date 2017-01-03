@@ -192,6 +192,12 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        val menuItem = menu.getItem(2)
+        menuItem.isVisible = editMirrorModel != null && editMirrorModel!!.configurationKey != null
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.addWidget_item_menu -> {
@@ -237,6 +243,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 })
                 .create()
                 .show()
+        invalidateOptionsMenu()
     }
 
     override fun onMirrorConfigurationLoaded(model: EditMirrorModel) {
@@ -248,6 +255,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         editMirrorModel?.widgets
                 ?.filter { !it.isDeleted }
                 ?.forEach { updateWidgetPosition(createWidgetView(it), it) }
+        invalidateOptionsMenu()
     }
 
     override fun onWidgetUpdate(infoData: WidgetData) {

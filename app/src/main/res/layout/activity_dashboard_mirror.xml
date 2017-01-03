@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    android:keepScreenOn="true"
+    android:fitsSystemWindows="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:fitsSystemWindows="true"
     tools:context=".ui.activity.dashboard.mirror.MirrorDashboardActivity">
 
     <com.jenshensoft.widgetview.WidgetContainerLayout
@@ -18,9 +18,23 @@
 
     <ImageView
         android:id="@+id/avatar"
-        android:layout_width="135dp"
-        android:layout_height="135dp"
-        android:layout_margin="8dp"
+        android:layout_width="@dimen/offset_big2_plus_normal"
+        android:layout_height="@dimen/offset_big2_plus_normal"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/offset_big1"
+        android:layout_marginEnd="@dimen/offset_small1"
         android:contentDescription="@null"
         tools:src="@drawable/ic_demo_avatar" />
+
+    <TextView
+        android:layout_gravity="bottom|end"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:id="@+id/nikeName"
+        android:textColor="@android:color/white"
+        android:layout_width="@dimen/offset_big2_plus_normal"
+        android:layout_marginEnd="@dimen/offset_small1"
+        android:layout_marginBottom="@dimen/offset_small1"
+        android:layout_height="wrap_content"
+        tools:text="Nikename" />
 </FrameLayout>

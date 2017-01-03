@@ -10,7 +10,7 @@ import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.manager.api.weather.IWeatherApiManager
 import com.jenshen.smartmirror.manager.location.IFindLocationManager
 import dagger.Lazy
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -26,24 +26,22 @@ class CurrentWeatherUpdater(widgetKey: WidgetKey,
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    override fun startUpdate(): Observable<CurrentWeatherWidgetData> {
+    override fun startUpdate(): Flowable<CurrentWeatherWidgetData> {
 
-        return Observable.interval(0, HOURS_BETWEEN_UPDATES, TimeUnit.HOURS)
+        return Flowable.interval(0, HOURS_BETWEEN_UPDATES, TimeUnit.HOURS)
                 .takeWhile { !isDisposed }
                 .flatMap {
                     if (IFindLocationManager.canGetLocation(context)) {
                         Single.fromCallable { findLocationManagerLazy.get() }
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .flatMapObservable { it.fetchCurrentLocation(1000000, 1000000) }
+                                .flatMapPublisher { it.fetchCurrentLocation(1000000, 1000000) }
                                 .observeOn(Schedulers.io())
                                 .map { MirrorLocationModel(it.latitude, it.longitude) }
                     } else {
-                        Observable.fromCallable { MirrorLocationModel() }
+                        Flowable.fromCallable { MirrorLocationModel() }
                     }
                 }
-                .flatMapSingle { weatherApiLazy.get().getCurrentWeather(it.lat, it.lon) }
-                .map {
-                    CurrentWeatherWidgetData(widgetKey, it)
-                }
+                .flatMap { weatherApiLazy.get().getCurrentWeather(it.lat, it.lon) }
+                .map { CurrentWeatherWidgetData(widgetKey, it) }
     }
 }

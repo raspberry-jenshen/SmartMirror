@@ -47,7 +47,9 @@
 
     <style name="App.Theme.ChooseMirror.Activity" />
 
-    <style name="App.Theme.Settings" />
+    <style name="App.Theme.Settings">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
 
     <style name="App.Theme.Settings.Activity" />
 
@@ -86,6 +88,8 @@
     <style name="App.Theme.Mirror">
         <item name="android:windowBackground">@color/black</item>
     </style>
+
+    <style name="App.Theme.Mirror.Activity"/>
 
     <!-- Widget -->
 

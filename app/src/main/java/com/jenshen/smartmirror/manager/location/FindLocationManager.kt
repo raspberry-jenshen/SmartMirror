@@ -7,6 +7,12 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.support.annotation.RequiresPermission
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.jenshen.smartmirror.util.reactive.firebase.observeValue
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import io.reactivex.Observable
 
 class FindLocationManager(private val context: Context) : LocationListener, IFindLocationManager {
@@ -36,8 +42,8 @@ class FindLocationManager(private val context: Context) : LocationListener, IFin
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     override fun fetchCurrentLocation(minTimeToUpdate: Long,
-                                      minDistanceToUpdate: Long): Observable<Location> {
-        return Observable.create { source ->
+                                      minDistanceToUpdate: Long): Flowable<Location> {
+        return Flowable.create<Location>({ source ->
             val onLocationReceived: OnLocationReceived = object : OnLocationReceived {
                 override fun onReceived(location: Location) {
                     source.onNext(location)
@@ -53,7 +59,7 @@ class FindLocationManager(private val context: Context) : LocationListener, IFin
                 removeOnLocationReceivedCallback(onLocationReceived)
                 stopUsingGPS()
             }
-        }
+        }, BackpressureStrategy.LATEST)
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)

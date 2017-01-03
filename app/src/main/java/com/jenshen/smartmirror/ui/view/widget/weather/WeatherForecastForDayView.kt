@@ -1,4 +1,4 @@
-package com.jenshen.smartmirror.ui.view.widget
+package com.jenshen.smartmirror.ui.view.widget.weather
 
 
 import android.content.Context
@@ -12,11 +12,12 @@ import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.widget.info.weather.WeatherForecastWidgetData
-import com.jenshen.smartmirror.util.toDayMonth
+import com.jenshen.smartmirror.ui.view.widget.Widget
+import com.jenshen.smartmirror.util.toHoursMinutes
 import kotlinx.android.synthetic.main.partial_weather_for_day.view.*
 import kotlinx.android.synthetic.main.view_forecast.view.*
 
-class WeatherForecastForWeekView : ConstraintLayout, Widget<WeatherForecastWidgetData> {
+class WeatherForecastForDayView : ConstraintLayout, Widget<WeatherForecastWidgetData> {
 
     constructor(context: Context) : super(context) {
         init()
@@ -34,13 +35,13 @@ class WeatherForecastForWeekView : ConstraintLayout, Widget<WeatherForecastWidge
         val response = widgetData.weatherResponse
         this.country.text = "${response.city?.name}, ${response.city?.country}"
 
-        while ( this.dayContainer.childCount != 0) {
+        while (this.dayContainer.childCount != 0) {
             val view = this.dayContainer.getChildAt(0)
             (view.parent as ViewGroup).removeView(view)
         }
-
+        val dayResponse = response.weathersList.iterator().next()
         response.weathersList
-                .distinctBy { it.date.day }
+                .filter { dayResponse.date.day == it.date.day }
                 .take(5)
                 .forEach {
                     val weatherView = LayoutInflater.from(context).inflate(R.layout.partial_weather_for_day, null)
@@ -53,10 +54,10 @@ class WeatherForecastForWeekView : ConstraintLayout, Widget<WeatherForecastWidge
                                 .into(weatherView.weatherIcon)
                     }
 
-                    it.date.let { weatherView.lastTimeUpdate.text = it.toDayMonth() }
+                    it.date.let { weatherView.lastTimeUpdate.text = it.toHoursMinutes() }
                     it.temperatureConditions?.let {
-                        it.pressure.let {  weatherView.pressure.text = context.getString(R.string.widget_weather_pressure) + ": ${Math.round(it!!)} hPa" }
-                        it.humidity.let {  weatherView.humidity.text = context.getString(R.string.widget_weather_humidity) + ": ${Math.round(it!!)} %" }
+                        it.pressure.let { weatherView.pressure.text = context.getString(R.string.widget_weather_pressure) + ": ${Math.round(it!!)} hPa" }
+                        it.humidity.let { weatherView.humidity.text = context.getString(R.string.widget_weather_humidity) + ": ${Math.round(it!!)} %" }
                         it.temp.let { weatherView.temp.text = Math.round(it!!).toString() }
                     }
                     this.dayContainer.addView(weatherView)

@@ -38,10 +38,9 @@ class ChooseWidgetPresenter @Inject constructor(private val apiInteractor: Tuner
     fun loadInfoForWidget(widgetKey: String) {
         val updaterForWidget = widgetFactoryManager.getUpdaterForWidget(WidgetKey(widgetKey))
         updaterList.add(updaterForWidget)
-        updaterForWidget.startUpdate()
+        addDisposible(updaterForWidget.startUpdate()
                 .applySchedulers(Schedulers.io())
-                .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({ view?.onWidgetUpdate(it) }, { view?.handleError(it) })
+                .subscribe({ view?.onWidgetUpdate(it) }, { view?.handleError(it) }))
     }
 
     fun clearWidgetsUpdaters() {

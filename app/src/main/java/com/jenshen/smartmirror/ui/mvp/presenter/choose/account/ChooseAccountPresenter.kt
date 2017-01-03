@@ -21,17 +21,14 @@ class ChooseAccountPresenter @Inject constructor() : MvpRxPresenter<ChooseAccoun
                 .applySchedulers(Schedulers.computation())
                 .doOnSubscribe {
                     disposable = it
-                    compositeDisposable.add(it)
+                    addDisposible(it)
                 }
-                .subscribe({
-                    //todo
-                    //view?.onChooseMirrorAccount()
-                    }, { view?.handleError(it) })
+                .subscribe({ view?.onChooseMirrorAccount() }, { view?.handleError(it) })
 
         Observable.interval(0, 1, TimeUnit.SECONDS)
                 .applySchedulers(Schedulers.computation())
-                .takeWhile{ seconds != 0 }
-                .doOnSubscribe { disposable = it }
+                .takeWhile { seconds > -1 }
+                .doOnSubscribe { addDisposible(it) }
                 .subscribe({
                     view?.onUpdateTimer(seconds)
                     seconds--
@@ -40,6 +37,7 @@ class ChooseAccountPresenter @Inject constructor() : MvpRxPresenter<ChooseAccoun
 
     fun cancelTimer() {
         if (disposable != null && !disposable!!.isDisposed) {
+            view?.onUpdateTimer(0)
             compositeDisposable.remove(disposable)
         }
     }

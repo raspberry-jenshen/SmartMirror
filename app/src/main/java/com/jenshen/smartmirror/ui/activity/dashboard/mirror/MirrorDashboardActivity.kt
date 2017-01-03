@@ -118,20 +118,8 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
             if (confettiManager != null) {
                 confettiManager!!.terminate()
             }
-            val size = resources.getDimensionPixelSize(R.dimen.big_confetti_size)
-            val bitmap = BitmapFactory.decodeResource(resources, model.getResId()).scale(size.toFloat(), size.toFloat())
-            val velocitySlow = resources.getDimensionPixelOffset(R.dimen.default_velocity_slow)
-            val velocityNormal = resources.getDimensionPixelOffset(R.dimen.default_velocity_normal)
-            val source = ConfettiSource(0, -size, container.width, -size)
-
-            val confettiManager = ConfettiManager(context, { BitmapConfetto(bitmap) }, source, container)
-                    .setVelocityX(0f, velocitySlow.toFloat())
-                    .setVelocityY(velocityNormal.toFloat(), velocitySlow.toFloat())
-                    .setRotationalVelocity(180f, 90f)
-                    .setEmissionDuration(ConfettiManager.INFINITE_DURATION)
-                    .setEmissionRate(30.toFloat())
-
-            confettiManager.animate()
+            confettiManager = model.getConfettiManager(context, container)
+            confettiManager!!.animate()
         }
     }
 
@@ -139,6 +127,9 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
         if (userInfoData.isPresent) {
             val avatarUrl = userInfoData.get().avatarUrl
             avatar.visibility = VISIBLE
+            nikeName.visibility = VISIBLE
+
+            nikeName.text = userInfoData.get().nikeName
             if (avatarUrl == null) {
                 avatar.setImageBitmap(getBitmap(context, R.drawable.ic_demo_avatar).asCircleBitmap())
             } else {
@@ -148,8 +139,16 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
                         .into(avatar)
             }
         } else {
+            nikeName.visibility = GONE
             avatar.visibility = GONE
         }
+    }
+
+    override fun enablePrecipitation(enable: Boolean) {
+        if (!enable && confettiManager != null) {
+            confettiManager!!.terminate()
+        }
+        presenter.enablePrecipitation(enable)
     }
 
 

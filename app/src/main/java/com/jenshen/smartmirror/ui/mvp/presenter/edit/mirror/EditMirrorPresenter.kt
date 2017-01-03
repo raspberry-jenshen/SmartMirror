@@ -41,10 +41,9 @@ class EditMirrorPresenter @Inject constructor(private val tunerApiInteractor: Tu
     fun addWidgetUpdater(widgetKey: WidgetKey) {
         val updater = widgetFactoryManager.getUpdaterForWidget(widgetKey)
         updaterList.add(updater)
-        updater.startUpdate()
+        addDisposible(updater.startUpdate()
                 .applySchedulers(Schedulers.io())
-                .doOnSubscribe { compositeDisposable.add(it) }
-                .subscribe({ view?.onWidgetUpdate(it) }, { view?.handleError(it) })
+                .subscribe({ view?.onWidgetUpdate(it) }, { view?.handleError(it) }))
     }
 
     fun updateWidget(infoData: WidgetData, widget: Widget<*>) {

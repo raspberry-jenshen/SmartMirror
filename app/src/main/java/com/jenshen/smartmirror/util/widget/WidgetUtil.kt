@@ -8,6 +8,9 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
 import com.jenshen.smartmirror.ui.view.widget.*
+import com.jenshen.smartmirror.ui.view.widget.weather.CurrentWeatherView
+import com.jenshen.smartmirror.ui.view.widget.weather.WeatherForecastForDayView
+import com.jenshen.smartmirror.ui.view.widget.weather.WeatherForecastForWeekView
 import com.jenshensoft.widgetview.WidgetView
 
 

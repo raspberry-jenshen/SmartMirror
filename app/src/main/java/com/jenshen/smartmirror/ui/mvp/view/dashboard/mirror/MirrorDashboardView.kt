@@ -13,5 +13,6 @@ interface MirrorDashboardView : BaseMvpView {
     fun changeMirrorConfiguration(mirrorConfiguration: MirrorConfiguration)
     fun onWidgetUpdate(infoData: WidgetData)
     fun enableUserInfo(userInfoData: Optional<TunerInfo>)
+    fun enablePrecipitation(enable: Boolean)
     fun onPrecipitationUpdate(model: PrecipitationModel)
 }

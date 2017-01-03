@@ -55,7 +55,7 @@ class ChooseAccountActivity : BaseDiMvpActivity<ChooseAccountComponent, ChooseAc
 
     override fun onUpdateTimer(seconds: Int) {
         timer.text = seconds.toString()
-        if (seconds < 0) {
+        if (seconds <= 0) {
             timer.visibility = GONE
         }
     }

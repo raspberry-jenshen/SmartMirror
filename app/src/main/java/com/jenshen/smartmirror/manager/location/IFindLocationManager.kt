@@ -7,6 +7,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.support.annotation.RequiresPermission
 import android.support.v4.content.ContextCompat
+import io.reactivex.Flowable
 import io.reactivex.Observable
 
 interface IFindLocationManager {
@@ -51,7 +52,7 @@ interface IFindLocationManager {
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun fetchCurrentLocation(minTimeToUpdate: Long = MIN_TIME_BW_UPDATES,
-                             minDistanceToUpdate: Long = MIN_DISTANCE_CHANGE_FOR_UPDATES): Observable<Location>
+                             minDistanceToUpdate: Long = MIN_DISTANCE_CHANGE_FOR_UPDATES): Flowable<Location>
 
     fun canGetLocation(): Boolean
     fun getLongitude(): Double?

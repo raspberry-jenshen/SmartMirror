@@ -107,10 +107,10 @@
         <!-- mirror -->
         <activity
             android:name=".ui.activity.signup.mirror.SignUpMirrorActivity"
-            android:theme="@style/App.Theme.Mirror" />
+            android:theme="@style/App.Theme.Mirror.Activity" />
         <activity
             android:name=".ui.activity.dashboard.mirror.MirrorDashboardActivity"
-            android:theme="@style/App.Theme.Mirror" />
+            android:theme="@style/App.Theme.Mirror.Activity" />
 
         <receiver
             android:name=".broadcast.LaunchAppBroadcast"

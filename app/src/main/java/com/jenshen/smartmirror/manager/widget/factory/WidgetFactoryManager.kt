@@ -17,6 +17,9 @@ import com.jenshen.smartmirror.manager.api.currency.ICurrencyApiManager
 import com.jenshen.smartmirror.manager.api.weather.IWeatherApiManager
 import com.jenshen.smartmirror.manager.location.IFindLocationManager
 import com.jenshen.smartmirror.ui.view.widget.*
+import com.jenshen.smartmirror.ui.view.widget.weather.CurrentWeatherView
+import com.jenshen.smartmirror.ui.view.widget.weather.WeatherForecastForDayView
+import com.jenshen.smartmirror.ui.view.widget.weather.WeatherForecastForWeekView
 import javax.inject.Inject
 
 

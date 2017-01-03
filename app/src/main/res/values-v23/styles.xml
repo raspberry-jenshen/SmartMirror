@@ -21,7 +21,7 @@
     <style name="App.Theme.SignInTuner.Activity">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="App.Theme.SignUpTuner.Activity">
@@ -39,7 +39,7 @@
     <style name="App.Theme.Settings.Activity">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="App.Theme.QRCodeScanner.Activity">
@@ -70,6 +70,11 @@
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="App.Theme.Mirror.Activity">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
 </resources>
