@@ -79,10 +79,7 @@ android {
     }
 
     productFlavors {
-        tuner {
-        }
-        mirror {
-            targetSdkVersion 21
+        prod {
         }
 
         development {
