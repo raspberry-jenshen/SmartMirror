@@ -6,6 +6,7 @@ import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.FirebaseRealTimeDatabaseConstant
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
+import com.jenshen.smartmirror.data.firebase.model.configuration.OrientationMode
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
@@ -190,6 +191,20 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
         return fireBaseDatabase
                 .getMirrorConfigurationWidgetRef(keyWidget, configurationsKey)
                 .flatMapCompletable { it.clearValue() }
+    }
+
+    override fun getOrientationModeInConfiguration(configurationsKey: String): Maybe<OrientationMode> {
+        return fireBaseDatabase
+                .getMirrorConfigurationOrientationModeRef(configurationsKey)
+                .flatMap { it.loadValue() }
+                .filter { it.exists() }
+                .map { OrientationMode.toOrientationMode(it.getValue(Int::class.java)) }
+    }
+
+    override fun setOrientationModeInConfiguration(configurationsKey: String, orientationMode: OrientationMode): Completable {
+        return fireBaseDatabase
+                .getMirrorConfigurationOrientationModeRef(configurationsKey)
+                .flatMapCompletable { it.uploadValue(orientationMode.index) }
     }
 
     override fun isEnablePrecipitationInConfiguration(configurationsKey: String): Single<Boolean> {

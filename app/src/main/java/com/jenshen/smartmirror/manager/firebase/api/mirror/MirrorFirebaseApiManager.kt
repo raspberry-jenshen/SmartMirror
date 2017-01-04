@@ -2,6 +2,7 @@ package com.jenshen.smartmirror.manager.firebase.api.mirror
 
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
+import com.jenshen.smartmirror.data.firebase.model.configuration.OrientationMode
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerInfo
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
@@ -63,5 +64,13 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
                 .flatMapPublisher { it.observeValue() }
                 .filter { it.exists() }
                 .map { it.getValue(Boolean::class.java) }
+    }
+
+    override fun observeScreenOrientation(configurationKey: String): Flowable<OrientationMode> {
+        return firebaseDatabase.getMirrorConfigurationOrientationModeRef(configurationKey)
+                .flatMapPublisher { it.observeValue() }
+                .filter { it.exists() }
+                .map { it.getValue(Int::class.java) }
+                .map { OrientationMode.toOrientationMode(it) }
     }
 }

@@ -2,31 +2,31 @@ package com.jenshen.smartmirror.ui.activity.dashboard.mirror
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
+import android.view.Surface.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.Window
 import android.view.WindowManager
 import com.bumptech.glide.Glide
 import com.github.jinatonic.confetti.ConfettiManager
-import com.github.jinatonic.confetti.ConfettiSource
-import com.github.jinatonic.confetti.confetto.BitmapConfetto
 import com.jenshen.awesomeanimation.AwesomeAnimation
 import com.jenshen.awesomeanimation.AwesomeAnimation.SizeMode.SCALE
-import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
+import com.jenshen.smartmirror.data.firebase.model.configuration.OrientationMode
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerInfo
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
 import com.jenshen.smartmirror.data.model.widget.PrecipitationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.di.component.activity.dashboard.mirror.MirrorDashboardComponent
+import com.jenshen.smartmirror.ui.activity.base.BaseMirrorDiMvpActivity
 import com.jenshen.smartmirror.ui.activity.signup.mirror.SignUpMirrorActivity
 import com.jenshen.smartmirror.ui.mvp.presenter.dashboard.mirror.MirrorDashboardPresenter
 import com.jenshen.smartmirror.ui.mvp.view.dashboard.mirror.MirrorDashboardView
@@ -34,13 +34,12 @@ import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshen.smartmirror.util.Optional
 import com.jenshen.smartmirror.util.asCircleBitmap
 import com.jenshen.smartmirror.util.getBitmap
-import com.jenshen.smartmirror.util.scale
 import com.jenshen.smartmirror.util.widget.createWidget
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_dashboard_mirror.*
 
 
-class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, MirrorDashboardView, MirrorDashboardPresenter>(), MirrorDashboardView {
+class MirrorDashboardActivity : BaseMirrorDiMvpActivity<MirrorDashboardComponent, MirrorDashboardView, MirrorDashboardPresenter>(), MirrorDashboardView {
 
     private var confettiManager: ConfettiManager? = null
 
@@ -63,8 +62,6 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_dashboard_mirror)
         widgetContainer.isEnabled = false
     }
@@ -118,7 +115,7 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
             if (confettiManager != null) {
                 confettiManager!!.terminate()
             }
-            confettiManager = model.getConfettiManager(context, container)
+            confettiManager = model.getConfettiManager(context, contentView)
             confettiManager!!.animate()
         }
     }
@@ -151,6 +148,26 @@ class MirrorDashboardActivity : BaseDiMvpActivity<MirrorDashboardComponent, Mirr
         presenter.enablePrecipitation(enable)
     }
 
+    override fun onChangeOrientation(orientationMode: OrientationMode) {
+        val display = (getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        val orientation = display.rotation
+        val mode = when (orientation) {
+            ROTATION_0 -> OrientationMode.PORTRAIT
+            ROTATION_90 -> OrientationMode.LANDSCAPE
+            ROTATION_180 -> OrientationMode.REVERSE_PORTRAIT
+            ROTATION_270 -> OrientationMode.REVERSE_LANDSCAPE
+            else -> OrientationMode.PORTRAIT
+        }
+
+        if (orientationMode != mode) {
+            when (orientationMode) {
+                OrientationMode.PORTRAIT -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                OrientationMode.LANDSCAPE -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                OrientationMode.REVERSE_PORTRAIT -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT
+                OrientationMode.REVERSE_LANDSCAPE -> requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+            }
+        }
+    }
 
     /* private methods */
 

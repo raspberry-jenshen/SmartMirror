@@ -16,6 +16,9 @@ data class MirrorConfiguration(
         @set:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.TITLE)
         @get:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.TITLE)
         var title: String,
+        @set:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.ORIENTATION_MODE)
+        @get:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.ORIENTATION_MODE)
+        var orientationMode: Int,
         @set:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.IS_ENABLE_PRECIPITATION)
         @get:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.IS_ENABLE_PRECIPITATION)
         var isEnablePrecipitation: Boolean,
@@ -27,7 +30,7 @@ data class MirrorConfiguration(
     @get:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.WIDGETS)
     var widgets: HashMap<String, WidgetConfiguration>? = null
 
-    constructor() : this("", ContainerSize(), "", false, "") {
+    constructor() : this("", ContainerSize(), "", OrientationMode.PORTRAIT.index, false, "") {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 }

@@ -87,9 +87,11 @@
     <!-- mirror -->
     <style name="App.Theme.Mirror">
         <item name="android:windowBackground">@color/black</item>
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
     </style>
 
-    <style name="App.Theme.Mirror.Activity"/>
+    <style name="App.Theme.Mirror.Activity" />
 
     <!-- Widget -->
 
@@ -130,5 +132,10 @@
         <item name="logo">@drawable/ic_mirror_logo_small</item>
         <item name="titleMarginStart">@dimen/offset_small1_plus_big1</item>
     </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
 
 </resources>

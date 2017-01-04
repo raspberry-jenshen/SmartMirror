@@ -81,6 +81,11 @@
     <string name="mirror_settings">Mirror settings</string>
     <string name="mirror_settings.show_user_info_on_mirror">Show user info on the mirror</string>
     <string name="mirror_settings.enable_precipitation_on_mirror">Enable precipitation on the mirror</string>
+    <string name="mirror_settings.orientationMode">Switch orientation mode</string>
+    <string name="mirror_settings.portrait">Portrait</string>
+    <string name="mirror_settings.landscape">Landscape</string>
+    <string name="mirror_settings.reverse_portrait">Reverse portrait</string>
+    <string name="mirror_settings.reverse_landscape">Reverse landscape</string>
 
     <!-- choose widget-->
     <string name="chooseWidget">Choose Widget</string>

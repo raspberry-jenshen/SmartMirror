@@ -23,6 +23,7 @@ class MirrorDashboardPresenter @Inject constructor(private val mirrorApiInteract
     private var userInfoFlagDisposable: Disposable? = null
     private var precipitationFlagDisposable: Disposable? = null
     private var precipitationDisposable: Disposable? = null
+    private var screenOrientationDisposable: Disposable? = null
 
     override fun attachView(view: MirrorDashboardView?) {
         super.attachView(view)
@@ -90,8 +91,14 @@ class MirrorDashboardPresenter @Inject constructor(private val mirrorApiInteract
             compositeDisposable.remove(userInfoFlagDisposable)
             userInfoFlagDisposable = null
         }
+
+        if (screenOrientationDisposable != null && !screenOrientationDisposable!!.isDisposed) {
+            compositeDisposable.remove(screenOrientationDisposable)
+            screenOrientationDisposable = null
+        }
         fetchNeedToShowUserInfo(configurationKey)
         fetchIsEnablePrecipitation(configurationKey)
+        fetchScreenOrientationPrecipitation(configurationKey)
     }
 
     private fun fetchNeedToShowUserInfo(configurationKey: String) {
@@ -107,6 +114,14 @@ class MirrorDashboardPresenter @Inject constructor(private val mirrorApiInteract
                 .applySchedulers(Schedulers.io())
                 .subscribe({ view?.enablePrecipitation(it) }, { view?.handleError(it) })
         precipitationFlagDisposable = disposable
+        addDisposible(disposable)
+    }
+
+    private fun fetchScreenOrientationPrecipitation(configurationKey: String) {
+        val disposable = mirrorApiInteractor.fetchScreenOrientation(configurationKey)
+                .applySchedulers(Schedulers.io())
+                .subscribe({ view?.onChangeOrientation(it) }, { view?.handleError(it) })
+        screenOrientationDisposable = disposable
         addDisposible(disposable)
     }
 

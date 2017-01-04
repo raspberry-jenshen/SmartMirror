@@ -16,6 +16,7 @@ interface FirebaseRealTimeDatabaseConstant {
             const val CONTAINER_SIZE = "container_size"
             const val WIDGETS = "widgets"
             const val USER_INFO_KEY = "user_info_key"
+            const val ORIENTATION_MODE = "orientation_mode"
             const val IS_ENABLE_PRECIPITATION = "is_enable_precipitation"
         }
 

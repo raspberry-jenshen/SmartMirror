@@ -2,6 +2,7 @@ package com.jenshen.smartmirror.data.model.mirror
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.jenshen.smartmirror.data.firebase.model.configuration.OrientationMode
 import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
 
 data class EditMirrorModel(val mirrorKey: String,
@@ -9,6 +10,7 @@ data class EditMirrorModel(val mirrorKey: String,
                            val rowsCount: Int,
                            val title: String,
                            var isEnablePrecipitation: Boolean = false,
+                           var orientationMode: OrientationMode = OrientationMode.PORTRAIT,
                            var configurationKey: String? = null,
                            var userInfoKey: String? = null,
                            val widgets: MutableList<WidgetConfigurationModel> = mutableListOf()) : Parcelable {
@@ -19,9 +21,12 @@ data class EditMirrorModel(val mirrorKey: String,
         }
     }
 
-    constructor(source: Parcel) : this(source.readString(), source.readInt(),
-            source.readInt(), source.readString(),
-            1 == source.readInt(), source.readString(), source.readString(),
+    constructor(source: Parcel) : this(source.readString(),
+            source.readInt(), source.readInt(),
+            source.readString(), 1 == source.readInt(),
+            OrientationMode.values()[source.readInt()],
+            source.readString(),
+            source.readString(),
             source.createTypedArrayList(WidgetConfigurationModel.CREATOR))
 
     override fun describeContents() = 0
@@ -32,6 +37,7 @@ data class EditMirrorModel(val mirrorKey: String,
         dest?.writeInt(rowsCount)
         dest?.writeString(title)
         dest?.writeInt((if (isEnablePrecipitation) 1 else 0))
+        dest?.writeInt(orientationMode.ordinal)
         dest?.writeString(configurationKey)
         dest?.writeString(userInfoKey)
         dest?.writeTypedList(widgets)

@@ -35,6 +35,7 @@ interface RealtimeDatabaseManager {
     fun getMirrorConfigurationRef(configurationKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationWidgetsRef(configurationKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationWidgetRef(widgetKey: String, configurationKey: String): Single<DatabaseReference>
+    fun getMirrorConfigurationOrientationModeRef(configurationKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationUserInfoKeyRef(configurationKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationIsEnablePrecipitationRef(configurationKey: String): Single<DatabaseReference>
 }

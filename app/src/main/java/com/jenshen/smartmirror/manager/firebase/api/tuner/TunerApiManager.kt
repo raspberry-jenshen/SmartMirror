@@ -3,6 +3,7 @@ package com.jenshen.smartmirror.manager.firebase.api.tuner
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
 import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
+import com.jenshen.smartmirror.data.firebase.model.configuration.OrientationMode
 import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
 import com.jenshen.smartmirror.data.firebase.model.mirror.Mirror
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
@@ -45,8 +46,13 @@ interface TunerApiManager {
     fun createWidgetInConfiguration(configurationsKey: String, widgetConfiguration: WidgetConfiguration): Single<String>
     fun editWidgetInConfiguration(configurationsKey: String, keyWidget: String, widgetConfiguration: WidgetConfiguration): Completable
     fun deleteWidgetInConfiguration(configurationsKey: String, keyWidget: String): Completable
+
+    fun getOrientationModeInConfiguration(configurationsKey: String): Maybe<OrientationMode>
+    fun setOrientationModeInConfiguration(configurationsKey: String, orientationMode: OrientationMode): Completable
+
     fun isEnablePrecipitationInConfiguration(configurationsKey: String) : Single<Boolean>
     fun setEnablePrecipitationInConfiguration(configurationsKey: String, enabled: Boolean) : Completable
+
     fun getUserInfoKeyInConfiguration(configurationsKey: String) : Maybe<String>
     fun setUserInfoKeyInConfiguration(configurationsKey: String, userInfoKey: String?) : Completable
 }

@@ -18,6 +18,7 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
+import com.jenshen.smartmirror.data.event.OrientationModeSettings
 import com.jenshen.smartmirror.data.event.PrecipitationSettings
 import com.jenshen.smartmirror.data.event.UserInfoSettings
 import com.jenshen.smartmirror.data.model.mirror.EditMirrorModel
@@ -230,6 +231,11 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUserInfoMessageEvent(event: UserInfoSettings) {
         editMirrorModel!!.userInfoKey = event.userInfoKey
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSetOrientationMessageEvent(event: OrientationModeSettings) {
+        editMirrorModel!!.orientationMode = event.orientationMode
     }
 
     override fun onSavedConfiguration() {

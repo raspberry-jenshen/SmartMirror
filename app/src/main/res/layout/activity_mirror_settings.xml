@@ -17,42 +17,68 @@
         app:title="@string/mirror_settings" />
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:padding="@dimen/offset_small1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:orientation="horizontal"
+        android:padding="@dimen/offset_small1">
 
         <TextView
-            android:layout_weight="1"
-            android:text="@string/mirror_settings.enable_precipitation_on_mirror"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mirror_settings.enable_precipitation_on_mirror" />
 
         <android.support.v7.widget.SwitchCompat
-            android:layout_marginStart="@dimen/offset_small1"
             android:id="@+id/enableWeatherAnimation"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/offset_small1" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:padding="@dimen/offset_small1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:orientation="horizontal"
+        android:padding="@dimen/offset_small1">
 
         <TextView
-            android:layout_weight="1"
-            android:text="@string/mirror_settings.show_user_info_on_mirror"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mirror_settings.show_user_info_on_mirror" />
 
         <android.support.v7.widget.SwitchCompat
-            android:layout_marginStart="@dimen/offset_small1"
             android:id="@+id/showAvatar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/offset_small1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/selectOrientationMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:orientation="vertical"
+        android:padding="@dimen/offset_small1">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mirror_settings.orientationMode" />
+
+        <TextView
+            android:id="@+id/mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textSize_small2"
+            tools:text="@string/mirror_settings.portrait" />
 
     </LinearLayout>
 </LinearLayout>

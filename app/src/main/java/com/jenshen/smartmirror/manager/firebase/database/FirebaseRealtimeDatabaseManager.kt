@@ -106,6 +106,11 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
                 .map { it.child(widgetKey) }
     }
 
+    override fun getMirrorConfigurationOrientationModeRef(configurationKey: String): Single<DatabaseReference> {
+        return getMirrorConfigurationRef(configurationKey)
+                .map { it.child(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.ORIENTATION_MODE) }
+    }
+
     override fun getMirrorConfigurationUserInfoKeyRef(configurationKey: String): Single<DatabaseReference> {
         return getMirrorConfigurationRef(configurationKey)
                 .map { it.child(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.USER_INFO_KEY) }

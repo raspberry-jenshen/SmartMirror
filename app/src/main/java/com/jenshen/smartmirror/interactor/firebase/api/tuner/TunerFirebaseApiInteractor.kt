@@ -5,10 +5,7 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
-import com.jenshen.smartmirror.data.firebase.model.configuration.ContainerSize
-import com.jenshen.smartmirror.data.firebase.model.configuration.Corner
-import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
-import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
+import com.jenshen.smartmirror.data.firebase.model.configuration.*
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
@@ -134,6 +131,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                     editMirrorModel.mirrorKey,
                     ContainerSize(editMirrorModel.columnsCount, editMirrorModel.rowsCount),
                     editMirrorModel.title,
+                    editMirrorModel.orientationMode.index,
                     editMirrorModel.isEnablePrecipitation,
                     editMirrorModel.userInfoKey)
         }
@@ -178,6 +176,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                         dataSnapshotWithKey.data.containerSize.row,
                                         dataSnapshotWithKey.data.title,
                                         dataSnapshotWithKey.data.isEnablePrecipitation,
+                                        OrientationMode.toOrientationMode(dataSnapshotWithKey.data.orientationMode),
                                         dataSnapshotWithKey.key,
                                         dataSnapshotWithKey.data.userInfoKey,
                                         widgetModels)
@@ -193,6 +192,16 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         return tunerApiManager.getUserInfoKeyInConfiguration(configurationKey)
                 .isEmpty
                 .map { !it }
+    }
+
+    override fun getOrientationModeInConfiguration(configurationKey: String): Single<OrientationMode> {
+        return tunerApiManager.getOrientationModeInConfiguration(configurationKey)
+                .defaultIfEmpty(OrientationMode.PORTRAIT)
+                .toSingle()
+    }
+
+    override fun setOrientationModeInConfiguration(configurationKey: String, orientationMode: OrientationMode): Completable {
+        return tunerApiManager.setOrientationModeInConfiguration(configurationKey, orientationMode)
     }
 
     override fun setEnablePrecipitationOnMirror(configurationKey: String, isEnable: Boolean): Completable {

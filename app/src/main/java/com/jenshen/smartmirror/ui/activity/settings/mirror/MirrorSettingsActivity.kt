@@ -3,10 +3,12 @@ package com.jenshen.smartmirror.ui.activity.settings.mirror
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.MenuItem
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
+import com.jenshen.smartmirror.data.firebase.model.configuration.OrientationMode
 import com.jenshen.smartmirror.data.model.configuration.ConfigurationSettingsModel
 import com.jenshen.smartmirror.di.component.activity.settings.mirror.MirrorSettingsComponent
 import com.jenshen.smartmirror.ui.mvp.presenter.settings.mirror.MirrorSettingsPresenter
@@ -65,8 +67,15 @@ class MirrorSettingsActivity : BaseDiMvpActivity<MirrorSettingsComponent, Mirror
         this.model = model
         enableWeatherAnimation.isChecked = model.isPrecipitationEnabled
         showAvatar.isChecked = model.isUserInfoEnabled
+        mode.text = model.orientationMode.getName(context)
         enableWeatherAnimation.setOnCheckedChangeListener({ buttonView, isChecked -> presenter.enablePrecipitationOnMirror(model.configurationKay, isChecked) })
         showAvatar.setOnCheckedChangeListener({ buttonView, isChecked -> presenter.enableUserInfoOnMirror(model.configurationKay, isChecked) })
+        selectOrientationMode.setOnClickListener { showOrientationDialog(model.orientationMode.index) }
+    }
+
+    override fun onOrientationChanged(orientationMode: OrientationMode) {
+        model.orientationMode = orientationMode
+        mode.text = model.orientationMode.getName(context)
     }
 
     /* private methods */
@@ -76,5 +85,26 @@ class MirrorSettingsActivity : BaseDiMvpActivity<MirrorSettingsComponent, Mirror
         val ab = supportActionBar
         ab?.setDisplayHomeAsUpEnabled(true)
         ab?.setDisplayShowHomeEnabled(true)
+    }
+
+    private fun showOrientationDialog(selectedItem: Int = -1) {
+        val items = arrayOf<CharSequence>(
+                getString(R.string.mirror_settings_portrait),
+                getString(R.string.mirror_settings_landscape),
+                getString(R.string.mirror_settings_reverse_portrait),
+                getString(R.string.mirror_settings_reverse_landscape))
+        var position = selectedItem
+        AlertDialog.Builder(context)
+                .setTitle(title)
+                .setSingleChoiceItems(items, selectedItem, { dialog, item ->
+                    position = item
+                })
+                .setPositiveButton(R.string.ok, { dialogInterface, i ->
+                    if (position != selectedItem) {
+                        presenter.setOrientationMode(model.configurationKay, OrientationMode.toOrientationMode(position))
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show()
     }
 }
