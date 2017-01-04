@@ -1,8 +1,8 @@
 # SmartMirror
 
-This app was created for Mirror based on this article http://blog.dylanjpierce.com/raspberrypi/magicmirror/tutorial/2015/12/27/build-a-magic-mirror.html
+This app was created for a Mirror based on this article http://blog.dylanjpierce.com/raspberrypi/magicmirror/tutorial/2015/12/27/build-a-magic-mirror.html
 The app has two types of accounts (Mirror and Mirror tuner) 
-You can set up you mirror by your Android device. As example: crete a lot of mirror configurations, add widgets to a configuration, configurate widgets (scale, size, position) etc.
+You can set up your mirror by your Android device. As example: create a lot of mirror's configurations, add widgets to a configuration, configurate widgets (scale, size, position) etc.
 
 ##Patterns:
 Dependency Injection, Clean Architecture + MVP etc.
