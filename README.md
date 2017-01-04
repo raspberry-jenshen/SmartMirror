@@ -15,7 +15,8 @@ RxJava 2.0, Retrofit 2.0, Dagger 2, Firebase (auth, realtime database, storage)
 
 ## Demo
 <img src="http://i.imgur.com/tCsQQb7.gif"/>
-<img src="http://i.imgur.com/GbLOZKa.giff"/>
+<img src="http://i.imgur.com/GbLOZKa.gif"/>
+<img src="http://i.imgur.com/DZdOevn.gif"/>
 
 ##Screenshots: 
 ![1 Screenshot](http://i.imgur.com/4BZeoXy.png)
