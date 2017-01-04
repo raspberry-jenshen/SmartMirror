@@ -19,11 +19,11 @@ RxJava 2.0, Retrofit 2.0, Dagger 2, Firebase (auth, realtime database, storage)
 <img src="http://i.imgur.com/DZdOevn.gif"/>
 
 ##Screenshots: 
-![1 Screenshot](http://i.imgur.com/4BZeoXy.png)
-![2 Screenshot](http://i.imgur.com/4QtKqYJ.png)
-![3 Screenshot](http://i.imgur.com/bGfTvGE.png)
-![4 Screenshot](http://i.imgur.com/Ehj8WJf.png)
-![5 Screenshot](http://i.imgur.com/ZDEihGN.png)
-![5 Screenshot](http://i.imgur.com/UguCydn.png)
-![6 Screenshot](http://i.imgur.com/0nTfHF2.png)
-![7 Screenshot](http://i.imgur.com/5piegpf.png)
+<img src="http://i.imgur.com/4BZeoXy.png" height="683" width="384">
+<img src="http://i.imgur.com/4QtKqYJ.png" height="683" width="384">
+<img src="http://i.imgur.com/bGfTvGE.png" height="683" width="384">
+<img src="http://i.imgur.com/Ehj8WJf.png" height="683" width="384">
+<img src="http://i.imgur.com/ZDEihGN.png" height="683" width="384">
+<img src="http://i.imgur.com/UguCydn.png" height="683" width="384">
+<img src="http://i.imgur.com/0nTfHF2.png" height="683" width="384">
+<img src="http://i.imgur.com/5piegpf.png" height="683" width="384">
