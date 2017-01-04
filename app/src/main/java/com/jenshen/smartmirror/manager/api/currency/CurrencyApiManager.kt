@@ -5,6 +5,7 @@ import com.jenshen.smartmirror.data.api.currency.CurrencyApi
 import com.jenshen.smartmirror.data.api.weather.WeatherApi
 import com.jenshen.smartmirror.data.entity.currency.ExchangeRatesResponse
 import com.jenshen.smartmirror.data.entity.weather.day.WeatherForCurrentDayResponse
+import com.jenshen.smartmirror.data.entity.widget.updater.currency.ExchangeRatesUpdater
 import com.jenshen.smartmirror.manager.api.weather.WeatherApiManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import io.reactivex.Flowable
@@ -14,10 +15,6 @@ import java.util.*
 
 
 class CurrencyApiManager(private val currencyApi: CurrencyApi, private val preferencesManager: PreferencesManager) : ICurrencyApiManager {
-
-    companion object {
-        val MAX_DIFFERENCE = 60 * 60 * 1000
-    }
 
     override fun getExchangeRates(): Flowable<ExchangeRatesResponse> {
         val data = preferencesManager.getExchangeRates()
@@ -31,7 +28,7 @@ class CurrencyApiManager(private val currencyApi: CurrencyApi, private val prefe
             val currentTime = Calendar.getInstance().time.time
             val responseCalculationTime = data.timestamp.time
             val difference = currentTime - responseCalculationTime
-            if (difference >= MAX_DIFFERENCE) {
+            if (difference >= ExchangeRatesUpdater.MINUTES_BETWEEN_UPDATES * 1000) {
                 singles.add(dataFromApiSingle)
             }
         } else {

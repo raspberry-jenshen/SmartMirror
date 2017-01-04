@@ -4,6 +4,8 @@ import com.jenshen.smartmirror.data.api.weather.WeatherApi
 import com.jenshen.smartmirror.data.api.weather.WeatherApi.Companion.METRIC_FORMAT
 import com.jenshen.smartmirror.data.entity.weather.day.WeatherForCurrentDayResponse
 import com.jenshen.smartmirror.data.entity.weather.forecast.WeatherForecastResponse
+import com.jenshen.smartmirror.data.entity.widget.updater.weather.CurrentWeatherUpdater
+import com.jenshen.smartmirror.data.entity.widget.updater.weather.WeatherForecastUpdater
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -12,10 +14,6 @@ import java.util.*
 
 
 class WeatherApiManager(private val weatherApi: WeatherApi, private val preferencesManager: PreferencesManager) : IWeatherApiManager {
-
-    companion object {
-        val MAX_DIFFERENCE = 60 * 60 * 1000
-    }
 
     override fun getCurrentWeather(lat: Double, lon: Double): Flowable<WeatherForCurrentDayResponse> {
         val data = preferencesManager.getCurrentWeather()
@@ -29,7 +27,7 @@ class WeatherApiManager(private val weatherApi: WeatherApi, private val preferen
             val currentTime = Calendar.getInstance().time.time
             val responseCalculationTime = data.date.time
             val difference = currentTime - responseCalculationTime
-            if (difference >= MAX_DIFFERENCE) {
+            if (difference >= CurrentWeatherUpdater.MINUTES_BETWEEN_UPDATES * 1000) {
                 singles.add(dataFromApiSingle)
             }
         } else {
@@ -50,7 +48,7 @@ class WeatherApiManager(private val weatherApi: WeatherApi, private val preferen
             val currentTime = Calendar.getInstance().time.time
             val responseCalculationTime = data.weathersList.iterator().next().date.time
             val difference = currentTime - responseCalculationTime
-            if (difference >= MAX_DIFFERENCE) {
+            if (difference >= WeatherForecastUpdater.MINUTES_BETWEEN_UPDATES * 1000) {
                 singles.add(dataFromApiSingle)
             }
         } else {

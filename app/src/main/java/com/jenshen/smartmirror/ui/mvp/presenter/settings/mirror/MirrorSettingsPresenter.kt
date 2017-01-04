@@ -1,6 +1,7 @@
 package com.jenshen.smartmirror.ui.mvp.presenter.settings.mirror
 
 import com.jenshen.compat.base.presenter.MvpRxPresenter
+import com.jenshen.smartmirror.data.event.OrientationModeSettings
 import com.jenshen.smartmirror.data.event.PrecipitationSettings
 import com.jenshen.smartmirror.data.event.UserInfoSettings
 import com.jenshen.smartmirror.data.firebase.model.configuration.OrientationMode
@@ -52,7 +53,7 @@ class MirrorSettingsPresenter @Inject constructor(private val tunerApiInteractor
                 .applyProgress(Consumer { view?.showProgress() }, Action { view?.hideProgress() })
                 .doOnSubscribe { compositeDisposable.add(it) }
                 .subscribe({
-                    EventBus.getDefault().post(orientationMode)
+                    EventBus.getDefault().post(OrientationModeSettings(orientationMode))
                     view?.onOrientationChanged(orientationMode)
                 }, { view?.handleError(it) })
     }

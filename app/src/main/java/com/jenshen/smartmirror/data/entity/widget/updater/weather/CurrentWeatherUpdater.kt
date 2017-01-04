@@ -22,13 +22,13 @@ class CurrentWeatherUpdater(widgetKey: WidgetKey,
                             private val findLocationManagerLazy: Lazy<IFindLocationManager>) : WidgetUpdater<CurrentWeatherWidgetData>(widgetKey) {
 
     companion object {
-        const val HOURS_BETWEEN_UPDATES = 3L
+        const val MINUTES_BETWEEN_UPDATES = 60L
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     override fun startUpdate(): Flowable<CurrentWeatherWidgetData> {
 
-        return Flowable.interval(0, HOURS_BETWEEN_UPDATES, TimeUnit.HOURS)
+        return Flowable.interval(0, MINUTES_BETWEEN_UPDATES, TimeUnit.MINUTES)
                 .takeWhile { !isDisposed }
                 .flatMap {
                     if (IFindLocationManager.canGetLocation(context)) {

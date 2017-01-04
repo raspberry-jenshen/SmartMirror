@@ -12,12 +12,12 @@ class ExchangeRatesUpdater(widgetKey: WidgetKey,
                            private val currencyApiManager: ICurrencyApiManager) : WidgetUpdater<ExchangeRatesWidgetData>(widgetKey) {
 
     companion object {
-        const val HOURS_BETWEEN_UPDATES = 2L
+        const val MINUTES_BETWEEN_UPDATES = 2L * 60L
     }
 
     override fun startUpdate(): Flowable<ExchangeRatesWidgetData> {
 
-        return Flowable.interval(0, HOURS_BETWEEN_UPDATES, TimeUnit.HOURS)
+        return Flowable.interval(0, MINUTES_BETWEEN_UPDATES, TimeUnit.MINUTES)
                 .takeWhile { !isDisposed }
                 .flatMap { currencyApiManager.getExchangeRates() }
                 .map { ExchangeRatesWidgetData(widgetKey, it) }
