@@ -11,6 +11,7 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.widget.info.weather.CurrentWeatherWidgetData
 import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshen.smartmirror.util.toDayMonth
+import com.jenshen.smartmirror.util.toHoursMinutesDayMonth
 import kotlinx.android.synthetic.main.view_weather.view.*
 
 class CurrentWeatherView : ConstraintLayout, Widget<CurrentWeatherWidgetData> {
@@ -36,7 +37,7 @@ class CurrentWeatherView : ConstraintLayout, Widget<CurrentWeatherWidgetData> {
                     .load(weather?.iconUrl)
                     .into(this.weatherIcon)
         }
-        response.date.let { this.lastTimeUpdate.text = it.toDayMonth() }
+        response.date.let { this.lastTimeUpdate.text = it.toHoursMinutesDayMonth() }
         this.country.text = "${response.name}, ${response.sys?.country}"
 
         response.temperatureConditions?.let {

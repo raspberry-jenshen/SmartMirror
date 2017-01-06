@@ -7,18 +7,17 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.support.annotation.RequiresPermission
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.jenshen.smartmirror.util.reactive.firebase.observeValue
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import io.reactivex.Observable
+import io.reactivex.Single
 
-class FindLocationManager(private val context: Context) : LocationListener, IFindLocationManager {
+class FindLocationManager(private val context: Context) : IFindLocationManager {
 
     private val locationManager: LocationManager
     private val onLocationReceivedCallbacks: MutableList<OnLocationReceived>
+    private val locationListeners: MutableList<LocationListener>
+
+    private var loadLocationListener: LocationListener? = null
 
     private var location: Location? = null
     private var latitude: Double? = null
@@ -27,6 +26,7 @@ class FindLocationManager(private val context: Context) : LocationListener, IFin
     init {
         this.locationManager = context.getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
         this.onLocationReceivedCallbacks = mutableListOf()
+        this.locationListeners = mutableListOf()
     }
 
     override fun addOnLocationReceivedCallback(onLocationReceived: OnLocationReceived) {
@@ -40,24 +40,67 @@ class FindLocationManager(private val context: Context) : LocationListener, IFin
 
     override fun canGetLocation() = IFindLocationManager.isLocationPermissionEnabled(context) && isProvidersEnabled()
 
+
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    override fun getCurrentLocation(minTimeToUpdate: Long,
+                                    minDistanceToUpdate: Long): Single<Location> {
+        return Single.create<Location>({ source ->
+            val listener: LocationListener = object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    if (!source.isDisposed) {
+                        source.onSuccess(location)
+                    }
+                }
+
+                override fun onProviderDisabled(provider: String) {
+                }
+
+                override fun onProviderEnabled(provider: String) {
+                }
+
+                override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+                }
+            }
+
+            if (!canGetLocation()) {
+                source.onError(RuntimeException("You mast check \"canGetLocation()\" methods"))
+            } else {
+                loadLocation(minTimeToUpdate, minDistanceToUpdate, listener)
+            }
+            source.setCancellable {
+                stopLoadLocation(listener)
+            }
+        })
+    }
+
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     override fun fetchCurrentLocation(minTimeToUpdate: Long,
                                       minDistanceToUpdate: Long): Flowable<Location> {
         return Flowable.create<Location>({ source ->
-            val onLocationReceived: OnLocationReceived = object : OnLocationReceived {
-                override fun onReceived(location: Location) {
-                    source.onNext(location)
+            val listener: LocationListener = object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    if (!source.isCancelled) {
+                        source.onNext(location)
+                    }
+                }
+
+                override fun onProviderDisabled(provider: String) {
+                }
+
+                override fun onProviderEnabled(provider: String) {
+                }
+
+                override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
                 }
             }
+
             if (!canGetLocation()) {
                 source.onError(RuntimeException("You mast check \"canGetLocation()\" methods"))
             } else {
-                addOnLocationReceivedCallback(onLocationReceived)
-                loadLocation(minTimeToUpdate, minDistanceToUpdate)
+                loadLocation(minTimeToUpdate, minDistanceToUpdate, listener)
             }
             source.setCancellable {
-                removeOnLocationReceivedCallback(onLocationReceived)
-                stopUsingGPS()
+                stopLoadLocation(listener)
             }
         }, BackpressureStrategy.LATEST)
     }
@@ -65,6 +108,31 @@ class FindLocationManager(private val context: Context) : LocationListener, IFin
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     override fun loadLocation(minTimeToUpdate: Long,
                               minDistanceToUpdate: Long) {
+        loadLocationListener = object : LocationListener {
+            override fun onLocationChanged(loc: Location) {
+                location = loc
+                sendLocation()
+            }
+
+            override fun onProviderDisabled(provider: String) {
+            }
+
+            override fun onProviderEnabled(provider: String) {
+            }
+
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+            }
+        }
+        loadLocation(minTimeToUpdate, minDistanceToUpdate, loadLocationListener!!)
+        if (location != null) {
+            sendLocation()
+        }
+    }
+
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    override fun loadLocation(minTimeToUpdate: Long,
+                              minDistanceToUpdate: Long,
+                              locationListener: LocationListener) {
 
         // getting GPS status
         val isGPSEnabled = locationManager
@@ -78,7 +146,7 @@ class FindLocationManager(private val context: Context) : LocationListener, IFin
             locationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER,
                     minTimeToUpdate,
-                    minDistanceToUpdate.toFloat(), this)
+                    minDistanceToUpdate.toFloat(), locationListener)
 
             location = locationManager
                     .getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
@@ -94,18 +162,35 @@ class FindLocationManager(private val context: Context) : LocationListener, IFin
                 locationManager.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
                         minTimeToUpdate,
-                        minDistanceToUpdate.toFloat(), this)
+                        minDistanceToUpdate.toFloat(), locationListener)
 
                 location = locationManager
                         .getLastKnownLocation(LocationManager.GPS_PROVIDER)
                 if (location != null) {
                     latitude = location!!.latitude
                     longitude = location!!.longitude
-
                 }
             }
         }
-        sendLocation()
+    }
+
+    /**
+     * Stop load current location
+     * unregister loadLocationListener
+     */
+    override fun stopLoadLocation(locationListener: LocationListener) {
+        locationListeners.remove(locationListener)
+        locationManager.removeUpdates(locationListener)
+    }
+
+    /**
+     * Stop load current location
+     * unregister loadLocationListener
+     */
+    override fun stopLoadLocation() {
+        if (loadLocationListener != null) {
+            stopLoadLocation(loadLocationListener!!)
+        }
     }
 
     /**
@@ -113,7 +198,7 @@ class FindLocationManager(private val context: Context) : LocationListener, IFin
      * Calling this function will stop using GPS in your app
      */
     override fun stopUsingGPS() {
-        locationManager.removeUpdates(this@FindLocationManager)
+        locationListeners.forEach { locationManager.removeUpdates(it) }
     }
 
     /**
@@ -138,20 +223,6 @@ class FindLocationManager(private val context: Context) : LocationListener, IFin
 
         // return longitude
         return longitude
-    }
-
-    override fun onLocationChanged(location: Location) {
-        this.location = location
-        sendLocation()
-    }
-
-    override fun onProviderDisabled(provider: String) {
-    }
-
-    override fun onProviderEnabled(provider: String) {
-    }
-
-    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
     }
 
     /* private methods */

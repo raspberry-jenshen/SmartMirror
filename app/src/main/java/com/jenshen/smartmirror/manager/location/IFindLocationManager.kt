@@ -4,11 +4,13 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.support.annotation.RequiresPermission
 import android.support.v4.content.ContextCompat
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 interface IFindLocationManager {
 
@@ -48,7 +50,20 @@ interface IFindLocationManager {
     fun loadLocation(minTimeToUpdate: Long = MIN_TIME_BW_UPDATES,
                      minDistanceToUpdate: Long = MIN_DISTANCE_CHANGE_FOR_UPDATES)
 
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun loadLocation(minTimeToUpdate: Long = MIN_TIME_BW_UPDATES,
+                     minDistanceToUpdate: Long = MIN_DISTANCE_CHANGE_FOR_UPDATES,
+                     locationListener: LocationListener)
+
+    fun stopLoadLocation(locationListener: LocationListener)
+
+    fun stopLoadLocation()
+
     fun stopUsingGPS()
+
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun getCurrentLocation(minTimeToUpdate: Long = MIN_TIME_BW_UPDATES,
+                           minDistanceToUpdate: Long = MIN_DISTANCE_CHANGE_FOR_UPDATES): Single<Location>
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun fetchCurrentLocation(minTimeToUpdate: Long = MIN_TIME_BW_UPDATES,

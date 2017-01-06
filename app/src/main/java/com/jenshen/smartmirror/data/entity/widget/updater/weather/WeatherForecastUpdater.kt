@@ -29,15 +29,15 @@ class WeatherForecastUpdater(widgetKey: WidgetKey,
 
         return Flowable.interval(0, MINUTES_BETWEEN_UPDATES, TimeUnit.MINUTES)
                 .takeWhile { !isDisposed }
-                .flatMap {
+                .flatMapSingle {
                     if (IFindLocationManager.canGetLocation(context)) {
                         Single.fromCallable { findLocationManagerLazy.get() }
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .flatMapPublisher { it.fetchCurrentLocation(1000000, 1000000) }
+                                .flatMap { it.getCurrentLocation(1000000, 1000000) }
                                 .observeOn(Schedulers.io())
                                 .map { MirrorLocationModel(it.latitude, it.longitude) }
                     } else {
-                        Flowable.fromCallable { MirrorLocationModel() }
+                        Single.fromCallable { MirrorLocationModel() }
                     }
                 }
                 .flatMap { weatherApiLazy.get().getWeatherForecast(it.lat, it.lon) }
