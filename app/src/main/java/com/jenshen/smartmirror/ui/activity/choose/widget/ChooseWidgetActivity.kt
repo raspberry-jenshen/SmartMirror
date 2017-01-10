@@ -13,7 +13,6 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
 import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
-import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.model.widget.WidgetModel
 import com.jenshen.smartmirror.di.component.activity.choose.widget.ChooseWidgetComponent
 import com.jenshen.smartmirror.ui.adapter.widgets.WidgetsAdapter
@@ -73,14 +72,14 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_widget)
         setupToolbar()
-        adapter = WidgetsAdapter(context, {
+        adapter = WidgetsAdapter(
+                context, {
             val intent = Intent()
             intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, WidgetConfigurationModel(
-                    WidgetKey(it.widgetDataSnapshot.key), it.widgetDataSnapshot.data))
+                    it.widgetData.widgetKey, it.widgetInfo))
             setResult(Activity.RESULT_OK, intent)
             finish()
         },
-                { presenter.loadInfoForWidget(it) },
                 { widgetData: WidgetData, widget: Widget<*> -> presenter.updateWidget(widgetData, widget) })
         contentView.adapter = adapter
         loadData(false)

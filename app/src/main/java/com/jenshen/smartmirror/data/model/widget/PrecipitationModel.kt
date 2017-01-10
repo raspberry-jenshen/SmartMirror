@@ -17,7 +17,7 @@ class PrecipitationModel private constructor(@PrecipitationType val type: Int) {
         fun createFromWeatherData(type: Int): PrecipitationModel {
             if (type >= 500 && type <= 531) {
                 return PrecipitationModel(RAIN)
-            } else if (type >= 500 && type <= 531) {
+            } else if (type >= 600 && type <= 622) {
                 return PrecipitationModel(SNOW)
             } else {
                 return PrecipitationModel(UNKNOWN)

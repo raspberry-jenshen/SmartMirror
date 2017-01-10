@@ -2,11 +2,8 @@ package com.jenshen.smartmirror.manager.api.currency
 
 import com.jenshen.smartmirror.BuildConfig
 import com.jenshen.smartmirror.data.api.currency.CurrencyApi
-import com.jenshen.smartmirror.data.api.weather.WeatherApi
 import com.jenshen.smartmirror.data.entity.currency.ExchangeRatesResponse
-import com.jenshen.smartmirror.data.entity.weather.day.WeatherForCurrentDayResponse
-import com.jenshen.smartmirror.data.entity.widget.updater.currency.ExchangeRatesUpdater
-import com.jenshen.smartmirror.manager.api.weather.WeatherApiManager
+import com.jenshen.smartmirror.data.updater.currency.ExchangeRatesUpdater
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import io.reactivex.Flowable
 import io.reactivex.Single

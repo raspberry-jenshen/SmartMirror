@@ -53,8 +53,6 @@ class SignUpMirrorActivity : BaseMirrorDiMvpActivity<SignUpMirrorComponent, Sign
     }
 
     override fun onTunerConnected() {
-        val intent = Intent(context, MirrorDashboardActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
+        MirrorDashboardActivity.startRoot(context, true)
     }
 }

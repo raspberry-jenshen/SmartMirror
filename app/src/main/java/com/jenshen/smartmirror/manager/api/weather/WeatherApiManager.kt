@@ -4,12 +4,14 @@ import com.jenshen.smartmirror.data.api.weather.WeatherApi
 import com.jenshen.smartmirror.data.api.weather.WeatherApi.Companion.METRIC_FORMAT
 import com.jenshen.smartmirror.data.entity.weather.day.WeatherForCurrentDayResponse
 import com.jenshen.smartmirror.data.entity.weather.forecast.WeatherForecastResponse
-import com.jenshen.smartmirror.data.entity.widget.updater.weather.CurrentWeatherUpdater
-import com.jenshen.smartmirror.data.entity.widget.updater.weather.WeatherForecastUpdater
+import com.jenshen.smartmirror.data.updater.weather.CurrentWeatherUpdater
+import com.jenshen.smartmirror.data.updater.weather.WeatherForecastUpdater
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import io.reactivex.Flowable
+import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.SingleSource
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 

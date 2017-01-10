@@ -3,11 +3,11 @@ package com.jenshen.smartmirror.ui.mvp.presenter.choose.widget
 
 import com.jenshen.compat.base.presenter.MvpLceRxPresenter
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
-import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.model.widget.WidgetModel
+import com.jenshen.smartmirror.data.updater.WidgetUpdater
 import com.jenshen.smartmirror.interactor.firebase.api.tuner.TunerApiInteractor
-import com.jenshen.smartmirror.manager.widget.factory.WidgetFactoryManager
+import com.jenshen.smartmirror.manager.widget.factory.IWidgetFactoryManager
 import com.jenshen.smartmirror.ui.mvp.view.choose.widget.ChooseWidgetView
 import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshen.smartmirror.util.reactive.applySchedulers
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ChooseWidgetPresenter @Inject constructor(private val apiInteractor: TunerApiInteractor,
-                                                private val widgetFactoryManager: WidgetFactoryManager) : MvpLceRxPresenter<WidgetModel, ChooseWidgetView>() {
+                                                private val widgetFactoryManager: IWidgetFactoryManager) : MvpLceRxPresenter<WidgetModel, ChooseWidgetView>() {
 
     private val updaterList: MutableList<WidgetUpdater<*>>
 
@@ -28,7 +28,13 @@ class ChooseWidgetPresenter @Inject constructor(private val apiInteractor: Tuner
     fun fetchWidgets(pullToRefresh: Boolean) {
         subscribeOnModel(apiInteractor
                 .fetchWidgets()
+                .flatMap { widgetInfo ->
+                    widgetFactoryManager.getUpdaterForWidget(WidgetKey(widgetInfo.key))
+                            .getInfo()
+                            .map { WidgetModel(widgetInfo.data, it) }
+                }
                 .toObservable(), pullToRefresh)
+
         Completable.timer(1000, TimeUnit.MILLISECONDS)
                 .applySchedulers(Schedulers.computation())
                 .doOnSubscribe { compositeDisposable.add(it) }

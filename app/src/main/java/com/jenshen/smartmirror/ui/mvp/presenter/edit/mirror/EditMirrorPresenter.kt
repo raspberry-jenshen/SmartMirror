@@ -3,10 +3,11 @@ package com.jenshen.smartmirror.ui.mvp.presenter.edit.mirror
 
 import com.jenshen.compat.base.presenter.MvpRxPresenter
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
-import com.jenshen.smartmirror.data.entity.widget.updater.WidgetUpdater
+import com.jenshen.smartmirror.data.updater.WidgetUpdater
 import com.jenshen.smartmirror.data.model.mirror.EditMirrorModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.interactor.firebase.api.tuner.TunerApiInteractor
+import com.jenshen.smartmirror.manager.widget.factory.IWidgetFactoryManager
 import com.jenshen.smartmirror.manager.widget.factory.WidgetFactoryManager
 import com.jenshen.smartmirror.ui.mvp.view.edit.mirror.EditMirrorView
 import com.jenshen.smartmirror.ui.view.widget.Widget
@@ -18,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class EditMirrorPresenter @Inject constructor(private val tunerApiInteractor: TunerApiInteractor,
-                                              private val widgetFactoryManager: WidgetFactoryManager) : MvpRxPresenter<EditMirrorView>() {
+                                              private val widgetFactoryManager: IWidgetFactoryManager) : MvpRxPresenter<EditMirrorView>() {
 
     private val updaterList: MutableList<WidgetUpdater<*>> = mutableListOf()
 

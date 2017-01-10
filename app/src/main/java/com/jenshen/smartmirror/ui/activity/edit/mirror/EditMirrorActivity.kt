@@ -50,7 +50,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
         fun start(context: Context, mirrorKey: String, configurationKey: String? = null) {
             RxPermissions.getInstance(context)
-                    .request(Manifest.permission.ACCESS_FINE_LOCATION)
+                    .request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_CALENDAR)
                     .subscribe { granted ->
                         if (granted) {
                             val intent = Intent(context, EditMirrorActivity::class.java)

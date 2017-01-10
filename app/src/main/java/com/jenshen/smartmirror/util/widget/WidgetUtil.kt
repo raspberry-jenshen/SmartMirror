@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.jenshen.smartmirror.R
+import com.jenshen.smartmirror.data.firebase.FirebaseRealTimeDatabaseConstant
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetSize
 import com.jenshen.smartmirror.ui.view.widget.*
@@ -25,11 +26,12 @@ fun createWidget(widgetKey: String, widgetSize: WidgetSize, context: Context): W
 
 fun getViewForWidget(widgetKey: String, context: Context): View {
     val view: View = when (widgetKey) {
-        WidgetInfo.CLOCK_WIDGET_KEY -> ClockView(context)
-        WidgetInfo.CURRENT_WEATHER_WIDGET_KEY -> CurrentWeatherView(context)
-        WidgetInfo.WEATHER_FORECAST_FOR_DAY_WIDGET_KEY -> WeatherForecastForDayView(context)
-        WidgetInfo.WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY -> WeatherForecastForWeekView(context)
-        WidgetInfo.EXCHANGE_RATES_WIDGET_KEY -> ExchangeRatesView(context)
+        FirebaseRealTimeDatabaseConstant.Widget.CLOCK_WIDGET_KEY -> ClockView(context)
+        FirebaseRealTimeDatabaseConstant.Widget.CURRENT_WEATHER_WIDGET_KEY -> CurrentWeatherView(context)
+        FirebaseRealTimeDatabaseConstant.Widget.WEATHER_FORECAST_FOR_DAY_WIDGET_KEY -> WeatherForecastForDayView(context)
+        FirebaseRealTimeDatabaseConstant.Widget.WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY -> WeatherForecastForWeekView(context)
+        FirebaseRealTimeDatabaseConstant.Widget.EXCHANGE_RATES_WIDGET_KEY -> ExchangeRatesView(context)
+        FirebaseRealTimeDatabaseConstant.Widget.CALENDAR_EVENTS_WIDGET_KEY -> CalendarEventsView(context)
         else -> ClockView(context)
     }
     view.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)

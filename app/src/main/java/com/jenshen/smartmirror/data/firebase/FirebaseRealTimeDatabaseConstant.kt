@@ -1,11 +1,14 @@
 package com.jenshen.smartmirror.data.firebase
 
+import android.provider.CalendarContract
+
 interface FirebaseRealTimeDatabaseConstant {
 
     companion object {
         const val MIRRORS: String = "mirrors"
         const val TUNERS: String = "tuners"
         const val WIDGETS: String = "widgets"
+        const val EVENTS: String = "events"
         const val MIRROR_CONFIGURATIONS: String = "mirror_configurations"
     }
 
@@ -49,6 +52,13 @@ interface FirebaseRealTimeDatabaseConstant {
         companion object {
             const val NAME = "name"
             const val DEFAULT_SIZE = "default_size"
+
+            const val CLOCK_WIDGET_KEY = "-KXmMIRVjA3K4zSPwsYv"
+            const val CURRENT_WEATHER_WIDGET_KEY = "-KZEODMZZ-Bx87mu1JoR"
+            const val WEATHER_FORECAST_FOR_DAY_WIDGET_KEY = "-KZLq6Oq9ydOvRYpgYOm"
+            const val WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY = "-KZTABib6OSjnBn79_8O"
+            const val EXCHANGE_RATES_WIDGET_KEY = "-K_R8vRWtIZ4HkAWa93o"
+            const val CALENDAR_EVENTS_WIDGET_KEY = "-Ka7tq0XcgoOXvFSOjSw"
         }
 
         interface Size {
@@ -101,6 +111,25 @@ interface FirebaseRealTimeDatabaseConstant {
                 const val DEVICE_INFO = "device_info"
                 const val LAST_TIME_UPDATE = "last_time_update"
             }
+        }
+    }
+
+    interface Event {
+
+        companion object {
+            const val USER_INFO_KEY = "user_info_key"
+            const val ID = "user_info_key"
+            const val TITLE = "title"
+            const val CALENDAR_DISPLAY_NAME = "name"
+            const val DESCRIPTION = "description"
+            const val ALL_DAY = "isAllDay"
+            const val DTSTART = "start_date"
+            const val DTEND = "end_date"
+            const val LAST_DATE = "last_date"
+            const val EVENT_LOCATION = "event_location"
+            const val CALENDAR_COLOR = "calendar_color"
+            const val EVENT_COLOR = "event_color"
+            const val ACCOUNT_NAME = "account_name"
         }
     }
 }

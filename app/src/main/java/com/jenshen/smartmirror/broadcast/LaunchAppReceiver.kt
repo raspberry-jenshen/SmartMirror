@@ -6,7 +6,7 @@ import android.content.Intent
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.service.StartMirrorService
 
-class LaunchAppBroadcast : BroadcastReceiver() {
+class LaunchAppReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val preferencesManager = SmartMirrorApp.rootComponent.providePreferencesManager()

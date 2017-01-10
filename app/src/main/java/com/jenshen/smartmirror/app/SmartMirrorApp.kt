@@ -13,6 +13,7 @@ import com.jenshen.smartmirror.di.component.AppComponent
 import com.jenshen.smartmirror.di.component.DaggerAppComponent
 import com.jenshen.smartmirror.di.component.SessionComponent
 import com.jenshen.smartmirror.di.module.AppModule
+import com.jenshen.smartmirror.manager.calendar.CalendarManager
 import com.jenshen.smartmirror.util.delegate.lazyValue
 import com.squareup.leakcanary.LeakCanary
 import io.fabric.sdk.android.Fabric

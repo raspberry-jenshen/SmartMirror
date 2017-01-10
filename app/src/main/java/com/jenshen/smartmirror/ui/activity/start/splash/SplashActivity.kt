@@ -37,7 +37,7 @@ class SplashActivity : BaseDiMvpActivity<SplashComponent, SplashView, SplashPres
     /* callbacks */
 
     override fun openMirrorScreen() {
-        startActivity(Intent(context, MirrorDashboardActivity::class.java))
+        MirrorDashboardActivity.start(context)
     }
 
     override fun openMirrorTunerScreen() {

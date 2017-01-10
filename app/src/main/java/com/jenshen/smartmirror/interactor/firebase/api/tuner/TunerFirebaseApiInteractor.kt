@@ -14,7 +14,6 @@ import com.jenshen.smartmirror.data.model.mirror.EditMirrorModel
 import com.jenshen.smartmirror.data.model.mirror.MirrorModel
 import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
-import com.jenshen.smartmirror.data.model.widget.WidgetModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.mirror.MirrorApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
@@ -112,10 +111,9 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     /* widget */
 
-    override fun fetchWidgets(): Flowable<WidgetModel> {
+    override fun fetchWidgets(): Flowable<DataSnapshotWithKey<WidgetInfo>> {
         return tunerApiManager.observeWidgets()
                 .map { DataSnapshotWithKey(it.dataSnapshot.key, it.dataSnapshot.getValue(WidgetInfo::class.java)) }
-                .map { WidgetModel(it) }
     }
 
     override fun addWidget(name: String, width: Int, height: Int): Single<String> {

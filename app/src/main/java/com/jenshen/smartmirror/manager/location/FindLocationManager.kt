@@ -124,9 +124,6 @@ class FindLocationManager(private val context: Context) : IFindLocationManager {
             }
         }
         loadLocation(minTimeToUpdate, minDistanceToUpdate, loadLocationListener!!)
-        if (location != null) {
-            sendLocation()
-        }
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -153,7 +150,6 @@ class FindLocationManager(private val context: Context) : IFindLocationManager {
             if (location != null) {
                 latitude = location!!.latitude
                 longitude = location!!.longitude
-
             }
         }
 
@@ -171,6 +167,9 @@ class FindLocationManager(private val context: Context) : IFindLocationManager {
                     longitude = location!!.longitude
                 }
             }
+        }
+        if (location != null) {
+            locationListener.onLocationChanged(location)
         }
     }
 

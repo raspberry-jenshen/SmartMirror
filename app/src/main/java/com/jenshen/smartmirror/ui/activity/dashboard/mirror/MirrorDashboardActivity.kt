@@ -1,5 +1,6 @@
 package com.jenshen.smartmirror.ui.activity.dashboard.mirror
 
+import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
@@ -7,6 +8,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.Surface.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -35,6 +37,7 @@ import com.jenshen.smartmirror.util.Optional
 import com.jenshen.smartmirror.util.asCircleBitmap
 import com.jenshen.smartmirror.util.getBitmap
 import com.jenshen.smartmirror.util.widget.createWidget
+import com.tbruyelle.rxpermissions2.RxPermissions
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_dashboard_mirror.*
 
@@ -45,6 +48,31 @@ class MirrorDashboardActivity : BaseMirrorDiMvpActivity<MirrorDashboardComponent
 
     @PrecipitationModel.PrecipitationType
     private var type: Int = PrecipitationModel.UNKNOWN
+
+    companion object {
+
+        fun start(context: Context) {
+            startRoot(context, false)
+        }
+
+        fun startRoot(context: Context, isNeedToClear: Boolean) {
+            RxPermissions.getInstance(context)
+                    .request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_CALENDAR)
+                    .subscribe { granted ->
+                        if (granted) {
+                            val intent = Intent(context, MirrorDashboardActivity::class.java)
+                            if (isNeedToClear) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            context.startActivity(intent)
+                        } else {
+                            AlertDialog.Builder(context)
+                                    .setTitle(R.string.warning)
+                                    .setMessage(R.string.error_location_permission)
+                                    .setPositiveButton(R.string.ok, null)
+                                    .show()
+                        }
+                    }
+        }
+    }
 
     /* inject */
 
