@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/offset_small1"
+    android:background="@drawable/drawable_event"
     tools:background="@color/gray">
 
     <TextView

@@ -120,4 +120,16 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
         return getMirrorConfigurationRef(configurationKey)
                 .map { it.child(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.IS_ENABLE_PRECIPITATION) }
     }
+
+    /* calendar */
+
+    override fun getUserCalendarsRef(): Single<DatabaseReference> {
+        return Single.fromCallable { fireBaseDatabase.reference }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.USER_CALENDARS) }
+    }
+
+    override fun getUserCalendarRef(tunerKey: String): Single<DatabaseReference> {
+        return getUserCalendarsRef()
+                .map { it.child(tunerKey) }
+    }
 }

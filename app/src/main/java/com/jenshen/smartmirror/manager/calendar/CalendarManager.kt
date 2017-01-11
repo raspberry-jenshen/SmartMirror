@@ -4,41 +4,34 @@ import android.content.ContentResolver
 import android.content.Context
 import android.provider.CalendarContract
 import android.support.annotation.RequiresPermission
-import com.jenshen.smartmirror.data.entity.calendar.CalendarEvent
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
+import com.jenshen.smartmirror.data.firebase.model.calendar.CalendarEvent
+import com.jenshen.smartmirror.data.firebase.model.calendar.UserCalendar
+import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
+import com.jenshen.smartmirror.util.reactive.firebase.loadValue
+import com.jenshen.smartmirror.util.reactive.firebase.uploadValue
+import io.reactivex.*
 
 
-class CalendarManager(ctx: Context) : ICalendarManager {
+class CalendarManager(context: Context, private val databaseManager: RealtimeDatabaseManager) : ICalendarManager {
 
     private val contentResolver: ContentResolver
 
     init {
-        contentResolver = ctx.contentResolver
+        contentResolver = context.contentResolver
     }
 
     @RequiresPermission(android.Manifest.permission.READ_CALENDAR)
-    override fun getEvents(startTime: Long, endTime: Long): Flowable<CalendarEvent> {
-        return Flowable.create({ emitter ->
-            val selection: String?
-            if (startTime != -1L && endTime != -1L) {
-                selection = "(" + CalendarContract.Events.DTSTART + " > " + startTime + ") and (" + CalendarContract.Events.DTSTART + " < " + endTime + ")"
-            } else if (startTime != -1L) {
-                selection = CalendarContract.Events.DTSTART + " > " + startTime
-            } else if (endTime != -1L) {
-                selection = CalendarContract.Events.DTSTART + " < " + endTime
-            } else {
-                selection = null
-            }
+    override fun getEvents(currentTime: Long): Single<MutableList<CalendarEvent>> {
+        return Single.create({ emitter ->
             val cursor = contentResolver.query(CalendarContract.Events.CONTENT_URI, FIELDS,
-                    selection,
-                    null, null)
+                    CalendarContract.Events.DTEND + " > " + currentTime,
+                    null, CalendarContract.Events.DTSTART + " ASC" + " LIMIT 10")
             try {
+                val list = mutableListOf<CalendarEvent>()
                 if (cursor != null && cursor.count > 0) {
                     cursor.moveToFirst()
-                    while (cursor.moveToNext() && !emitter.isCancelled) {
-                        emitter.onNext(CalendarEvent(null,
-                                cursor.getLong(PROJECTION_ID_INDEX),
+                    while (cursor.moveToNext() && !emitter.isDisposed) {
+                       list.add(CalendarEvent(cursor.getLong(PROJECTION_ID_INDEX),
                                 cursor.getString(PROJECTION_TITLE),
                                 cursor.getString(PROJECTION_CALENDAR_DISPLAY_NAME),
                                 cursor.getString(PROJECTION_DESCRIPTION),
@@ -52,7 +45,7 @@ class CalendarManager(ctx: Context) : ICalendarManager {
                                 cursor.getString(PROJECTION_ACCOUNT_NAME)))
                     }
                 }
-                emitter.onComplete()
+                emitter.onSuccess(list)
             } catch (e: Exception) {
                 emitter.onError(e)
             } finally {
@@ -61,7 +54,20 @@ class CalendarManager(ctx: Context) : ICalendarManager {
             emitter.setCancellable {
                 cursor?.close()
             }
-        }, BackpressureStrategy.BUFFER)
+        })
+    }
+
+    override fun getEvents(tunerKey: String): Maybe<UserCalendar> {
+        return databaseManager.getUserCalendarRef(tunerKey)
+                .flatMap { it.loadValue() }
+                .filter { it.exists() }
+                .map { it.getValue(UserCalendar::class.java) }
+    }
+
+    override fun setEvents(tunerKey: String, events: MutableList<CalendarEvent>): Completable {
+        return databaseManager.getUserCalendarsRef()
+                .map { it.child(tunerKey) }
+                .flatMapCompletable { it.uploadValue(UserCalendar(events)) }
     }
 
     companion object {

@@ -45,4 +45,7 @@
     <dimen name="widget.size">50dp</dimen>
     <dimen name="widget.confetti.snow.size">10dp</dimen>
     <dimen name="widget.confetti.rain.size">5dp</dimen>
+
+    <dimen name="widget.item.size">260dp</dimen>
+
 </resources>

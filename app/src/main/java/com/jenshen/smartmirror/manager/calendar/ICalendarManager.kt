@@ -1,11 +1,18 @@
 package com.jenshen.smartmirror.manager.calendar
 
 import android.support.annotation.RequiresPermission
-import com.jenshen.smartmirror.data.entity.calendar.CalendarEvent
+import com.jenshen.smartmirror.data.firebase.model.calendar.CalendarEvent
+import com.jenshen.smartmirror.data.firebase.model.calendar.UserCalendar
+import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Maybe
+import io.reactivex.Single
 
 
 interface ICalendarManager {
     @RequiresPermission(android.Manifest.permission.READ_CALENDAR)
-    fun getEvents(startTime: Long = -1, endTime: Long = -1): Flowable<CalendarEvent>
+    fun getEvents(currentTime: Long): Single<MutableList<CalendarEvent>>
+
+    fun getEvents(tunerKey: String): Maybe<UserCalendar>
+    fun setEvents(tunerKey: String, events: MutableList<CalendarEvent>): Completable
 }

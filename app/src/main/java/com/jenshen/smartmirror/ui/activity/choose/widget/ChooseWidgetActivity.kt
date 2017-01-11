@@ -73,13 +73,8 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         setContentView(R.layout.activity_choose_widget)
         setupToolbar()
         adapter = WidgetsAdapter(
-                context, {
-            val intent = Intent()
-            intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, WidgetConfigurationModel(
-                    it.widgetData.widgetKey, it.widgetInfo))
-            setResult(Activity.RESULT_OK, intent)
-            finish()
-        },
+                context,
+                { presenter.onChooseWidget(it) },
                 { widgetData: WidgetData, widget: Widget<*> -> presenter.updateWidget(widgetData, widget) })
         contentView.adapter = adapter
         loadData(false)
@@ -102,6 +97,13 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
 
     override fun onWidgetUpdate(widgetData: WidgetData) {
         adapter.onUpdateItem(widgetData)
+    }
+
+    override fun onReturnWidgetConfiguration(widgetConfigurationModel: WidgetConfigurationModel) {
+        val intent = Intent()
+        intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, widgetConfigurationModel)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
     /* lce */

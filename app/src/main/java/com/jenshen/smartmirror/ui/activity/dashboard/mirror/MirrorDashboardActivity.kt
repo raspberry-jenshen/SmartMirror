@@ -204,7 +204,7 @@ class MirrorDashboardActivity : BaseMirrorDiMvpActivity<MirrorDashboardComponent
         val sameWidgetsCount = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == configuration.widgetKey }.size
         val widgetKey = WidgetKey(configuration.widgetKey, sameWidgetsCount)
         widget.tag = widgetKey
-        presenter.addWidgetUpdater(widgetKey)
+        presenter.addWidgetUpdater(widgetKey, configuration.tunerKey)
 
         val position = widget.widgetPosition
 

@@ -16,9 +16,9 @@ import com.jenshen.smartmirror.data.updater.WidgetUpdater
 import com.jenshen.smartmirror.data.updater.currency.ExchangeRatesUpdater
 import com.jenshen.smartmirror.data.updater.weather.CurrentWeatherUpdater
 import com.jenshen.smartmirror.data.updater.weather.WeatherForecastUpdater
+import com.jenshen.smartmirror.interactor.calendar.ICalendarInteractor
 import com.jenshen.smartmirror.manager.api.currency.ICurrencyApiManager
 import com.jenshen.smartmirror.manager.api.weather.IWeatherApiManager
-import com.jenshen.smartmirror.manager.calendar.ICalendarManager
 import com.jenshen.smartmirror.manager.location.IFindLocationManager
 import com.jenshen.smartmirror.ui.view.widget.CalendarEventsView
 import com.jenshen.smartmirror.ui.view.widget.ClockView
@@ -33,9 +33,9 @@ class WidgetFactoryManager constructor(private val context: Context,
                                        private val currencyApiManager: dagger.Lazy<ICurrencyApiManager>,
                                        private val weatherApiLazy: dagger.Lazy<IWeatherApiManager>,
                                        private val findLocationManagerLazy: dagger.Lazy<IFindLocationManager>,
-                                       private val calendarManager: dagger.Lazy<ICalendarManager>) : IWidgetFactoryManager {
+                                       private val calendarInteractor: dagger.Lazy<ICalendarInteractor>) : IWidgetFactoryManager {
 
-    override fun getUpdaterForWidget(widgetKey: WidgetKey): WidgetUpdater<*> {
+    override fun getUpdaterForWidget(widgetKey: WidgetKey, tunerKey: String?): WidgetUpdater<*> {
         return when (widgetKey.key) {
             FirebaseRealTimeDatabaseConstant.Widget.CLOCK_WIDGET_KEY -> {
                 ClockUpdater(widgetKey)
@@ -50,7 +50,7 @@ class WidgetFactoryManager constructor(private val context: Context,
                 ExchangeRatesUpdater(widgetKey, currencyApiManager.get())
             }
             FirebaseRealTimeDatabaseConstant.Widget.CALENDAR_EVENTS_WIDGET_KEY -> {
-                CalendarEventsUpdater(widgetKey, calendarManager.get())
+                CalendarEventsUpdater(widgetKey, tunerKey, calendarInteractor.get())
             }
             else -> throw RuntimeException("Can't support this widget")
         }

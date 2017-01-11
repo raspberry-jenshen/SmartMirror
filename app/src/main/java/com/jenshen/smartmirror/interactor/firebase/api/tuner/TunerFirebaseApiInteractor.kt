@@ -159,6 +159,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                             WidgetConfigurationModel(
                                                     WidgetKey(snapshotsWithKey.key),
                                                     snapshotsWithKey.data,
+                                                    widgetConfiguration.tunerKey,
                                                     pair.first,
                                                     WidgetPosition(widgetConfiguration.topLeftCorner.column, widgetConfiguration.topLeftCorner.row,
                                                             widgetConfiguration.topRightCorner.column, widgetConfiguration.topRightCorner.row,
@@ -226,7 +227,8 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                 Corner(widgetModel.widgetPosition!!.topLeftColumnLine, widgetModel.widgetPosition!!.topLeftRowLine),
                                 Corner(widgetModel.widgetPosition!!.topRightColumnLine, widgetModel.widgetPosition!!.topRightRowLine),
                                 Corner(widgetModel.widgetPosition!!.bottomLeftColumnLine, widgetModel.widgetPosition!!.bottomLeftRowLine),
-                                Corner(widgetModel.widgetPosition!!.bottomRightColumnLine, widgetModel.widgetPosition!!.bottomRightRowLine))
+                                Corner(widgetModel.widgetPosition!!.bottomRightColumnLine, widgetModel.widgetPosition!!.bottomRightRowLine),
+                                widgetModel.tunerKey)
 
                         if (widgetModel.key == null) {
                             tunerApiManager.createWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetConfiguration)
@@ -253,7 +255,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
     }
 
     private fun getTunerSession(): Single<TunerSession> {
-        return Single.fromCallable { preferencesManager.getSession() }
+        return Single.fromCallable { preferencesManager.getSession()!! }
                 .cast(TunerSession::class.java)
     }
 }

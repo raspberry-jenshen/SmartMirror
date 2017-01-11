@@ -6,10 +6,6 @@ import com.jenshen.smartmirror.data.entity.session.Session
 import com.jenshen.smartmirror.di.module.activity.SessionActivityBindingModule
 import com.jenshen.smartmirror.di.module.interactor.firebase.api.mirror.MirrorApiInteractorModule
 import com.jenshen.smartmirror.di.module.interactor.firebase.api.tuner.TunerApiInteractorModule
-import com.jenshen.smartmirror.di.module.manager.api.currency.CurrencyApiModule
-import com.jenshen.smartmirror.di.module.manager.api.weather.WeatherApiModule
-import com.jenshen.smartmirror.di.module.manager.calendar.CalendarManagerModule
-import com.jenshen.smartmirror.di.module.manager.location.LocationModule
 import com.jenshen.smartmirror.di.module.manager.session.SessionModule
 import com.jenshen.smartmirror.di.module.manager.session.UserSessionModule
 import com.jenshen.smartmirror.di.module.manager.widget.factory.WidgetFactoryManagerModule

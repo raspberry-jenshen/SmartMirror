@@ -1,14 +1,12 @@
 package com.jenshen.smartmirror.data.firebase
 
-import android.provider.CalendarContract
-
 interface FirebaseRealTimeDatabaseConstant {
 
     companion object {
         const val MIRRORS: String = "mirrors"
         const val TUNERS: String = "tuners"
         const val WIDGETS: String = "widgets"
-        const val EVENTS: String = "events"
+        const val USER_CALENDARS: String = "user_calendars"
         const val MIRROR_CONFIGURATIONS: String = "mirror_configurations"
     }
 
@@ -37,6 +35,7 @@ interface FirebaseRealTimeDatabaseConstant {
                 const val TOP_RIGHT_CORNER = "topRight_corner"
                 const val BOTTOM_LEFT_CORNER = "bottomLeft_corner"
                 const val BOTTOM_RIGHT_CORNER = "bottomRight_corner"
+                const val TUNER_KEY = "tunerKey"
             }
 
             interface Corner {
@@ -114,22 +113,26 @@ interface FirebaseRealTimeDatabaseConstant {
         }
     }
 
-    interface Event {
-
+    interface UserCalendar {
         companion object {
-            const val USER_INFO_KEY = "user_info_key"
-            const val ID = "user_info_key"
-            const val TITLE = "title"
-            const val CALENDAR_DISPLAY_NAME = "name"
-            const val DESCRIPTION = "description"
-            const val ALL_DAY = "isAllDay"
-            const val DTSTART = "start_date"
-            const val DTEND = "end_date"
-            const val LAST_DATE = "last_date"
-            const val EVENT_LOCATION = "event_location"
-            const val CALENDAR_COLOR = "calendar_color"
-            const val EVENT_COLOR = "event_color"
-            const val ACCOUNT_NAME = "account_name"
+            const val EVENTS = "events"
+        }
+
+        interface Event {
+            companion object {
+                const val ID = "user_info_key"
+                const val TITLE = "title"
+                const val CALENDAR_DISPLAY_NAME = "name"
+                const val DESCRIPTION = "description"
+                const val ALL_DAY = "isAllDay"
+                const val DTSTART = "start_date"
+                const val DTEND = "end_date"
+                const val LAST_DATE = "last_date"
+                const val EVENT_LOCATION = "event_location"
+                const val CALENDAR_COLOR = "calendar_color"
+                const val EVENT_COLOR = "event_color"
+                const val ACCOUNT_NAME = "account_name"
+            }
         }
     }
 }
