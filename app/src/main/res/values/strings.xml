@@ -99,5 +99,6 @@
     <string name="widget.exchange_rates.currency_RUB">RUB</string>
     <string name="widget.exchange_rates.currency_EUR">EUR</string>
     <string name="widget.exchange_rates.currency_GBP">GBP</string>
+    <string name="widget.calendar_events.all_day">All day</string>
 
 </resources>
