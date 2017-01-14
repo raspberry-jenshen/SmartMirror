@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
+import com.crashlytics.android.Crashlytics
+import com.firebase.jobdispatcher.FirebaseJobDispatcher
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
@@ -19,6 +21,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     protected lateinit var sessionManager: SessionManager
     @Inject
     protected lateinit var preferencesManager: PreferencesManager
+    @Inject
+    protected lateinit var dispatcher: FirebaseJobDispatcher
 
     private lateinit var compositeDisposable: CompositeDisposable
 
@@ -37,13 +41,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
         buttonLogout.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             preferencesManager.logout()
                     .doOnComplete { sessionManager.logout() }
+                    .doOnComplete { dispatcher.cancelAll() }
                     .doOnComplete { SmartMirrorApp.releaseUserComponent() }
                     .doOnSubscribe { compositeDisposable.add(it) }
                     .subscribe({
                         val intent = Intent(context, ChooseAccountActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)
-                    }, {})
+                    }, { Crashlytics.logException(it) })
             true
         }
 

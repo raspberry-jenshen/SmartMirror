@@ -7,17 +7,16 @@ import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.di.module.activity.service.StartMirrorServiceModule
-import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorDashboardActivity
-import com.jenshen.smartmirror.ui.mvp.presenter.service.StartMirrorServicePresenter
-import com.jenshen.smartmirror.ui.mvp.view.service.StartMirrorServiceView
+import com.jenshen.smartmirror.data.firebase.model.calendar.UPDATE_CALENDAR_RECEIVER
+import com.jenshen.smartmirror.di.module.activity.service.UpdateCalendarEventsModule
+import com.jenshen.smartmirror.ui.mvp.presenter.service.UpdateCalendarEventsPresenter
+import com.jenshen.smartmirror.ui.mvp.view.service.UpdateCalendarEventsView
 import javax.inject.Inject
 
-
-class StartMirrorService : Service(), StartMirrorServiceView {
+class UpdateCalendarEventsService : Service(), UpdateCalendarEventsView {
 
     @Inject
-    protected lateinit var presenter: StartMirrorServicePresenter
+    protected lateinit var presenter: UpdateCalendarEventsPresenter
 
     /* lifecycle */
 
@@ -26,14 +25,14 @@ class StartMirrorService : Service(), StartMirrorServiceView {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        presenter.isSessionExist()
+        presenter.onStartJob(UPDATE_CALENDAR_RECEIVER)
         return START_STICKY
     }
 
     override fun onCreate() {
         super.onCreate()
-        SmartMirrorApp.rootComponent
-                .plusMirrorService(StartMirrorServiceModule())
+        SmartMirrorApp.userComponent!!
+                .plusCalendarEventsService(UpdateCalendarEventsModule())
                 .injectMembers(this)
         presenter.attachView(this)
     }
@@ -45,10 +44,7 @@ class StartMirrorService : Service(), StartMirrorServiceView {
 
     /* callbacks */
 
-    override fun openMirrorScreen() {
-        val intentActivity = Intent(context, MirrorDashboardActivity::class.java)
-        intentActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intentActivity)
+    override fun onJobCompleted() {
         stopSelf()
     }
 

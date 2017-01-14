@@ -17,8 +17,7 @@ class CalendarEventsUpdater(widgetKey: WidgetKey,
     }
 
     override fun getInfo(): Flowable<CalendarEventsWidgetData> {
-        return calendarInteractor.getEvents(tunerKey)
+        return calendarInteractor.fetchEvents(tunerKey)
                 .map { CalendarEventsWidgetData(widgetKey, it) }
-                .toFlowable()
     }
 }

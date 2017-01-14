@@ -3,7 +3,10 @@ package com.jenshen.smartmirror.di.component
 import android.app.Activity
 import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
 import com.jenshen.smartmirror.data.entity.session.Session
+import com.jenshen.smartmirror.di.component.activity.service.UpdateCalendarEventsComponent
+import com.jenshen.smartmirror.di.module.DispatcherModule
 import com.jenshen.smartmirror.di.module.activity.SessionActivityBindingModule
+import com.jenshen.smartmirror.di.module.activity.service.UpdateCalendarEventsModule
 import com.jenshen.smartmirror.di.module.interactor.firebase.api.mirror.MirrorApiInteractorModule
 import com.jenshen.smartmirror.di.module.interactor.firebase.api.tuner.TunerApiInteractorModule
 import com.jenshen.smartmirror.di.module.manager.session.SessionModule
@@ -20,6 +23,7 @@ import dagger.Subcomponent
         WidgetFactoryManagerModule::class,
         MirrorApiInteractorModule::class,
         TunerApiInteractorModule::class,
+        DispatcherModule::class,
         //activities
         SessionActivityBindingModule::class))
 interface SessionComponent {
@@ -32,6 +36,8 @@ interface SessionComponent {
     fun provideUser(): Session
 
     fun inject(settingsFragment: SettingsFragment)
+
+    fun plusCalendarEventsService(moduleUpdate: UpdateCalendarEventsModule) : UpdateCalendarEventsComponent
 
     @SessionScope
     fun provideMultiBuildersForActivities(): Map<Class<out Activity>, ActivityComponentBuilder<*>>

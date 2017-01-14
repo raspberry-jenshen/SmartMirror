@@ -5,9 +5,11 @@ import android.content.Context
 import android.provider.CalendarContract
 import android.support.annotation.RequiresPermission
 import com.jenshen.smartmirror.data.firebase.model.calendar.CalendarEvent
+import com.jenshen.smartmirror.data.firebase.model.calendar.TypesOfUpdaters
 import com.jenshen.smartmirror.data.firebase.model.calendar.UserCalendar
 import com.jenshen.smartmirror.manager.firebase.database.RealtimeDatabaseManager
 import com.jenshen.smartmirror.util.reactive.firebase.loadValue
+import com.jenshen.smartmirror.util.reactive.firebase.observeValue
 import com.jenshen.smartmirror.util.reactive.firebase.uploadValue
 import io.reactivex.*
 
@@ -57,6 +59,13 @@ class CalendarManager(context: Context, private val databaseManager: RealtimeDat
         })
     }
 
+    override fun fetchEvents(tunerKey: String): Flowable<UserCalendar> {
+        return databaseManager.getUserCalendarRef(tunerKey)
+                .flatMapPublisher { it.observeValue() }
+                .filter { it.exists() }
+                .map { it.getValue(UserCalendar::class.java) }
+    }
+
     override fun getEvents(tunerKey: String): Maybe<UserCalendar> {
         return databaseManager.getUserCalendarRef(tunerKey)
                 .flatMap { it.loadValue() }
@@ -64,10 +73,10 @@ class CalendarManager(context: Context, private val databaseManager: RealtimeDat
                 .map { it.getValue(UserCalendar::class.java) }
     }
 
-    override fun setEvents(tunerKey: String, events: MutableList<CalendarEvent>): Completable {
+    override fun setEvents(tunerKey: String, events: MutableList<CalendarEvent>, @TypesOfUpdaters type: String): Completable {
         return databaseManager.getUserCalendarsRef()
                 .map { it.child(tunerKey) }
-                .flatMapCompletable { it.uploadValue(UserCalendar(events).toValueWithUpdateTime()) }
+                .flatMapCompletable { it.uploadValue(UserCalendar(events).toValueWithUpdateTime(type)) }
     }
 
     companion object {

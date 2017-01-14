@@ -11,4 +11,5 @@ interface SignInView : BaseMvpView {
     fun setLoginButtonState(isEnabled: Boolean)
     fun onLoginClicked()
     fun onLoginSuccess()
+    fun onPasswordReset()
 }

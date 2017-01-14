@@ -13,4 +13,5 @@ interface AuthInteractor {
     fun signInTuner(email: String, password: String): Completable
     fun signInMirror(): Completable
     fun editUserInfo(name: String, uri: Uri): Completable
+    fun resetPassword(email: String): Completable
 }

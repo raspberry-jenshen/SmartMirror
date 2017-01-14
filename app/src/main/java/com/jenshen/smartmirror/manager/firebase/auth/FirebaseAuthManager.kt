@@ -98,4 +98,17 @@ class FirebaseAuthManager @Inject constructor(private val context: Context, priv
                     }
         }
     }
+
+    override fun resetPassword(email: String): Completable {
+        return Completable.create { emitter ->
+            fireBaseAuth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            emitter.onComplete()
+                        } else {
+                            emitter.onError(it.exception)
+                        }
+                    }
+        }
+    }
 }

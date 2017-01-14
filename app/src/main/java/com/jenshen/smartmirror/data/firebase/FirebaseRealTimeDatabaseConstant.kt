@@ -118,6 +118,7 @@ interface FirebaseRealTimeDatabaseConstant {
         companion object {
             const val EVENTS = "events"
             const val LAST_TIME_UPDATE = "last_time_update"
+            const val TYPE_OF_UPDATER = "type_of_updater"
         }
 
         interface Event {

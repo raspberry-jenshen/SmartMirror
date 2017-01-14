@@ -19,8 +19,8 @@ import com.jenshen.smartmirror.ui.mvp.presenter.signup.tuner.SignUpTunerPresente
 import com.jenshen.smartmirror.ui.mvp.view.signup.tuner.SignUpTunerView
 import com.jenshen.smartmirror.util.asCircleBitmap
 import com.jenshen.smartmirror.util.getBitmap
-import com.jenshen.smartmirror.util.reactive.onEditorAction
-import com.jenshen.smartmirror.util.reactive.onTextChanged
+import com.jenshen.smartmirror.util.reactive.onEditorActionObservable
+import com.jenshen.smartmirror.util.reactive.onTextChangedObservable
 import com.jenshen.smartmirror.util.validation.ValidationResult
 import com.nguyenhoanglam.imagepicker.activity.ImagePicker
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES
@@ -75,11 +75,11 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
         }
 
         presenter.initCreateAccountButtonStateListener(
-                nameEdit.onTextChanged(),
-                emailEdit.onTextChanged(),
-                passwordEdit.onTextChanged(),
-                confirmPasswordEdit.onTextChanged())
-        presenter.initEditableAction(confirmPasswordEdit.onEditorAction())
+                nameEdit.onTextChangedObservable(),
+                emailEdit.onTextChangedObservable(),
+                passwordEdit.onTextChangedObservable(),
+                confirmPasswordEdit.onTextChangedObservable())
+        presenter.initEditableAction(confirmPasswordEdit.onEditorActionObservable())
     }
 
     override fun onResume() {

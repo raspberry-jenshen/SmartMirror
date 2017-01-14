@@ -29,6 +29,9 @@ interface PreferencesManager {
 
     fun getExchangeRates(): ExchangeRatesResponse?
 
-    fun  addJob(job: Job)
+    fun addJob(job: Job)
+
+    fun getJobs() : MutableList<Job>?
+
     fun deleteJob(job: Job)
 }

@@ -13,17 +13,21 @@ class UserCalendar(@set:PropertyName(FirebaseRealTimeDatabaseConstant.UserCalend
                    var events: MutableList<CalendarEvent>,
                    @set:PropertyName(FirebaseRealTimeDatabaseConstant.UserCalendar.LAST_TIME_UPDATE)
                    @get:PropertyName(FirebaseRealTimeDatabaseConstant.UserCalendar.LAST_TIME_UPDATE)
-                   var lastTimeUpdate: Long? = null) {
+                   var lastTimeUpdate: Long? = null,
+                   @set:PropertyName(FirebaseRealTimeDatabaseConstant.UserCalendar.TYPE_OF_UPDATER)
+                   @get:PropertyName(FirebaseRealTimeDatabaseConstant.UserCalendar.TYPE_OF_UPDATER)
+                   var typeOfUpdater: String? = null) {
 
     constructor() : this(mutableListOf()) {
         // Default constructor required for calls to DataSnapshot.getValue(Mirror.class)
     }
 
     @Exclude
-    fun toValueWithUpdateTime(): Map<String, Any> {
+    fun toValueWithUpdateTime(@TypesOfUpdaters type: String): Map<String, Any> {
         val result = HashMap<String, Any>()
         result.put(FirebaseRealTimeDatabaseConstant.UserCalendar.LAST_TIME_UPDATE, ServerValue.TIMESTAMP)
         result.put(FirebaseRealTimeDatabaseConstant.UserCalendar.EVENTS, events)
+        result.put(FirebaseRealTimeDatabaseConstant.UserCalendar.TYPE_OF_UPDATER, type)
         return result
     }
 }

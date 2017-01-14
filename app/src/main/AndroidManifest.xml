@@ -118,16 +118,29 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".broadcast.NativeEventChangeReceiver">
+        <receiver android:name=".broadcast.NativeEventChangeReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.PROVIDER_CHANGED"/>
-                <data android:scheme="content"/>
-                <data android:host="com.android.calendar"/>
+                <action android:name="android.intent.action.PROVIDER_CHANGED" />
+
+                <data android:scheme="content" />
+                <data android:host="com.android.calendar" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.StartMirrorService" />
+        <service
+            android:name=".service.StartMirrorService"
+            android:exported="false" />
+        <service
+            android:name=".service.UpdateCalendarEventsService"
+            android:exported="false" />
+
+        <service
+            android:name=".service.UpdateCalendarEventsJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
 
     </application>
 

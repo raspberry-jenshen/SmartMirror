@@ -1,6 +1,6 @@
-package com.jenshen.smartmirror.di.component.activity.start.service
+package com.jenshen.smartmirror.di.component.activity.service
 
-import com.jenshen.smartmirror.di.module.activity.start.service.StartMirrorServiceModule
+import com.jenshen.smartmirror.di.module.activity.service.StartMirrorServiceModule
 import com.jenshen.smartmirror.di.scope.ActivityScope
 import com.jenshen.smartmirror.service.StartMirrorService
 import dagger.MembersInjector

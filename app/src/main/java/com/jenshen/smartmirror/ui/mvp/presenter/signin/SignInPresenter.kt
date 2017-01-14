@@ -99,20 +99,10 @@ class SignInPresenter @Inject constructor(private val preferencesManager: Prefer
     }
 
     fun restorePassword(email: String) {
-        /*isValidEmail(email)
-                .filter { it.isValid }
-                .switchIfEmpty { Completable.complete() }
-                .doOnSuccess { view?.showProgress() }
-                .observeOn(Schedulers.io())
-                .flatMapObservable { loginApiManager.restorePassword(RestorePasswordRequest(email)) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { composite.add(it) }
-                .subscribe({
-                    view?.onPasswordRestoreSuccess()
-                    view?.hideProgress()
-                }, {
-                    errorHandler.handleError(view?.getContext(), it)
-                    view?.hideProgress()
-                })*/
+        authInteractor.resetPassword(email)
+                .applySchedulers(Schedulers.io())
+                .applyProgress(Consumer { view?.showProgress() }, Action { view?.hideProgress() })
+                .doOnSubscribe { compositeDisposable.add(it) }
+                .subscribe({ view?.onPasswordReset() }, { view?.handleError(it) })
     }
 }

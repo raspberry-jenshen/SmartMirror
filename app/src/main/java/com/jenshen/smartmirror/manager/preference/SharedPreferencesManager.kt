@@ -35,6 +35,10 @@ class SharedPreferencesManager : PreferencesManager {
         val editor = mSharedPreferences.edit()
         //remove it if needed editor.remove(mContext.getString(R.string.preference_key_user))
         editor.remove(mContext.getString(R.string.preference_key_is_mirror))
+        editor.remove(mContext.getString(R.string.preference_key_current_weather))
+        editor.remove(mContext.getString(R.string.preference_key_weather_forecast))
+        editor.remove(mContext.getString(R.string.preference_key_exchange_rates))
+        editor.remove(mContext.getString(R.string.preference_key_list_of_jobs))
         editor.apply()
     }
 
@@ -76,37 +80,41 @@ class SharedPreferencesManager : PreferencesManager {
     }
 
     override fun addJob(job: Job) {
-        val key = mContext.getString(R.string.preference_key_list_of_jobs)
-        val typeToken = object : TypeToken<MutableList<Job>>() {}
-        var list = getModel(key, typeToken)
+        var list = getJobs()
         if (list == null) {
             list = mutableListOf<Job>()
         }
         list.add(job)
+        val key = mContext.getString(R.string.preference_key_list_of_jobs)
         saveModel(key, list)
     }
 
-    override fun deleteJob(job: Job) {
+    override fun getJobs(): MutableList<Job>? {
         val key = mContext.getString(R.string.preference_key_list_of_jobs)
         val typeToken = object : TypeToken<MutableList<Job>>() {}
-        val list: MutableList<Job>? = getModel(key, typeToken) ?: return
+        return getModel(key, typeToken)
+    }
+
+    override fun deleteJob(job: Job) {
+        val list = getJobs()?: return
         if (job.currentWidgetKey == null) {
             if (job.widgetKey == null) {
                 if (job.configurationKey == null) {
-                    val itemsToDelete = list!!.filter { it.mirrorKey == job.mirrorKey }.toCollection(mutableListOf())
+                    val itemsToDelete = list.filter { it.mirrorKey == job.mirrorKey }.toCollection(mutableListOf())
                     list.removeAll(itemsToDelete)
                 } else {
-                    val itemsToDelete = list!!.filter { it.configurationKey == job.configurationKey }.toCollection(mutableListOf())
+                    val itemsToDelete = list.filter { it.configurationKey == job.configurationKey }.toCollection(mutableListOf())
                     list.removeAll(itemsToDelete)
                 }
             } else {
-                val itemsToDelete = list!!.filter { it.widgetKey == job.widgetKey }.toCollection(mutableListOf())
+                val itemsToDelete = list.filter { it.widgetKey == job.widgetKey }.toCollection(mutableListOf())
                 list.removeAll(itemsToDelete)
             }
         } else {
-            list!!.remove(job)
+            list.remove(job)
         }
-        saveModel(key, list!!)
+        val key = mContext.getString(R.string.preference_key_list_of_jobs)
+        saveModel(key, list)
     }
 
 
