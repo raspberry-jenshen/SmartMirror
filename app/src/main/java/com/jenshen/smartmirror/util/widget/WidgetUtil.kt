@@ -27,6 +27,7 @@ fun createWidget(widgetKey: String, widgetSize: WidgetSize, context: Context): W
 fun getViewForWidget(widgetKey: String, context: Context): View {
     val view: View = when (widgetKey) {
         FirebaseRealTimeDatabaseConstant.Widget.CLOCK_WIDGET_KEY -> ClockView(context)
+        FirebaseRealTimeDatabaseConstant.Widget.DIGITAL_CLOCK_WIDGET_KEY -> DigitalClockView(context)
         FirebaseRealTimeDatabaseConstant.Widget.CURRENT_WEATHER_WIDGET_KEY -> CurrentWeatherView(context)
         FirebaseRealTimeDatabaseConstant.Widget.WEATHER_FORECAST_FOR_DAY_WIDGET_KEY -> WeatherForecastForDayView(context)
         FirebaseRealTimeDatabaseConstant.Widget.WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY -> WeatherForecastForWeekView(context)

@@ -35,9 +35,17 @@ class WidgetFactoryManager constructor(private val context: Context,
                                        private val findLocationManagerLazy: dagger.Lazy<IFindLocationManager>,
                                        private val calendarInteractor: dagger.Lazy<ICalendarInteractor>) : IWidgetFactoryManager {
 
+    override fun canSupportThisWidget(widgetKey: String) = widgetKey == FirebaseRealTimeDatabaseConstant.Widget.CLOCK_WIDGET_KEY ||
+            widgetKey == FirebaseRealTimeDatabaseConstant.Widget.CURRENT_WEATHER_WIDGET_KEY ||
+            widgetKey == FirebaseRealTimeDatabaseConstant.Widget.WEATHER_FORECAST_FOR_DAY_WIDGET_KEY ||
+            widgetKey == FirebaseRealTimeDatabaseConstant.Widget.WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY ||
+            widgetKey == FirebaseRealTimeDatabaseConstant.Widget.EXCHANGE_RATES_WIDGET_KEY ||
+            widgetKey == FirebaseRealTimeDatabaseConstant.Widget.CALENDAR_EVENTS_WIDGET_KEY ||
+            widgetKey == FirebaseRealTimeDatabaseConstant.Widget.DIGITAL_CLOCK_WIDGET_KEY
+
     override fun getUpdaterForWidget(widgetKey: WidgetKey, tunerKey: String?): WidgetUpdater<*> {
         return when (widgetKey.key) {
-            FirebaseRealTimeDatabaseConstant.Widget.CLOCK_WIDGET_KEY -> {
+            FirebaseRealTimeDatabaseConstant.Widget.CLOCK_WIDGET_KEY, FirebaseRealTimeDatabaseConstant.Widget.DIGITAL_CLOCK_WIDGET_KEY -> {
                 ClockUpdater(widgetKey)
             }
             FirebaseRealTimeDatabaseConstant.Widget.CURRENT_WEATHER_WIDGET_KEY -> {

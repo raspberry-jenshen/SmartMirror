@@ -89,7 +89,7 @@ class TunerFirebaseApiManager @Inject constructor(private val fireBaseDatabase: 
 
     override fun deleteMirrorConfigurationInfoForMirror(configurationKey: String, mirrorId: String): Completable {
         return fireBaseDatabase
-                .getMirrorConfigurationInfoRef(configurationKey, mirrorId)
+                .getMirrorConfigurationInfoRef(mirrorId, configurationKey)
                 .flatMapCompletable { it.clearValue() }
     }
 

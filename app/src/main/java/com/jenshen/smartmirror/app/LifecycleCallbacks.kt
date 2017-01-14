@@ -5,8 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import com.jenshen.compat.util.delegate.HasDelegateView
 
-class LifecycleCallbacks(private val activityDelegate: ActivityDelegate) :
-        Application.ActivityLifecycleCallbacks {
+class LifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityPaused(activity: Activity?) {
 
@@ -32,7 +31,7 @@ class LifecycleCallbacks(private val activityDelegate: ActivityDelegate) :
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         if (activity is HasDelegateView<*>) {
-            activity.viewDelegate = activityDelegate
+            activity.viewDelegate = ActivityDelegate(activity)
         }
     }
 

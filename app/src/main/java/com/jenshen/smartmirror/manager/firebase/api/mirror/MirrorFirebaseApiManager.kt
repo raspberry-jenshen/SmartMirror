@@ -20,6 +20,7 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
 
     override fun observeSelectedConfigurationKey(mirrorKey: String): Flowable<String> {
         return firebaseDatabase.getSelectedConfigurationRef(mirrorKey)
+                .doOnSuccess { it.keepSynced(true) }
                 .flatMapPublisher { it.observeValue() }
                 .filter { it.exists() }
                 .map { it.getValue(String::class.java) }
@@ -33,8 +34,8 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
     }
 
     override fun observeMirrorConfigurationInfoForMirror(mirrorKey: String, configurationKey: String): Flowable<MirrorConfigurationInfo> {
-        return firebaseDatabase.getMirrorConfigurationsInfoRef(mirrorKey)
-                .map { it.child(configurationKey) }
+        return firebaseDatabase.getMirrorConfigurationInfoRef(mirrorKey, configurationKey)
+                .doOnSuccess { it.keepSynced(true) }
                 .flatMapPublisher { it.observeValue() }
                 .filter { it.exists() }
                 .map { it.getValue(MirrorConfigurationInfo::class.java) }
@@ -44,6 +45,7 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
 
     override fun observeUserInfoOnMirror(configurationKey: String): Flowable<Optional<TunerInfo>> {
         return firebaseDatabase.getMirrorConfigurationUserInfoKeyRef(configurationKey)
+                .doOnSuccess { it.keepSynced(true) }
                 .flatMapPublisher { it.observeValue() }
                 .flatMapSingle {
                     if (it.exists()) {
@@ -61,6 +63,7 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
 
     override fun observeIsEnablePrecipitation(configurationKey: String): Flowable<Boolean> {
         return firebaseDatabase.getMirrorConfigurationIsEnablePrecipitationRef(configurationKey)
+                .doOnSuccess { it.keepSynced(true) }
                 .flatMapPublisher { it.observeValue() }
                 .filter { it.exists() }
                 .map { it.getValue(Boolean::class.java) }
@@ -68,6 +71,7 @@ class MirrorFirebaseApiManager @Inject constructor(private var firebaseDatabase:
 
     override fun observeScreenOrientation(configurationKey: String): Flowable<OrientationMode> {
         return firebaseDatabase.getMirrorConfigurationOrientationModeRef(configurationKey)
+                .doOnSuccess { it.keepSynced(true) }
                 .flatMapPublisher { it.observeValue() }
                 .filter { it.exists() }
                 .map { it.getValue(Int::class.java) }

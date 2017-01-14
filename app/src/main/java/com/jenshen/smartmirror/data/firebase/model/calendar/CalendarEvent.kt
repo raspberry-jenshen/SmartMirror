@@ -40,6 +40,10 @@ class CalendarEvent(@set:PropertyName(FirebaseRealTimeDatabaseConstant.UserCalen
                     @get:PropertyName(FirebaseRealTimeDatabaseConstant.UserCalendar.Event.ACCOUNT_NAME)
                     var accountName: String) : Comparable<CalendarEvent> {
 
+    constructor() : this(0L, null, null, null, false, 0L, 0L, null, null, null, null, "") {
+        // Default constructor required for calls to DataSnapshot.getValue(Mirror.class)
+    }
+
     override fun compareTo(other: CalendarEvent): Int {
         // -1 = less, 0 = equal, 1 = greater
         return startDate.compareTo(other.startDate)

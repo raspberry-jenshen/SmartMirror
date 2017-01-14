@@ -14,7 +14,7 @@ interface RealtimeDatabaseManager {
     fun getSelectedConfigurationRef(mirrorKey: String): Single<DatabaseReference>
     fun getMirrorSubscribersRef(mirrorKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationsInfoRef(mirrorKey: String): Single<DatabaseReference>
-    fun getMirrorConfigurationInfoRef(configurationKey: String, mirrorKey: String): Single<DatabaseReference>
+    fun getMirrorConfigurationInfoRef(mirrorKey: String, configurationKey: String): Single<DatabaseReference>
 
     /* tuner */
 

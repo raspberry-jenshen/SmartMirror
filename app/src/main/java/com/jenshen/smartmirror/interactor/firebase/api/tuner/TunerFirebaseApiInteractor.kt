@@ -17,6 +17,7 @@ import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.mirror.MirrorApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
+import com.jenshen.smartmirror.manager.job.IJobManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshensoft.widgetview.entity.WidgetPosition
 import io.reactivex.Completable
@@ -25,13 +26,13 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.*
-import javax.inject.Inject
 
-class TunerFirebaseApiInteractor @Inject constructor(private var context: Context,
-                                                     private var apiManager: ApiManager,
-                                                     private var preferencesManager: PreferencesManager,
-                                                     private var tunerApiManager: TunerApiManager,
-                                                     private var mirrorApiManager: MirrorApiManager) : TunerApiInteractor {
+class TunerFirebaseApiInteractor(private var context: Context,
+                                 private var apiManager: ApiManager,
+                                 private var preferencesManager: PreferencesManager,
+                                 private var tunerApiManager: TunerApiManager,
+                                 private var mirrorApiManager: MirrorApiManager,
+                                 private var jobManager: IJobManager) : TunerApiInteractor {
 
     /* mirror */
 
@@ -64,6 +65,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                                         Completable.complete()
                                                     }
                                                 })
+                                        .andThen(jobManager.onDeleteJob(mirrorId))
                             }
                 }
     }
@@ -84,6 +86,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
     override fun deleteConfigurationForMirror(configurationId: String, mirrorId: String, isSelected: Boolean): Completable {
         return tunerApiManager.deleteMirrorConfigurationInfoForMirror(configurationId, mirrorId)
                 .andThen(tunerApiManager.deleteMirrorConfiguration(configurationId))
+                .andThen(jobManager.onDeleteJob(mirrorId, configurationId))
     }
 
     /* tuner */
@@ -231,14 +234,26 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                 widgetModel.tunerKey)
 
                         if (widgetModel.key == null) {
-                            tunerApiManager.createWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetConfiguration)
+                            return@flatMapCompletable tunerApiManager.createWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetConfiguration)
                                     .doOnSuccess { widgetModel.key = it }
-                                    .toCompletable()
+                                    .flatMapCompletable {
+                                        jobManager.onCreateJob(
+                                                editMirrorModel.mirrorKey,
+                                                editMirrorModel.configurationKey!!,
+                                                widgetModel.key!!,
+                                                widgetModel.widgetKey)
+                                    }
                         } else {
                             if (widgetModel.isDeleted) {
-                                tunerApiManager.deleteWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!)
+                                return@flatMapCompletable tunerApiManager.deleteWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!)
+                                        .andThen(
+                                                jobManager.onDeleteJob(
+                                                        editMirrorModel.mirrorKey,
+                                                        editMirrorModel.configurationKey!!,
+                                                        widgetModel.key!!,
+                                                        widgetModel.widgetKey))
                             } else {
-                                tunerApiManager.editWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!, widgetConfiguration)
+                                return@flatMapCompletable tunerApiManager.editWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!, widgetConfiguration)
                             }
                         }
                     }

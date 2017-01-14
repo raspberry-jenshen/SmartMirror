@@ -9,4 +9,5 @@ import com.jenshensoft.widgetview.WidgetView
 interface IWidgetFactoryManager {
     fun getUpdaterForWidget(widgetKey: WidgetKey, tunerKey: String? = null): WidgetUpdater<*>
     fun updateWidget(infoData: WidgetData, widget: Widget<*>)
+    fun canSupportThisWidget(widgetKey: String): Boolean
 }

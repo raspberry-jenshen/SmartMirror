@@ -53,6 +53,7 @@ class ChooseWidgetPresenter @Inject constructor(private val apiInteractor: Tuner
     fun fetchWidgets(pullToRefresh: Boolean) {
         subscribeOnModel(apiInteractor
                 .fetchWidgets()
+                .filter { widgetFactoryManager.canSupportThisWidget(it.key) }
                 .flatMap { widgetInfo ->
                     widgetFactoryManager.getUpdaterForWidget(WidgetKey(widgetInfo.key))
                             .getInfo()

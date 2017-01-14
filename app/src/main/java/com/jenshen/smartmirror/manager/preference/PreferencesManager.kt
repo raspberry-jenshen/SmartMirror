@@ -1,5 +1,6 @@
 package com.jenshen.smartmirror.manager.preference
 
+import com.jenshen.smartmirror.data.entity.Job
 import com.jenshen.smartmirror.data.entity.currency.ExchangeRatesResponse
 import com.jenshen.smartmirror.data.entity.session.Session
 import com.jenshen.smartmirror.data.entity.weather.day.WeatherForCurrentDayResponse
@@ -27,4 +28,7 @@ interface PreferencesManager {
     fun getWeatherForecast(): WeatherForecastResponse?
 
     fun getExchangeRates(): ExchangeRatesResponse?
+
+    fun  addJob(job: Job)
+    fun deleteJob(job: Job)
 }

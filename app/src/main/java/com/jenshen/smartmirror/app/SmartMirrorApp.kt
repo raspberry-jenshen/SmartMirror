@@ -73,7 +73,7 @@ open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
         super.onCreate()
         LeakCanary.install(this)
 
-        val lifecycleCallbacks = LifecycleCallbacks(ActivityDelegate(this))
+        val lifecycleCallbacks = LifecycleCallbacks()
         registerActivityLifecycleCallbacks(lifecycleCallbacks)
 
         Fabric.with(this, Crashlytics.Builder()

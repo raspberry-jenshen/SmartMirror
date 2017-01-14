@@ -67,7 +67,7 @@ class CalendarManager(context: Context, private val databaseManager: RealtimeDat
     override fun setEvents(tunerKey: String, events: MutableList<CalendarEvent>): Completable {
         return databaseManager.getUserCalendarsRef()
                 .map { it.child(tunerKey) }
-                .flatMapCompletable { it.uploadValue(UserCalendar(events)) }
+                .flatMapCompletable { it.uploadValue(UserCalendar(events).toValueWithUpdateTime()) }
     }
 
     companion object {

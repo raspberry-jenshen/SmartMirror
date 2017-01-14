@@ -3,14 +3,15 @@ package com.jenshen.smartmirror.manager.preference
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.jenshen.smartmirror.R
+import com.jenshen.smartmirror.data.entity.Job
 import com.jenshen.smartmirror.data.entity.currency.ExchangeRatesResponse
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
 import com.jenshen.smartmirror.data.entity.session.Session
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.entity.weather.day.WeatherForCurrentDayResponse
 import com.jenshen.smartmirror.data.entity.weather.forecast.WeatherForecastResponse
-import com.jenshen.smartmirror.util.Optional
 import io.reactivex.Completable
 
 class SharedPreferencesManager : PreferencesManager {
@@ -44,7 +45,6 @@ class SharedPreferencesManager : PreferencesManager {
         } else {
             return mGson.fromJson(json, TunerSession::class.java)
         }
-
     }
 
     override fun isMirror(): Boolean {
@@ -75,6 +75,40 @@ class SharedPreferencesManager : PreferencesManager {
         return getModel(mContext.getString(R.string.preference_key_exchange_rates), ExchangeRatesResponse::class.java)
     }
 
+    override fun addJob(job: Job) {
+        val key = mContext.getString(R.string.preference_key_list_of_jobs)
+        val typeToken = object : TypeToken<MutableList<Job>>() {}
+        var list = getModel(key, typeToken)
+        if (list == null) {
+            list = mutableListOf<Job>()
+        }
+        list.add(job)
+        saveModel(key, list)
+    }
+
+    override fun deleteJob(job: Job) {
+        val key = mContext.getString(R.string.preference_key_list_of_jobs)
+        val typeToken = object : TypeToken<MutableList<Job>>() {}
+        val list: MutableList<Job>? = getModel(key, typeToken) ?: return
+        if (job.currentWidgetKey == null) {
+            if (job.widgetKey == null) {
+                if (job.configurationKey == null) {
+                    val itemsToDelete = list!!.filter { it.mirrorKey == job.mirrorKey }.toCollection(mutableListOf())
+                    list.removeAll(itemsToDelete)
+                } else {
+                    val itemsToDelete = list!!.filter { it.configurationKey == job.configurationKey }.toCollection(mutableListOf())
+                    list.removeAll(itemsToDelete)
+                }
+            } else {
+                val itemsToDelete = list!!.filter { it.widgetKey == job.widgetKey }.toCollection(mutableListOf())
+                list.removeAll(itemsToDelete)
+            }
+        } else {
+            list!!.remove(job)
+        }
+        saveModel(key, list!!)
+    }
+
 
     /* private methods */
 
@@ -94,5 +128,10 @@ class SharedPreferencesManager : PreferencesManager {
     private fun <T> getModel(key: String, clazz: Class<T>): T? {
         val json = mSharedPreferences.getString(key, null) ?: return null
         return mGson.fromJson(json, clazz)
+    }
+
+    private fun <T> getModel(key: String, typeToken: TypeToken<T>): T? {
+        val json = mSharedPreferences.getString(key, null) ?: return null
+        return mGson.fromJson(json, typeToken.type)
     }
 }

@@ -14,14 +14,9 @@ class ClockUpdater(widgetKey: WidgetKey) : WidgetUpdater<ClockWidgetData>(widget
     override val initialDelay: Long = 0
     override val period: Long = 1000
 
-    private val calendar: Calendar
-
-    init {
-        calendar = Calendar.getInstance()
-    }
-
     override fun getInfo(): Flowable<ClockWidgetData> {
         return Flowable.fromCallable {
+            val calendar = Calendar.getInstance()
             ClockWidgetData(widgetKey, calendar.get(HOUR), calendar.get(MINUTE), calendar.get(SECOND))
         }
     }

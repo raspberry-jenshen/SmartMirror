@@ -9,6 +9,7 @@ class DateUtil {
         val DAY_MONTH_YEAR = "dd.MM.yyyy"
         val DAT_MONTH = "dd.MM"
         val HOURS_MINUTES = "HH:mm"
+        val HOURS_MINUTES_SECONDS = "HH:mm:ss"
         val HOURS_MINUTES_DAT_MONTH = HOURS_MINUTES + ", " + DAT_MONTH
     }
 }

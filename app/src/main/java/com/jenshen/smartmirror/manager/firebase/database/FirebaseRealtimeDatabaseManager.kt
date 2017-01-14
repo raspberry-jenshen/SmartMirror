@@ -40,7 +40,7 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
                 .map { it.child(FirebaseRealTimeDatabaseConstant.Mirror.CONFIGURATIONS) }
     }
 
-    override fun getMirrorConfigurationInfoRef(configurationKey: String, mirrorKey: String): Single<DatabaseReference> {
+    override fun getMirrorConfigurationInfoRef(mirrorKey: String, configurationKey: String): Single<DatabaseReference> {
         return getMirrorConfigurationsInfoRef(mirrorKey)
                 .map { it.child(configurationKey) }
     }

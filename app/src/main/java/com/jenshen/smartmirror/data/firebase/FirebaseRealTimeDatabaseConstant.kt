@@ -58,6 +58,7 @@ interface FirebaseRealTimeDatabaseConstant {
             const val WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY = "-KZTABib6OSjnBn79_8O"
             const val EXCHANGE_RATES_WIDGET_KEY = "-K_R8vRWtIZ4HkAWa93o"
             const val CALENDAR_EVENTS_WIDGET_KEY = "-Ka7tq0XcgoOXvFSOjSw"
+            const val DIGITAL_CLOCK_WIDGET_KEY = "-KaGhfwH_uQbImz8w2u8"
         }
 
         interface Size {
@@ -116,11 +117,12 @@ interface FirebaseRealTimeDatabaseConstant {
     interface UserCalendar {
         companion object {
             const val EVENTS = "events"
+            const val LAST_TIME_UPDATE = "last_time_update"
         }
 
         interface Event {
             companion object {
-                const val ID = "user_info_key"
+                const val ID = "id"
                 const val TITLE = "title"
                 const val CALENDAR_DISPLAY_NAME = "name"
                 const val DESCRIPTION = "description"

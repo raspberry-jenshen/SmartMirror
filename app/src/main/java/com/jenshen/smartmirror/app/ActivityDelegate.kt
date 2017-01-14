@@ -5,7 +5,7 @@ import com.crashlytics.android.Crashlytics
 import com.jenshen.compat.util.delegate.ViewDelegateActivity
 
 
-class ActivityDelegate(context : Context) : ViewDelegateActivity(context) {
+class ActivityDelegate(context: Context) : ViewDelegateActivity(context) {
 
     override fun handleError(throwable: Throwable?) {
         Crashlytics.logException(throwable)
