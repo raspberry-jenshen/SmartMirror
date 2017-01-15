@@ -1,7 +1,6 @@
 package com.jenshen.smartmirror.ui.activity.signIn
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.Snackbar.LENGTH_LONG
@@ -26,6 +25,7 @@ import com.jenshen.smartmirror.util.reactive.onTextChangedObservable
 import com.jenshen.smartmirror.util.validation.ValidationResult
 import kotlinx.android.synthetic.main.activity_sign_in_tuner.*
 import kotlinx.android.synthetic.main.partial_sign_in.*
+import kotlinx.android.synthetic.main.partial_toolbar.*
 
 
 class SignInTunerActivity : BaseDiMvpActivity<SignInComponent, SignInView, SignInPresenter>(), SignInView {

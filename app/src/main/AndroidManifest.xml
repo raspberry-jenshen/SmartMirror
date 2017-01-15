@@ -42,6 +42,7 @@
 
         <activity
             android:name=".ui.activity.signIn.SignInTunerActivity"
+            android:label="@string/signIn"
             android:launchMode="singleTop"
             android:theme="@style/App.Theme.SignInTuner.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden">
@@ -51,6 +52,7 @@
         </activity>
         <activity
             android:name=".ui.activity.signup.tuner.SignUpTunerActivity"
+            android:label="@string/signUp"
             android:theme="@style/App.Theme.SignUpTuner.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
@@ -59,11 +61,13 @@
         </activity>
         <activity
             android:name=".ui.activity.choose.mirror.ChooseMirrorActivity"
+            android:label="@string/tuner"
             android:launchMode="singleTop"
             android:theme="@style/App.Theme.ChooseMirror.Activity" />
         <activity
             android:name=".ui.activity.settings.app.SettingsActivity"
             android:launchMode="singleTop"
+            android:label="@string/settings"
             android:theme="@style/App.Theme.Settings.Activity" />
         <activity
             android:name=".ui.activity.qrScan.QRCodeScanActivity"
@@ -76,6 +80,7 @@
         <activity
             android:name=".ui.activity.edit.mirror.EditMirrorActivity"
             android:launchMode="singleTop"
+            android:label="@string/editMirror"
             android:theme="@style/App.Theme.EditMirror.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -83,6 +88,7 @@
         </activity>
         <activity
             android:name=".ui.activity.choose.widget.ChooseWidgetActivity"
+            android:label="@string/chooseWidget"
             android:theme="@style/App.Theme.ChooseWidget.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -90,6 +96,7 @@
         </activity>
         <activity
             android:name=".ui.activity.add.widget.AddWidgetActivity"
+            android:label="@string/tuner"
             android:theme="@style/App.Theme.AddWidget.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -97,6 +104,7 @@
         </activity>
         <activity
             android:name=".ui.activity.settings.mirror.MirrorSettingsActivity"
+            android:label="@string/mirror_settings"
             android:theme="@style/App.Theme.MirrorSettings.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

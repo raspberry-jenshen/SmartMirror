@@ -8,13 +8,7 @@
     android:orientation="vertical"
     tools:context=".ui.activity.edit.mirror.EditMirrorActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/editMirror" />
+    <include layout="@layout/partial_toolbar" />
 
     <com.jenshen.smartmirror.ui.view.WidgetScaleLayout
         android:id="@+id/widgetContainer"

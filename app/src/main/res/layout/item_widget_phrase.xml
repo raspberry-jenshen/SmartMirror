@@ -8,7 +8,7 @@
     android:layout_marginStart="@dimen/offset_small1"
     android:layout_marginTop="@dimen/offset_small1"
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/grey"
     app:cardCornerRadius="4dp"
