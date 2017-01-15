@@ -163,6 +163,7 @@ class TunerFirebaseApiInteractor(private var context: Context,
                                                     WidgetKey(snapshotsWithKey.key),
                                                     snapshotsWithKey.data,
                                                     widgetConfiguration.tunerKey,
+                                                    widgetConfiguration.phrase,
                                                     pair.first,
                                                     WidgetPosition(widgetConfiguration.topLeftCorner.column, widgetConfiguration.topLeftCorner.row,
                                                             widgetConfiguration.topRightCorner.column, widgetConfiguration.topRightCorner.row,
@@ -226,12 +227,14 @@ class TunerFirebaseApiInteractor(private var context: Context,
         return Completable.defer {
             Observable.fromIterable(editMirrorModel.widgets)
                     .flatMapCompletable { widgetModel ->
-                        val widgetConfiguration = WidgetConfiguration(widgetModel.widgetKey.key,
+                        val widgetConfiguration = WidgetConfiguration(
+                                widgetModel.widgetKey.key,
                                 Corner(widgetModel.widgetPosition!!.topLeftColumnLine, widgetModel.widgetPosition!!.topLeftRowLine),
                                 Corner(widgetModel.widgetPosition!!.topRightColumnLine, widgetModel.widgetPosition!!.topRightRowLine),
                                 Corner(widgetModel.widgetPosition!!.bottomLeftColumnLine, widgetModel.widgetPosition!!.bottomLeftRowLine),
                                 Corner(widgetModel.widgetPosition!!.bottomRightColumnLine, widgetModel.widgetPosition!!.bottomRightRowLine),
-                                widgetModel.tunerKey)
+                                widgetModel.tunerKey,
+                                widgetModel.phrase)
 
                         if (widgetModel.key == null) {
                             return@flatMapCompletable tunerApiManager.createWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetConfiguration)

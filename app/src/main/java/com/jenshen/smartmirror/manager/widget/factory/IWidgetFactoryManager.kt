@@ -7,7 +7,7 @@ import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.jenshensoft.widgetview.WidgetView
 
 interface IWidgetFactoryManager {
-    fun getUpdaterForWidget(widgetKey: WidgetKey, tunerKey: String? = null): WidgetUpdater<*>
+    fun getUpdaterForWidget(widgetKey: WidgetKey, tunerKey: String? = null, phrase: String? = null): WidgetUpdater<*>
     fun updateWidget(infoData: WidgetData, widget: Widget<*>)
     fun canSupportThisWidget(widgetKey: String): Boolean
 }

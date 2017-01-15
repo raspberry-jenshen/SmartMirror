@@ -26,10 +26,9 @@ import com.nguyenhoanglam.imagepicker.activity.ImagePicker
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES
 import com.nguyenhoanglam.imagepicker.model.Image
 import jp.wasabeef.glide.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.activity_sign_up_tuner.*
 import kotlinx.android.synthetic.main.partial_sign_up.*
+import kotlinx.android.synthetic.main.partial_toolbar.*
 import java.io.File
-
 
 class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerView, SignUpTunerPresenter>(), SignUpTunerView {
 
@@ -191,8 +190,8 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
     }
 
     private fun updateModel() {
-        userModel.name =  nameEdit.text.toString().trim()
-        userModel.email =  emailEdit.text.toString()
+        userModel.name = nameEdit.text.toString().trim()
+        userModel.email = emailEdit.text.toString()
     }
 
     private fun setupToolbar() {

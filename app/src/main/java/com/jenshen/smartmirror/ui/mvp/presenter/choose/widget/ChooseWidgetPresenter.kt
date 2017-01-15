@@ -43,7 +43,7 @@ class ChooseWidgetPresenter @Inject constructor(private val apiInteractor: Tuner
                     } else {
                         tunerKey = null
                     }
-                    WidgetConfigurationModel(widgetKey, widgetModel.widgetInfo, tunerKey)
+                    WidgetConfigurationModel(widgetKey, widgetModel.widgetInfo, tunerKey, widgetModel.phrase)
                 }
                 .applySchedulers(Schedulers.computation())
                 .doOnSubscribe { compositeDisposable.add(it) }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.jenshen.compat.base.view.impl.BaseActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.ui.fragment.settings.app.SettingsFragment
-import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.partial_toolbar.*
 
 class SettingsActivity : BaseActivity() {
 

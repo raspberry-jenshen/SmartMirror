@@ -21,8 +21,7 @@ import com.jenshen.smartmirror.ui.adapter.mirrors.MirrorsAdapter
 import com.jenshen.smartmirror.ui.adapter.touch.SimpleItemTouchHelperCallback
 import com.jenshen.smartmirror.ui.mvp.presenter.choose.mirror.ChooseMirrorPresenter
 import com.jenshen.smartmirror.ui.mvp.view.choose.mirror.ChooseMirrorView
-import kotlinx.android.synthetic.main.activity_choose_mirror.*
-
+import kotlinx.android.synthetic.main.partial_toolbar.*
 
 class ChooseMirrorActivity : BaseDiLceMvpActivity<ChooseMirrorComponent,
         RecyclerView,

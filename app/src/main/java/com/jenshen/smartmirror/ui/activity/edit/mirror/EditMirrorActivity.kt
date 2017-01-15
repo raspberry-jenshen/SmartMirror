@@ -34,10 +34,10 @@ import com.jenshen.smartmirror.util.widget.createWidget
 import com.jenshensoft.widgetview.WidgetView
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_edit_mirror.*
+import kotlinx.android.synthetic.main.partial_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
 
 
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
@@ -332,7 +332,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     private fun createWidgetView(widgetModel: WidgetConfigurationModel): WidgetView {
         widgetModel.widgetKey.number = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == widgetModel.widgetKey.key }.size
-        presenter.addWidgetUpdater(widgetModel.widgetKey)
+        presenter.addWidgetUpdater(widgetModel.widgetKey, widgetModel.tunerKey, widgetModel.phrase)
         val widget = createWidget(widgetModel.widgetKey.key, widgetModel.widgetInfo.defaultSize, context)
         widget.tag = widgetModel.widgetKey
         return widget

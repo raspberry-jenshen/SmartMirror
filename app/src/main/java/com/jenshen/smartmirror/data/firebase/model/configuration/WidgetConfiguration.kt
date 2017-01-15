@@ -22,9 +22,12 @@ class WidgetConfiguration(
         var bottomRightCorner: Corner,
         @set:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.Widget.TUNER_KEY)
         @get:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.Widget.TUNER_KEY)
-        var tunerKey: String?) {
+        var tunerKey: String?,
+        @set:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.Widget.PHRASE)
+        @get:PropertyName(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.Widget.PHRASE)
+        var phrase: String?) {
 
-    constructor() : this("", Corner(), Corner(), Corner(), Corner(), null) {
+    constructor() : this("", Corner(), Corner(), Corner(), Corner(), null, null) {
         // Default constructor required for calls to DataSnapshot.getValue(Widget.class)
     }
 }

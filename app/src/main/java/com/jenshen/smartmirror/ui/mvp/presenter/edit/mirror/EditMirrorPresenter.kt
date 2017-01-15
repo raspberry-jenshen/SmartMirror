@@ -39,8 +39,8 @@ class EditMirrorPresenter @Inject constructor(private val tunerApiInteractor: Tu
                 .subscribe({ view?.onMirrorConfigurationLoaded(it) }, { view?.handleError(it) })
     }
 
-    fun addWidgetUpdater(widgetKey: WidgetKey) {
-        val updater = widgetFactoryManager.getUpdaterForWidget(widgetKey)
+    fun addWidgetUpdater(widgetKey: WidgetKey, tunerKey: String?, phrase: String?) {
+        val updater = widgetFactoryManager.getUpdaterForWidget(widgetKey, tunerKey, phrase)
         updaterList.add(updater)
         addDisposible(updater.startUpdate()
                 .applySchedulers(Schedulers.io())

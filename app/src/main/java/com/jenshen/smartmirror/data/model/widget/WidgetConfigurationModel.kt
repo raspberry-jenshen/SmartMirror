@@ -3,16 +3,16 @@ package com.jenshen.smartmirror.data.model.widget
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
 import com.jenshensoft.widgetview.entity.WidgetPosition
 
 data class WidgetConfigurationModel(val widgetKey: WidgetKey,
                                     val widgetInfo: WidgetInfo,
-                                    var tunerKey: String?,
+                                    var tunerKey: String?, //for calendar
+                                    var phrase: String?, //for phrase
                                     var key: String? = null,
                                     var widgetPosition: WidgetPosition? = null,
-                                    var isDeleted: Boolean = false) : Parcelable{
+                                    var isDeleted: Boolean = false) : Parcelable {
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<WidgetConfigurationModel> = object : Parcelable.Creator<WidgetConfigurationModel> {
             override fun createFromParcel(source: Parcel): WidgetConfigurationModel = WidgetConfigurationModel(source)
@@ -22,9 +22,10 @@ data class WidgetConfigurationModel(val widgetKey: WidgetKey,
 
     constructor(source: Parcel) : this(source.readParcelable<WidgetKey>(WidgetKey::class.java.classLoader),
             source.readParcelable<WidgetInfo>(WidgetInfo::class.java.classLoader),
-            source.readString(), source.readString(),
-            source.readParcelable<WidgetPosition?>(WidgetPosition::class.java.classLoader),
-            1 == source.readInt())
+            source.readString(),
+            source.readString(),
+            source.readString(),
+            source.readParcelable<WidgetPosition?>(WidgetPosition::class.java.classLoader), 1 == source.readInt())
 
     override fun describeContents() = 0
 
@@ -32,6 +33,7 @@ data class WidgetConfigurationModel(val widgetKey: WidgetKey,
         dest?.writeParcelable(widgetKey, 0)
         dest?.writeParcelable(widgetInfo, 0)
         dest?.writeString(tunerKey)
+        dest?.writeString(phrase)
         dest?.writeString(key)
         dest?.writeParcelable(widgetPosition, 0)
         dest?.writeInt((if (isDeleted) 1 else 0))

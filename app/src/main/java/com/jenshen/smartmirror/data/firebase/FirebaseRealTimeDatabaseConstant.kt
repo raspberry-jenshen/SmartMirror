@@ -36,6 +36,7 @@ interface FirebaseRealTimeDatabaseConstant {
                 const val BOTTOM_LEFT_CORNER = "bottomLeft_corner"
                 const val BOTTOM_RIGHT_CORNER = "bottomRight_corner"
                 const val TUNER_KEY = "tunerKey"
+                const val PHRASE = "phrase"
             }
 
             interface Corner {

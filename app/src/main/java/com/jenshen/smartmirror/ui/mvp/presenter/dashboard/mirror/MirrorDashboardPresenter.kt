@@ -32,8 +32,8 @@ class MirrorDashboardPresenter @Inject constructor(private val mirrorApiInteract
         fetchSelectedConfiguration()
     }
 
-    fun addWidgetUpdater(widgetKey: WidgetKey, tunerKey: String?) {
-        val updater = widgetFactoryManager.getUpdaterForWidget(widgetKey, tunerKey)
+    fun addWidgetUpdater(widgetKey: WidgetKey, tunerKey: String?, phrase: String?) {
+        val updater = widgetFactoryManager.getUpdaterForWidget(widgetKey, tunerKey, phrase)
         updaterList.add(updater)
         addDisposible(updater.startUpdate()
                 .applySchedulers(Schedulers.io())

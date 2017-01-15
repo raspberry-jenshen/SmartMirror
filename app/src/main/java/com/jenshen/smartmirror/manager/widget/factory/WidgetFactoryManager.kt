@@ -43,7 +43,7 @@ class WidgetFactoryManager constructor(private val context: Context,
             widgetKey == FirebaseRealTimeDatabaseConstant.Widget.DIGITAL_CLOCK_WIDGET_KEY ||
             widgetKey == FirebaseRealTimeDatabaseConstant.Widget.PHRASE_WIDGET_KEY
 
-    override fun getUpdaterForWidget(widgetKey: WidgetKey, tunerKey: String?): WidgetUpdater<*> {
+    override fun getUpdaterForWidget(widgetKey: WidgetKey, tunerKey: String?, phrase: String?): WidgetUpdater<*> {
         return when (widgetKey.key) {
             FirebaseRealTimeDatabaseConstant.Widget.CLOCK_WIDGET_KEY, FirebaseRealTimeDatabaseConstant.Widget.DIGITAL_CLOCK_WIDGET_KEY -> {
                 ClockUpdater(widgetKey)
@@ -61,7 +61,7 @@ class WidgetFactoryManager constructor(private val context: Context,
                 CalendarEventsUpdater(widgetKey, tunerKey, calendarInteractor.get())
             }
             FirebaseRealTimeDatabaseConstant.Widget.PHRASE_WIDGET_KEY -> {
-                PhraseUpdater(widgetKey)
+                PhraseUpdater(widgetKey, phrase)
             }
             else -> throw RuntimeException("Can't support this widget")
         }

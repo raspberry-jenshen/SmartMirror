@@ -14,7 +14,7 @@ import com.jenshen.smartmirror.di.component.activity.settings.mirror.MirrorSetti
 import com.jenshen.smartmirror.ui.mvp.presenter.settings.mirror.MirrorSettingsPresenter
 import com.jenshen.smartmirror.ui.mvp.view.settings.mirror.MirrorSettingsView
 import kotlinx.android.synthetic.main.activity_mirror_settings.*
-
+import kotlinx.android.synthetic.main.partial_toolbar.*
 
 class MirrorSettingsActivity : BaseDiMvpActivity<MirrorSettingsComponent, MirrorSettingsView, MirrorSettingsPresenter>(), MirrorSettingsView {
 
