@@ -323,7 +323,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     }
 
     private fun restoreExtra(savedInstanceState: Bundle?) {
-        isSaved = savedInstanceState?.getBoolean(IS_SAVED_KEY) ?: false
+        isSaved = savedInstanceState?.getBoolean(IS_SAVED_KEY) ?: true
         val model = savedInstanceState?.getParcelable<EditMirrorModel>(MODEL_KEY)
         if (model != null) {
             onMirrorConfigurationLoaded(model)

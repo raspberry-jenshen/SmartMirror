@@ -8,6 +8,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.support.v4.content.ContextCompat
+import android.support.v4.graphics.drawable.DrawableCompat
+import android.support.v7.widget.AppCompatDrawableManager
 
 
 fun Bitmap.asCircleBitmap(): Bitmap {
@@ -81,20 +83,24 @@ fun Bitmap.cutBottom(width: Int, height: Int): Bitmap {
 }
 
 fun getBitmap(context: Context, drawableId: Int): Bitmap {
-    val drawable = ContextCompat.getDrawable(context, drawableId)
+    var drawable = AppCompatDrawableManager.get().getDrawable(context, drawableId)
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        drawable = DrawableCompat.wrap(drawable).mutate()
+    }
     if (drawable is BitmapDrawable) {
         return drawable.bitmap
-    } else if (drawable is VectorDrawable) {
-        return getBitmap(drawable)
     } else {
-        throw IllegalArgumentException("unsupported drawable type")
+        val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
     }
 }
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 private fun getBitmap(vectorDrawable: VectorDrawable): Bitmap {
-    val bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+    val bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(bitmap)
     vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
     vectorDrawable.draw(canvas)

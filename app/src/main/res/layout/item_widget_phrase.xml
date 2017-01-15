@@ -22,28 +22,37 @@
 
         <TextView
             android:id="@+id/name_textView"
+            style="@style/App.Theme.Widget.TextView.Dark.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAllCaps="true"
-            android:textColor="@color/white"
             tools:text="Clock" />
 
         <TextView
+            style="@style/App.Theme.Widget.TextView.Dark.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/chooseWidget.type_a_phrase"
-            android:textColor="@color/white" />
+            android:layout_margin="@dimen/offset_small1"
+            android:text="@string/chooseWidget.type_a_phrase" />
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/phraseEdit"
+            style="@style/App.Theme.Widget.TextView.Dark.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/offset_small1"
             android:hint="@string/chooseWidget.phrase.hint"
             android:inputType="text"
-            android:textColor="@color/white"
             android:textColorHighlight="@color/colorAccent"
             android:textColorHint="@color/white" />
+
+        <Button
+            android:id="@+id/ok"
+            style="@style/Widget.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/offset_small1"
+            android:text="@string/ok" />
 
     </LinearLayout>
 

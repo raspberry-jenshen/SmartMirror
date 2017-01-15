@@ -31,12 +31,14 @@
 
     <style name="App.Theme.SignInTuner">
         <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+        <item name="buttonStyle">@style/Widget.Button</item>
     </style>
 
     <style name="App.Theme.SignInTuner.Activity" />
 
     <style name="App.Theme.SignUpTuner">
         <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+        <item name="buttonStyle">@style/Widget.Button</item>
     </style>
 
     <style name="App.Theme.SignUpTuner.Activity" />
@@ -119,6 +121,26 @@
 
     <style name="App.Theme.Widget.TextView.Dark.Large">
         <item name="android:textSize">@dimen/textSize_large2</item>
+    </style>
+
+    <style name="App.Theme.Widget.TextView.Light.Small">
+        <item name="android:textSize">@dimen/textSize_small2</item>
+    </style>
+
+    <style name="App.Theme.Widget.TextView.Light.Medium">
+        <item name="android:textSize">@dimen/textSize_normal</item>
+    </style>
+
+    <style name="App.Theme.Widget.TextView.Light.Large">
+        <item name="android:textSize">@dimen/textSize_large2</item>
+    </style>
+
+    <!--button-->
+    <style name="Widget.Button" parent="Base.Widget.AppCompat.Button">
+        <item name="android:textSize">@dimen/textSize_normal</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@drawable/selector_login_button_text_color</item>
+        <item name="android:background">@drawable/selector_login_button_color</item>
     </style>
 
     <!-- toolbar -->

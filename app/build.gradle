@@ -95,6 +95,11 @@ android {
     kapt {
         generateStubs = true
     }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+        jumboMode true
+    }
 }
 
 dependencies {

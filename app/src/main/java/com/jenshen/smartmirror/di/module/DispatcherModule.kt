@@ -37,9 +37,9 @@ class DispatcherModule {
                 .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)// retry with exponential backoff
                 .setConstraints(// constraints that need to be satisfied for the job to run
                         // only run on an unmetered network
-                        Constraint.ON_UNMETERED_NETWORK,
+                        Constraint.ON_ANY_NETWORK/*,
                         // only run when the device is charging
-                        Constraint.DEVICE_CHARGING
+                        Constraint.DEVICE_CHARGING*/
                 )
     }
 }
