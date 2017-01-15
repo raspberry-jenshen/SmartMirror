@@ -33,6 +33,7 @@ fun getViewForWidget(widgetKey: String, context: Context): View {
         FirebaseRealTimeDatabaseConstant.Widget.WEATHER_FORECAST_FOR_WEEK_WIDGET_KEY -> WeatherForecastForWeekView(context)
         FirebaseRealTimeDatabaseConstant.Widget.EXCHANGE_RATES_WIDGET_KEY -> ExchangeRatesView(context)
         FirebaseRealTimeDatabaseConstant.Widget.CALENDAR_EVENTS_WIDGET_KEY -> CalendarEventsView(context)
+        FirebaseRealTimeDatabaseConstant.Widget.PHRASE_WIDGET_KEY -> PhraseTextView(context)
         else -> ClockView(context)
     }
     view.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)

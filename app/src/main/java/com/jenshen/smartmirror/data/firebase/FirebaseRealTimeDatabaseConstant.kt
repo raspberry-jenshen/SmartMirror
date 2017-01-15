@@ -59,6 +59,7 @@ interface FirebaseRealTimeDatabaseConstant {
             const val EXCHANGE_RATES_WIDGET_KEY = "-K_R8vRWtIZ4HkAWa93o"
             const val CALENDAR_EVENTS_WIDGET_KEY = "-Ka7tq0XcgoOXvFSOjSw"
             const val DIGITAL_CLOCK_WIDGET_KEY = "-KaGhfwH_uQbImz8w2u8"
+            const val PHRASE_WIDGET_KEY = "-KaUIbexgbc0CwdmmzSP"
         }
 
         interface Size {

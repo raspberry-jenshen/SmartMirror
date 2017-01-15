@@ -33,6 +33,8 @@
             android:id="@+id/contentView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/offset_small1"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:listItem="@layout/item_mirror" />
 

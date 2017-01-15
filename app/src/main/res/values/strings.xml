@@ -90,6 +90,8 @@
 
     <!-- choose widget-->
     <string name="chooseWidget">Choose Widget</string>
+    <string name="chooseWidget.type_a_phrase">Type a phrase</string>
+    <string name="chooseWidget.phrase.hint">Good morning, Dear</string>
 
     <!-- widgets-->
     <!--weather-->
