@@ -54,9 +54,7 @@ class FirebaseApiManager @Inject constructor(realtimeDatabaseManager: RealtimeDa
         return fireBaseDatabase.getMirrorRef(mirrorSession.key)
                 .flatMap { reference ->
                     Single.fromCallable {
-                        Mirror(Build.DEVICE + " " +
-                                Build.MODEL + " " +
-                                Build.PRODUCT)
+                        Mirror(Build.DEVICE)
                     }
                             .flatMap { mirror ->
                                 reference.uploadValue(mirror)

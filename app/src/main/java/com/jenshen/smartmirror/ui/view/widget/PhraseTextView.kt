@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import com.jenshen.smartmirror.R
 
 import com.jenshen.smartmirror.data.entity.widget.info.PhraseWidgetData
-import com.jenshen.smartmirror.ui.view.ScaledTextView
+import com.jenshen.smartmirror.ui.view.FontFitTextView
 
-class PhraseTextView : ScaledTextView, Widget<PhraseWidgetData> {
+class PhraseTextView : FontFitTextView, Widget<PhraseWidgetData> {
 
     init {
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -22,7 +22,7 @@ class PhraseTextView : ScaledTextView, Widget<PhraseWidgetData> {
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+    //constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
     override fun updateWidget(phraseWidgetData: PhraseWidgetData) {
         text = phraseWidgetData.phrase

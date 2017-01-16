@@ -307,10 +307,13 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                                 val widgetKey = it.tag as WidgetKey
                                 (widgetKey.key == widgetModel.widgetKey.key) && widgetKey.number == widgetModel.widgetKey.number
                             }
-                    if (isSaved && widgetModel.widgetPosition != null) {
-                        isSaved = widgetModel.widgetPosition == view!!.widgetPosition
+
+                    if (view != null) {
+                        if (isSaved && widgetModel.widgetPosition != null) {
+                            isSaved = widgetModel.widgetPosition == view.widgetPosition
+                        }
+                        widgetModel.widgetPosition = view.widgetPosition
                     }
-                    widgetModel.widgetPosition = view!!.widgetPosition
                 }
     }
 
