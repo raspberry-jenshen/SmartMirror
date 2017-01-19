@@ -15,7 +15,13 @@ abstract class WidgetUpdater<Info : WidgetData>(val widgetKey: WidgetKey) {
     protected var isDisposed = false
 
     fun startUpdate(): Flowable<Info> {
-        return Flowable.interval(initialDelay, period, TimeUnit.MILLISECONDS, Schedulers.io())
+        val emitter : Flowable<Long>
+        if (period == -1L) {
+            emitter = Flowable.timer(initialDelay, TimeUnit.MILLISECONDS, Schedulers.io())
+        } else {
+            emitter = Flowable.interval(initialDelay, period * 100L * 1000L, TimeUnit.MILLISECONDS, Schedulers.io())
+        }
+        return emitter
                 .takeWhile { !isDisposed }
                 .flatMap { getInfo() }
     }

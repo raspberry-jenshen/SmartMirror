@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 class ClockUpdater(widgetKey: WidgetKey) : WidgetUpdater<ClockWidgetData>(widgetKey) {
 
     override val initialDelay: Long = 0
-    override val period: Long = 1000
+    override val period: Long = 1
 
     override fun getInfo(): Flowable<ClockWidgetData> {
         return Flowable.fromCallable {

@@ -21,7 +21,7 @@ class CurrentWeatherUpdater(widgetKey: WidgetKey,
                             private val findLocationManagerLazy: Lazy<IFindLocationManager>) : WidgetUpdater<CurrentWeatherWidgetData>(widgetKey) {
 
     override val initialDelay: Long = 0
-    override val period: Long = MINUTES_BETWEEN_UPDATES * 1000
+    override val period: Long = MINUTES_BETWEEN_UPDATES
 
     companion object {
         const val MINUTES_BETWEEN_UPDATES = 60L
