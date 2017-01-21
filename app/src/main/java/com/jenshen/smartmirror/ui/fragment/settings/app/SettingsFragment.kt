@@ -39,7 +39,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val buttonLogout = findPreference(getString(R.string.preference_logout_key))
         buttonLogout.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            preferencesManager.logout()
+            preferencesManager.logout(false)
                     .doOnComplete { sessionManager.logout() }
                     .doOnComplete { dispatcher.cancelAll() }
                     .doOnComplete { SmartMirrorApp.releaseUserComponent() }

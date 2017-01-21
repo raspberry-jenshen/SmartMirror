@@ -11,7 +11,7 @@ interface PreferencesManager {
 
     fun sighIn(session: Session, isMirror: Boolean)
 
-    fun logout(): Completable
+    fun logout(isNeedToRemoveUser: Boolean): Completable
 
     fun getSession(): Session?
 

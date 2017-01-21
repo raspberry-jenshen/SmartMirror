@@ -10,7 +10,8 @@ class NativeEventChangeReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val preferencesManager = SmartMirrorApp.rootComponent.providePreferencesManager()
-        if (!preferencesManager.isMirror()) {
+        val session = preferencesManager.getSession()
+        if (session != null && !session.isLogOut && !preferencesManager.isMirror()) {
             context.startService(Intent(context, UpdateCalendarEventsService::class.java))
         }
     }

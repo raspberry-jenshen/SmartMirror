@@ -31,9 +31,17 @@ class SharedPreferencesManager : PreferencesManager {
         setIsMirror(isMirror)
     }
 
-    override fun logout(): Completable = Completable.fromCallable {
+    override fun logout(isNeedToRemoveUser: Boolean): Completable = Completable.fromCallable {
         val editor = mSharedPreferences.edit()
-        //remove it if needed editor.remove(mContext.getString(R.string.preference_key_user))
+        if(isNeedToRemoveUser) {
+            editor.remove(mContext.getString(R.string.preference_key_user))
+        } else {
+            val session = getSession()
+            if (session != null) {
+                session.isLogOut = true
+                saveSession(session)
+            }
+        }
         editor.remove(mContext.getString(R.string.preference_key_is_mirror))
         editor.remove(mContext.getString(R.string.preference_key_current_weather))
         editor.remove(mContext.getString(R.string.preference_key_weather_forecast))

@@ -1,5 +1,6 @@
 package com.jenshen.smartmirror.di.module
 
+import android.text.format.DateUtils
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.jenshen.smartmirror.di.scope.ApiScope
@@ -10,9 +11,12 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 @Module(includes = arrayOf(GsonModule::class))
-class ApiModule(private val baseUrl: String, private val interceptor: Interceptor? = null) {
+class ApiModule(private val baseUrl: String,
+                private val interceptor: Interceptor? = null,
+                private val timeOutTime: Long = DateUtils.MINUTE_IN_MILLIS * 10) {
 
     @ApiScope
     @Provides
@@ -30,6 +34,9 @@ class ApiModule(private val baseUrl: String, private val interceptor: Intercepto
         if (interceptor != null) {
             builder.addInterceptor(interceptor)
         }
+        builder.connectTimeout(timeOutTime, TimeUnit.MILLISECONDS)
+                .readTimeout(timeOutTime, TimeUnit.MILLISECONDS)
+                .writeTimeout(timeOutTime, TimeUnit.MILLISECONDS)
         return builder.build()
     }
 
