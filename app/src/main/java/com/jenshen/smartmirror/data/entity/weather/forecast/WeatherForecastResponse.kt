@@ -6,4 +6,4 @@ import com.jenshen.smartmirror.data.entity.weather.day.WeatherForDayResponse
 class WeatherForecastResponse(val city: City?,
                               val message: String?,
                               val cnt: Int?,
-                              @SerializedName("list") val weathersList: MutableList<WeatherForDayResponse>?)
+                              @SerializedName("list") val weathersList: MutableList<WeatherForDayResponse>)

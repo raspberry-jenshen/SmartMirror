@@ -6,9 +6,10 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 
-fun DatabaseReference.observeValue() : Flowable<DataSnapshot> {
+fun DatabaseReference.observeValue(): Flowable<DataSnapshot> {
     return Flowable.create<DataSnapshot>({ source ->
         val listener = object : ValueEventListener {
 
@@ -24,9 +25,10 @@ fun DatabaseReference.observeValue() : Flowable<DataSnapshot> {
         source.setCancellable { this.removeEventListener(listener) }
 
     }, BackpressureStrategy.BUFFER)
+            .observeOn(Schedulers.io())
 }
 
-fun DatabaseReference.loadValue() : Single<DataSnapshot> {
+fun DatabaseReference.loadValue(): Single<DataSnapshot> {
     return Single.create<DataSnapshot>({ source ->
         val listener = object : ValueEventListener {
 
@@ -41,6 +43,7 @@ fun DatabaseReference.loadValue() : Single<DataSnapshot> {
         this.addListenerForSingleValueEvent(listener)
         source.setCancellable { this.removeEventListener(listener) }
     })
+            .observeOn(Schedulers.io())
 }
 
 fun DatabaseReference.uploadValue(any: Any?): Completable {
@@ -54,6 +57,7 @@ fun DatabaseReference.uploadValue(any: Any?): Completable {
                     }
                 }
     }
+            .observeOn(Schedulers.io())
 }
 
 fun DatabaseReference.updateValues(map: Map<String, Any>): Completable {
@@ -67,6 +71,7 @@ fun DatabaseReference.updateValues(map: Map<String, Any>): Completable {
                     }
                 }
     }
+            .observeOn(Schedulers.io())
 }
 
 fun DatabaseReference.clearValue(): Completable {
@@ -80,9 +85,10 @@ fun DatabaseReference.clearValue(): Completable {
                     }
                 }
     }
+            .observeOn(Schedulers.io())
 }
 
-fun DatabaseReference.observeChildren() : Flowable<FirebaseChildEvent> {
+fun DatabaseReference.observeChildren(): Flowable<FirebaseChildEvent> {
     return Flowable.create<FirebaseChildEvent>({ subscriber ->
         val listener = object : ChildEventListener {
 
@@ -110,4 +116,5 @@ fun DatabaseReference.observeChildren() : Flowable<FirebaseChildEvent> {
         subscriber.setCancellable { this.removeEventListener(listener) }
 
     }, BackpressureStrategy.BUFFER)
+            .observeOn(Schedulers.io())
 }

@@ -17,7 +17,7 @@
     <LinearLayout
         android:id="@+id/widgetsContainer"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/widget.item.size"
         android:layout_margin="@dimen/offset_normal"
         android:orientation="vertical">
 

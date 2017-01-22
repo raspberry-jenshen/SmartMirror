@@ -9,6 +9,8 @@ class DateUtil {
         val DAY_MONTH_YEAR = "dd.MM.yyyy"
         val DAT_MONTH = "dd.MM"
         val HOURS_MINUTES = "HH:mm"
+        val HOURS_MINUTES_SECONDS = "HH:mm:ss"
+        val HOURS_MINUTES_DAT_MONTH = HOURS_MINUTES + ", " + DAT_MONTH
     }
 }
 
@@ -24,5 +26,10 @@ fun Date.toDayMonth(): String {
 
 fun Date.toHoursMinutes(): String {
     val baseFormat = SimpleDateFormat(DateUtil.HOURS_MINUTES, Locale.getDefault())
+    return baseFormat.format(this)
+}
+
+fun Date.toHoursMinutesDayMonth(): String {
+    val baseFormat = SimpleDateFormat(DateUtil.HOURS_MINUTES_DAT_MONTH, Locale.getDefault())
     return baseFormat.format(this)
 }

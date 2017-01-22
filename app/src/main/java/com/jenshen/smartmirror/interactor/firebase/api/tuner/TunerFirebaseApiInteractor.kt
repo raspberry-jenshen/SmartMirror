@@ -5,10 +5,7 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.data.entity.session.TunerSession
 import com.jenshen.smartmirror.data.firebase.DataSnapshotWithKey
 import com.jenshen.smartmirror.data.firebase.FirebaseChildEvent
-import com.jenshen.smartmirror.data.firebase.model.configuration.ContainerSize
-import com.jenshen.smartmirror.data.firebase.model.configuration.Corner
-import com.jenshen.smartmirror.data.firebase.model.configuration.MirrorConfiguration
-import com.jenshen.smartmirror.data.firebase.model.configuration.WidgetConfiguration
+import com.jenshen.smartmirror.data.firebase.model.configuration.*
 import com.jenshen.smartmirror.data.firebase.model.mirror.MirrorConfigurationInfo
 import com.jenshen.smartmirror.data.firebase.model.tuner.TunerSubscription
 import com.jenshen.smartmirror.data.firebase.model.widget.WidgetInfo
@@ -17,10 +14,10 @@ import com.jenshen.smartmirror.data.model.mirror.EditMirrorModel
 import com.jenshen.smartmirror.data.model.mirror.MirrorModel
 import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
-import com.jenshen.smartmirror.data.model.widget.WidgetModel
 import com.jenshen.smartmirror.manager.firebase.api.ApiManager
 import com.jenshen.smartmirror.manager.firebase.api.mirror.MirrorApiManager
 import com.jenshen.smartmirror.manager.firebase.api.tuner.TunerApiManager
+import com.jenshen.smartmirror.manager.job.IJobManager
 import com.jenshen.smartmirror.manager.preference.PreferencesManager
 import com.jenshensoft.widgetview.entity.WidgetPosition
 import io.reactivex.Completable
@@ -29,13 +26,13 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.*
-import javax.inject.Inject
 
-class TunerFirebaseApiInteractor @Inject constructor(private var context: Context,
-                                                     private var apiManager: ApiManager,
-                                                     private var preferencesManager: PreferencesManager,
-                                                     private var tunerApiManager: TunerApiManager,
-                                                     private var mirrorApiManager: MirrorApiManager) : TunerApiInteractor {
+class TunerFirebaseApiInteractor(private var context: Context,
+                                 private var apiManager: ApiManager,
+                                 private var preferencesManager: PreferencesManager,
+                                 private var tunerApiManager: TunerApiManager,
+                                 private var mirrorApiManager: MirrorApiManager,
+                                 private var jobManager: IJobManager) : TunerApiInteractor {
 
     /* mirror */
 
@@ -68,6 +65,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                                         Completable.complete()
                                                     }
                                                 })
+                                        .andThen(jobManager.onDeleteJob(mirrorId))
                             }
                 }
     }
@@ -88,6 +86,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
     override fun deleteConfigurationForMirror(configurationId: String, mirrorId: String, isSelected: Boolean): Completable {
         return tunerApiManager.deleteMirrorConfigurationInfoForMirror(configurationId, mirrorId)
                 .andThen(tunerApiManager.deleteMirrorConfiguration(configurationId))
+                .andThen(jobManager.onDeleteJob(mirrorId, configurationId))
     }
 
     /* tuner */
@@ -115,10 +114,9 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
 
     /* widget */
 
-    override fun fetchWidgets(): Flowable<WidgetModel> {
+    override fun fetchWidgets(): Flowable<DataSnapshotWithKey<WidgetInfo>> {
         return tunerApiManager.observeWidgets()
                 .map { DataSnapshotWithKey(it.dataSnapshot.key, it.dataSnapshot.getValue(WidgetInfo::class.java)) }
-                .map { WidgetModel(it) }
     }
 
     override fun addWidget(name: String, width: Int, height: Int): Single<String> {
@@ -132,8 +130,11 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         return Single.fromCallable {
             MirrorConfiguration(
                     editMirrorModel.mirrorKey,
+                    ContainerSize(editMirrorModel.columnsCount, editMirrorModel.rowsCount),
                     editMirrorModel.title,
-                    ContainerSize(editMirrorModel.columnsCount, editMirrorModel.rowsCount))
+                    editMirrorModel.orientationMode.index,
+                    editMirrorModel.isEnablePrecipitation,
+                    editMirrorModel.userInfoKey)
         }
                 .flatMapCompletable { mirrorConfiguration ->
                     if (editMirrorModel.configurationKey == null) {
@@ -161,6 +162,8 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                             WidgetConfigurationModel(
                                                     WidgetKey(snapshotsWithKey.key),
                                                     snapshotsWithKey.data,
+                                                    widgetConfiguration.tunerKey,
+                                                    widgetConfiguration.phrase,
                                                     pair.first,
                                                     WidgetPosition(widgetConfiguration.topLeftCorner.column, widgetConfiguration.topLeftCorner.row,
                                                             widgetConfiguration.topRightCorner.column, widgetConfiguration.topRightCorner.row,
@@ -175,8 +178,11 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                                         dataSnapshotWithKey.data.containerSize.column,
                                         dataSnapshotWithKey.data.containerSize.row,
                                         dataSnapshotWithKey.data.title,
-                                        widgetModels,
-                                        dataSnapshotWithKey.key)
+                                        dataSnapshotWithKey.data.isEnablePrecipitation,
+                                        OrientationMode.toOrientationMode(dataSnapshotWithKey.data.orientationMode),
+                                        dataSnapshotWithKey.key,
+                                        dataSnapshotWithKey.data.userInfoKey,
+                                        widgetModels)
                             }
                 }
     }
@@ -191,14 +197,27 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
                 .map { !it }
     }
 
+    override fun getOrientationModeInConfiguration(configurationKey: String): Single<OrientationMode> {
+        return tunerApiManager.getOrientationModeInConfiguration(configurationKey)
+                .defaultIfEmpty(OrientationMode.PORTRAIT)
+                .toSingle()
+    }
+
+    override fun setOrientationModeInConfiguration(configurationKey: String, orientationMode: OrientationMode): Completable {
+        return tunerApiManager.setOrientationModeInConfiguration(configurationKey, orientationMode)
+    }
+
     override fun setEnablePrecipitationOnMirror(configurationKey: String, isEnable: Boolean): Completable {
         return tunerApiManager.setEnablePrecipitationInConfiguration(configurationKey, isEnable)
     }
 
-    override fun setEnableUserInfoOnMirror(configurationKey: String, isEnable: Boolean): Completable {
+    override fun setEnableUserInfoOnMirror(configurationKey: String, isEnable: Boolean): Single<String> {
         return Single.fromCallable { preferencesManager.getSession()!! }
                 .cast(TunerSession::class.java)
-                .flatMapCompletable { tunerApiManager.setUserInfoKeyInConfiguration(configurationKey, if (isEnable) it.key else null) }
+                .flatMap {
+                    tunerApiManager.setUserInfoKeyInConfiguration(configurationKey, if (isEnable) it.key else null)
+                            .toSingle { it.key }
+                }
     }
 
 
@@ -208,21 +227,36 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
         return Completable.defer {
             Observable.fromIterable(editMirrorModel.widgets)
                     .flatMapCompletable { widgetModel ->
-                        val widgetConfiguration = WidgetConfiguration(widgetModel.widgetKey.key,
+                        val widgetConfiguration = WidgetConfiguration(
+                                widgetModel.widgetKey.key,
                                 Corner(widgetModel.widgetPosition!!.topLeftColumnLine, widgetModel.widgetPosition!!.topLeftRowLine),
                                 Corner(widgetModel.widgetPosition!!.topRightColumnLine, widgetModel.widgetPosition!!.topRightRowLine),
                                 Corner(widgetModel.widgetPosition!!.bottomLeftColumnLine, widgetModel.widgetPosition!!.bottomLeftRowLine),
-                                Corner(widgetModel.widgetPosition!!.bottomRightColumnLine, widgetModel.widgetPosition!!.bottomRightRowLine))
+                                Corner(widgetModel.widgetPosition!!.bottomRightColumnLine, widgetModel.widgetPosition!!.bottomRightRowLine),
+                                widgetModel.tunerKey,
+                                widgetModel.phrase)
 
                         if (widgetModel.key == null) {
-                            tunerApiManager.createWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetConfiguration)
+                            return@flatMapCompletable tunerApiManager.createWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetConfiguration)
                                     .doOnSuccess { widgetModel.key = it }
-                                    .toCompletable()
+                                    .flatMapCompletable {
+                                        jobManager.onCreateJob(
+                                                editMirrorModel.mirrorKey,
+                                                editMirrorModel.configurationKey!!,
+                                                widgetModel.key!!,
+                                                widgetModel.widgetKey)
+                                    }
                         } else {
                             if (widgetModel.isDeleted) {
-                                tunerApiManager.deleteWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!)
+                                return@flatMapCompletable tunerApiManager.deleteWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!)
+                                        .andThen(
+                                                jobManager.onDeleteJob(
+                                                        editMirrorModel.mirrorKey,
+                                                        editMirrorModel.configurationKey!!,
+                                                        widgetModel.key!!,
+                                                        widgetModel.widgetKey))
                             } else {
-                                tunerApiManager.editWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!, widgetConfiguration)
+                                return@flatMapCompletable tunerApiManager.editWidgetInConfiguration(editMirrorModel.configurationKey!!, widgetModel.key!!, widgetConfiguration)
                             }
                         }
                     }
@@ -239,7 +273,7 @@ class TunerFirebaseApiInteractor @Inject constructor(private var context: Contex
     }
 
     private fun getTunerSession(): Single<TunerSession> {
-        return Single.fromCallable { preferencesManager.getSession() }
+        return Single.fromCallable { preferencesManager.getSession()!! }
                 .cast(TunerSession::class.java)
     }
 }

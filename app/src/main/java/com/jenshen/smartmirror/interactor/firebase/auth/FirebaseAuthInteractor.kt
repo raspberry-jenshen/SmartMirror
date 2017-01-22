@@ -49,5 +49,9 @@ class FirebaseAuthInteractor @Inject constructor(private val context: Context,
         return authManager.createNewUser(email, password)
     }
 
+    override fun resetPassword(email: String) :Completable {
+        return authManager.resetPassword(email)
+    }
+
     private fun getDeviceUniqueID(activity: Context) = Settings.Secure.getString(activity.contentResolver, Settings.Secure.ANDROID_ID)
 }

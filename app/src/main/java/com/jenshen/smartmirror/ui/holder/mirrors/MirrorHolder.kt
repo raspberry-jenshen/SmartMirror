@@ -88,11 +88,7 @@ class MirrorHolder(context: Context, view: View) : SwipeToDeleteHolder(context, 
 
     private fun setCheckedConfiguration(checkedItemTag: String?) {
         configurationsList.forEach {
-            if (it.tag == checkedItemTag) {
-                it.checkBox_textView.isChecked = true
-            } else {
-                it.checkBox_textView.isChecked = false
-            }
+            it.checkBox_textView.isChecked = it.tag == checkedItemTag
         }
     }
 

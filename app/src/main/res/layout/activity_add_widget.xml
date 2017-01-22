@@ -8,14 +8,7 @@
     android:orientation="vertical"
     tools:context="com.jenshen.smartmirror.ui.activity.choose.mirror.ChooseMirrorActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/tuner" />
-
+    <include layout="@layout/partial_toolbar" />
 
     <EditText
         android:id="@+id/nameEdit"

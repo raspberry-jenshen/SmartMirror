@@ -5,10 +5,10 @@
 
     <permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -24,7 +24,7 @@
             android:value="3b1adbe3949cfd0e01ca89038fa1a880df54aa38" />
 
         <activity
-            android:name=".ui.activity.splash.SplashActivity"
+            android:name=".ui.activity.start.splash.SplashActivity"
             android:noHistory="true"
             android:theme="@style/App.Theme.Splash.Activity">
             <intent-filter>
@@ -34,23 +34,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.start.StartActivity"
+            android:name=".ui.activity.choose.account.ChooseAccountActivity"
             android:launchMode="singleTop"
-            android:theme="@style/App.Theme.Start.Activity" />
+            android:theme="@style/App.Theme.ChooseAccount.Activity" />
 
         <!-- tuner -->
 
         <activity
             android:name=".ui.activity.signIn.SignInTunerActivity"
+            android:label="@string/signIn"
             android:launchMode="singleTop"
             android:theme="@style/App.Theme.SignInTuner.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.start.StartActivity" />
+                android:value=".ui.activity.choose.account.ChooseAccountActivity" />
         </activity>
         <activity
             android:name=".ui.activity.signup.tuner.SignUpTunerActivity"
+            android:label="@string/signUp"
             android:theme="@style/App.Theme.SignUpTuner.Activity"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
@@ -59,11 +61,13 @@
         </activity>
         <activity
             android:name=".ui.activity.choose.mirror.ChooseMirrorActivity"
+            android:label="@string/tuner"
             android:launchMode="singleTop"
             android:theme="@style/App.Theme.ChooseMirror.Activity" />
         <activity
             android:name=".ui.activity.settings.app.SettingsActivity"
             android:launchMode="singleTop"
+            android:label="@string/settings"
             android:theme="@style/App.Theme.Settings.Activity" />
         <activity
             android:name=".ui.activity.qrScan.QRCodeScanActivity"
@@ -76,6 +80,7 @@
         <activity
             android:name=".ui.activity.edit.mirror.EditMirrorActivity"
             android:launchMode="singleTop"
+            android:label="@string/editMirror"
             android:theme="@style/App.Theme.EditMirror.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -83,6 +88,7 @@
         </activity>
         <activity
             android:name=".ui.activity.choose.widget.ChooseWidgetActivity"
+            android:label="@string/chooseWidget"
             android:theme="@style/App.Theme.ChooseWidget.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -90,15 +96,16 @@
         </activity>
         <activity
             android:name=".ui.activity.add.widget.AddWidgetActivity"
+            android:label="@string/tuner"
             android:theme="@style/App.Theme.AddWidget.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.settings.app.SettingsActivity" />
         </activity>
-
         <activity
             android:name=".ui.activity.settings.mirror.MirrorSettingsActivity"
-            android:theme="@style/App.Theme.AddWidget.Activity">
+            android:label="@string/mirror_settings"
+            android:theme="@style/App.Theme.MirrorSettings.Activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.edit.mirror.EditMirrorActivity" />
@@ -107,20 +114,42 @@
         <!-- mirror -->
         <activity
             android:name=".ui.activity.signup.mirror.SignUpMirrorActivity"
-            android:theme="@style/App.Theme.Mirror" />
+            android:theme="@style/App.Theme.Mirror.Activity" />
         <activity
             android:name=".ui.activity.dashboard.mirror.MirrorDashboardActivity"
-            android:theme="@style/App.Theme.Mirror" />
+            android:theme="@style/App.Theme.Mirror.Activity" />
 
         <receiver
-            android:name=".broadcast.LaunchAppBroadcast"
+            android:name=".broadcast.LaunchAppReceiver"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".broadcast.NativeEventChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PROVIDER_CHANGED" />
 
-        <service android:name=".service.StartMirrorService" />
+                <data android:scheme="content" />
+                <data android:host="com.android.calendar" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.StartMirrorService"
+            android:exported="false" />
+        <service
+            android:name=".service.UpdateCalendarEventsService"
+            android:exported="false" />
+
+        <service
+            android:name=".service.UpdateCalendarEventsJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

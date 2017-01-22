@@ -2,11 +2,11 @@
 
     <!-- AppTheme -->
 
-    <style name="App" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="App" parent="JenshenSoftCompatAppLight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textViewStyle">@style/App.Theme.TextView</item>
+        <item name="android:textViewStyle">@style/App.Theme.Widget.TextView.Light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <!-- <item name="android:windowBackground">@drawable/background</item>-->
     </style>
@@ -21,20 +21,24 @@
 
     <style name="App.Theme.Splash.Activity" />
 
-    <style name="App.Theme.Start" />
+    <style name="App.Theme.ChooseAccount">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
 
-    <style name="App.Theme.Start.Activity" />
+    <style name="App.Theme.ChooseAccount.Activity" />
 
     <!--tuner-->
 
     <style name="App.Theme.SignInTuner">
         <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+        <item name="buttonStyle">@style/Widget.Button</item>
     </style>
 
     <style name="App.Theme.SignInTuner.Activity" />
 
     <style name="App.Theme.SignUpTuner">
         <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+        <item name="buttonStyle">@style/Widget.Button</item>
     </style>
 
     <style name="App.Theme.SignUpTuner.Activity" />
@@ -45,7 +49,9 @@
 
     <style name="App.Theme.ChooseMirror.Activity" />
 
-    <style name="App.Theme.Settings" />
+    <style name="App.Theme.Settings">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
 
     <style name="App.Theme.Settings.Activity" />
 
@@ -74,20 +80,70 @@
 
     <style name="App.Theme.AddWidget.Activity" />
 
+    <style name="App.Theme.MirrorSettings">
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar.Mirror</item>
+    </style>
+
+    <style name="App.Theme.MirrorSettings.Activity" />
+
     <!-- mirror -->
     <style name="App.Theme.Mirror">
         <item name="android:windowBackground">@color/black</item>
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
     </style>
+
+    <style name="App.Theme.Mirror.Activity" />
 
     <!-- Widget -->
 
-    <style name="App.Theme.TextView">
+    <style name="App.Theme.Widget" />
+
+    <!-- text view -->
+
+    <style name="App.Theme.Widget.TextView" />
+
+    <style name="App.Theme.Widget.TextView.Light">
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="App.Theme.TextViewLight">
+    <style name="App.Theme.Widget.TextView.Dark">
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="App.Theme.Widget.TextView.Dark.Small">
+        <item name="android:textSize">@dimen/textSize_small2</item>
+    </style>
+
+    <style name="App.Theme.Widget.TextView.Dark.Medium">
+        <item name="android:textSize">@dimen/textSize_normal</item>
+    </style>
+
+    <style name="App.Theme.Widget.TextView.Dark.Large">
+        <item name="android:textSize">@dimen/textSize_large2</item>
+    </style>
+
+    <style name="App.Theme.Widget.TextView.Light.Small">
+        <item name="android:textSize">@dimen/textSize_small2</item>
+    </style>
+
+    <style name="App.Theme.Widget.TextView.Light.Medium">
+        <item name="android:textSize">@dimen/textSize_normal</item>
+    </style>
+
+    <style name="App.Theme.Widget.TextView.Light.Large">
+        <item name="android:textSize">@dimen/textSize_large2</item>
+    </style>
+
+    <!--button-->
+    <style name="Widget.Button" parent="Base.Widget.AppCompat.Button">
+        <item name="android:textSize">@dimen/textSize_normal</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@drawable/selector_login_button_text_color</item>
+        <item name="android:background">@drawable/selector_login_button_color</item>
+    </style>
+
+    <!-- toolbar -->
 
     <style name="Widget.AppCompat.Toolbar.Transparent" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:background">@color/black_with_alpha</item>
@@ -98,5 +154,10 @@
         <item name="logo">@drawable/ic_mirror_logo_small</item>
         <item name="titleMarginStart">@dimen/offset_small1_plus_big1</item>
     </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
 
 </resources>

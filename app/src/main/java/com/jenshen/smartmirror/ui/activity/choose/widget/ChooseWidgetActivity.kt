@@ -13,7 +13,6 @@ import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
 import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
-import com.jenshen.smartmirror.data.model.widget.WidgetKey
 import com.jenshen.smartmirror.data.model.widget.WidgetModel
 import com.jenshen.smartmirror.di.component.activity.choose.widget.ChooseWidgetComponent
 import com.jenshen.smartmirror.ui.adapter.widgets.WidgetsAdapter
@@ -21,8 +20,7 @@ import com.jenshen.smartmirror.ui.mvp.presenter.choose.widget.ChooseWidgetPresen
 import com.jenshen.smartmirror.ui.mvp.view.choose.widget.ChooseWidgetView
 import com.jenshen.smartmirror.ui.view.widget.Widget
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.activity_choose_widget.*
-
+import kotlinx.android.synthetic.main.partial_toolbar.*
 
 class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         RecyclerView,
@@ -73,14 +71,9 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_widget)
         setupToolbar()
-        adapter = WidgetsAdapter(context, {
-            val intent = Intent()
-            intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, WidgetConfigurationModel(
-                    WidgetKey(it.widgetDataSnapshot.key), it.widgetDataSnapshot.data))
-            setResult(Activity.RESULT_OK, intent)
-            finish()
-        },
-                { presenter.loadInfoForWidget(it) },
+        adapter = WidgetsAdapter(
+                context,
+                { presenter.onChooseWidget(it) },
                 { widgetData: WidgetData, widget: Widget<*> -> presenter.updateWidget(widgetData, widget) })
         contentView.adapter = adapter
         loadData(false)
@@ -103,6 +96,13 @@ class ChooseWidgetActivity : BaseDiLceMvpActivity<ChooseWidgetComponent,
 
     override fun onWidgetUpdate(widgetData: WidgetData) {
         adapter.onUpdateItem(widgetData)
+    }
+
+    override fun onReturnWidgetConfiguration(widgetConfigurationModel: WidgetConfigurationModel) {
+        val intent = Intent()
+        intent.putExtra(ChooseWidgetActivity.RESULT_EXTRA_WIDGET, widgetConfigurationModel)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
     /* lce */

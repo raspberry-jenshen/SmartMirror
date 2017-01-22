@@ -16,4 +16,8 @@
         <attr name="digitalClockTextColor" format="color" />
         <attr name="circleColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="WidgetScaleLayout">
+        <attr name="scale_textSize_multiplier" format="float" />
+    </declare-styleable>
 </resources>

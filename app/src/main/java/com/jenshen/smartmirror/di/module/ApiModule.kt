@@ -1,8 +1,8 @@
 package com.jenshen.smartmirror.di.module
 
+import android.text.format.DateUtils
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import com.jenshen.smartmirror.BuildConfig
 import com.jenshen.smartmirror.di.scope.ApiScope
 import dagger.Module
 import dagger.Provides
@@ -11,9 +11,12 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 @Module(includes = arrayOf(GsonModule::class))
-class ApiModule(private val baseUrl: String, private val interceptor: Interceptor) {
+class ApiModule(private val baseUrl: String,
+                private val interceptor: Interceptor? = null,
+                private val timeOutTime: Long = DateUtils.MINUTE_IN_MILLIS * 10) {
 
     @ApiScope
     @Provides
@@ -26,11 +29,15 @@ class ApiModule(private val baseUrl: String, private val interceptor: Intercepto
     @ApiScope
     @Provides
     fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-        val client = OkHttpClient.Builder()
+        val builder = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-                .addInterceptor(interceptor)
-                .build()
-        return client
+        if (interceptor != null) {
+            builder.addInterceptor(interceptor)
+        }
+        builder.connectTimeout(timeOutTime, TimeUnit.MILLISECONDS)
+                .readTimeout(timeOutTime, TimeUnit.MILLISECONDS)
+                .writeTimeout(timeOutTime, TimeUnit.MILLISECONDS)
+        return builder.build()
     }
 
     @ApiScope

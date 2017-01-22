@@ -14,7 +14,7 @@ interface RealtimeDatabaseManager {
     fun getSelectedConfigurationRef(mirrorKey: String): Single<DatabaseReference>
     fun getMirrorSubscribersRef(mirrorKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationsInfoRef(mirrorKey: String): Single<DatabaseReference>
-    fun getMirrorConfigurationInfoRef(configurationKey: String, mirrorKey: String): Single<DatabaseReference>
+    fun getMirrorConfigurationInfoRef(mirrorKey: String, configurationKey: String): Single<DatabaseReference>
 
     /* tuner */
 
@@ -35,6 +35,11 @@ interface RealtimeDatabaseManager {
     fun getMirrorConfigurationRef(configurationKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationWidgetsRef(configurationKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationWidgetRef(widgetKey: String, configurationKey: String): Single<DatabaseReference>
+    fun getMirrorConfigurationOrientationModeRef(configurationKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationUserInfoKeyRef(configurationKey: String): Single<DatabaseReference>
     fun getMirrorConfigurationIsEnablePrecipitationRef(configurationKey: String): Single<DatabaseReference>
+
+    /* calendar */
+    fun getUserCalendarsRef(): Single<DatabaseReference>
+    fun getUserCalendarRef(tunerKey: String): Single<DatabaseReference>
 }

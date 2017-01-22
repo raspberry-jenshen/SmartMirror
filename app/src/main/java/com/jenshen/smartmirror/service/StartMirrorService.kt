@@ -4,12 +4,13 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import com.crashlytics.android.Crashlytics
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.di.module.activity.start.service.StartMirrorServiceModule
+import com.jenshen.smartmirror.di.module.activity.service.StartMirrorServiceModule
 import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorDashboardActivity
-import com.jenshen.smartmirror.ui.mvp.presenter.start.service.StartMirrorServicePresenter
-import com.jenshen.smartmirror.ui.mvp.view.start.service.StartMirrorServiceView
+import com.jenshen.smartmirror.ui.mvp.presenter.service.StartMirrorServicePresenter
+import com.jenshen.smartmirror.ui.mvp.view.service.StartMirrorServiceView
 import javax.inject.Inject
 
 
@@ -55,6 +56,7 @@ class StartMirrorService : Service(), StartMirrorServiceView {
 
     override fun handleError(throwable: Throwable?) {
         Log.e(context.getString(R.string.app_name), throwable.toString())
+        Crashlytics.logException(throwable)
     }
 
     override fun getContext() = this

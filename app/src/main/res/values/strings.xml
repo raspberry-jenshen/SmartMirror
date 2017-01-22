@@ -9,6 +9,7 @@
     <string name="dialog.no">No</string>
     <string name="dialog.save">Save</string>
     <string name="dialog.completed">Completed</string>
+    <string name="dialog.success">Success</string>
     <string name="dialog.data_were_set">Data were set</string>
     <string name="dialog.exit">Exit</string>
     <string name="dialog.edit_configuration.type_name">Type configuration name</string>
@@ -65,7 +66,7 @@
 
     <!--tuner -->
     <string name="tuner">Tuner</string>
-    <string name="tuner.home_mirror">Home mirror</string>
+    <string name="tuner.home_mirror">Mirror</string>
     <string name="tuner.add_configuration">Add new configuration…</string>
     <string name="tuner.delete">Delete</string>
 
@@ -78,15 +79,29 @@
     <string name="editMirror.news">News</string>
 
     <!-- mirror settings-->
+    <string name="mirror_settings">Mirror settings</string>
     <string name="mirror_settings.show_user_info_on_mirror">Show user info on the mirror</string>
     <string name="mirror_settings.enable_precipitation_on_mirror">Enable precipitation on the mirror</string>
+    <string name="mirror_settings.orientationMode">Switch orientation mode</string>
+    <string name="mirror_settings.portrait">Portrait</string>
+    <string name="mirror_settings.landscape">Landscape</string>
+    <string name="mirror_settings.reverse_portrait">Reverse portrait</string>
+    <string name="mirror_settings.reverse_landscape">Reverse landscape</string>
 
     <!-- choose widget-->
     <string name="chooseWidget">Choose Widget</string>
+    <string name="chooseWidget.type_a_phrase">Type a phrase</string>
+    <string name="chooseWidget.phrase.hint">Good morning, Dear</string>
 
     <!-- widgets-->
     <!--weather-->
     <string name="widget.weather.pressure">Pressure</string>
     <string name="widget.weather.humidity">Humidity</string>
+    <string name="widget.exchange_rates.currency_UAH">UAH</string>
+    <string name="widget.exchange_rates.currency_USD">USD</string>
+    <string name="widget.exchange_rates.currency_RUB">RUB</string>
+    <string name="widget.exchange_rates.currency_EUR">EUR</string>
+    <string name="widget.exchange_rates.currency_GBP">GBP</string>
+    <string name="widget.calendar_events.all_day">All day</string>
 
 </resources>

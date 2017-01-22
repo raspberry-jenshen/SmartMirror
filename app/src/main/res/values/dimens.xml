@@ -33,10 +33,19 @@
 
     <!-- animations -->
 
-    <dimen name="default_velocity_slow">50dp</dimen>
+    <dimen name="default_velocity_slow3">12dp</dimen>
+    <dimen name="default_velocity_slow2">25dp</dimen>
+    <dimen name="default_velocity_slow1">50dp</dimen>
     <dimen name="default_velocity_normal">100dp</dimen>
-    <dimen name="default_velocity_fast">200dp</dimen>
+    <dimen name="default_velocity_fast1">200dp</dimen>
+    <dimen name="default_velocity_fast2">400dp</dimen>
+    <dimen name="default_velocity_fast3">600dp</dimen>
 
     <!-- widgets -->
     <dimen name="widget.size">50dp</dimen>
+    <dimen name="widget.confetti.snow.size">10dp</dimen>
+    <dimen name="widget.confetti.rain.size">5dp</dimen>
+
+    <dimen name="widget.item.size">260dp</dimen>
+
 </resources>

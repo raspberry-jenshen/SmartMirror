@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/offset_small1"
+    android:layout_marginStart="@dimen/offset_small1"
+    android:layout_marginTop="@dimen/offset_small1"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/grey"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/offset_normal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name_textView"
+            style="@style/App.Theme.Widget.TextView.Dark.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            tools:text="Clock" />
+
+        <TextView
+            style="@style/App.Theme.Widget.TextView.Dark.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/offset_small1"
+            android:text="@string/chooseWidget.type_a_phrase" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/phraseEdit"
+            style="@style/App.Theme.Widget.TextView.Dark.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/offset_small1"
+            android:hint="@string/chooseWidget.phrase.hint"
+            android:inputType="text"
+            android:textColorHighlight="@color/colorAccent"
+            android:textColorHint="@color/white" />
+
+        <Button
+            android:id="@+id/ok"
+            style="@style/Widget.Button"
+            android:enabled="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/offset_small1"
+            android:text="@string/ok" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

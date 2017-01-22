@@ -4,10 +4,10 @@ import android.app.Activity
 import com.jenshen.compat.base.component.activity.ActivityComponentBuilder
 import com.jenshen.compat.base.component.app.BaseAppComponent
 import com.jenshen.smartmirror.app.SmartMirrorApp
-import com.jenshen.smartmirror.di.component.activity.start.service.StartMirrorServiceComponent
+import com.jenshen.smartmirror.di.component.activity.service.StartMirrorServiceComponent
 import com.jenshen.smartmirror.di.module.AppModule
 import com.jenshen.smartmirror.di.module.activity.ActivityBindingModule
-import com.jenshen.smartmirror.di.module.activity.start.service.StartMirrorServiceModule
+import com.jenshen.smartmirror.di.module.activity.service.StartMirrorServiceModule
 import com.jenshen.smartmirror.di.module.firebase.FirebaseModule
 import com.jenshen.smartmirror.di.module.interactor.firebase.api.ApiInteractorModule
 import com.jenshen.smartmirror.di.module.interactor.firebase.auth.AuthInteractorModule

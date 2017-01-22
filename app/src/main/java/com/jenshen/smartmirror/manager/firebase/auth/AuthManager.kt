@@ -10,10 +10,11 @@ interface AuthManager {
 
     val isUserExists: Boolean
     fun fetchFirebaseUser(): Observable<FirebaseUser>
-    fun getFirebaseUser() : Maybe<FirebaseUser>
+    fun getFirebaseUser(): Maybe<FirebaseUser>
 
     fun createNewUser(email: String, password: String): Completable
     fun signInWithEmailAndPassword(email: String, password: String): Completable
     fun updateProfile(name: String, uri: Uri?): Completable
     fun signInAnonymously(): Completable
+    fun resetPassword(email: String): Completable
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
+import com.jenshen.smartmirror.ui.activity.base.BaseMirrorDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.session.MirrorSession
@@ -17,7 +18,7 @@ import com.jenshen.smartmirror.ui.mvp.view.signup.mirror.SignUpMirrorView
 import kotlinx.android.synthetic.main.activity_sign_up_mirror.*
 
 
-class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirrorView, SignUpMirrorPresenter>(), SignUpMirrorView {
+class SignUpMirrorActivity : BaseMirrorDiMvpActivity<SignUpMirrorComponent, SignUpMirrorView, SignUpMirrorPresenter>(), SignUpMirrorView {
 
 
     /* inject */
@@ -36,8 +37,6 @@ class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_sign_up_mirror)
         presenter.signInMirror()
     }
@@ -54,8 +53,6 @@ class SignUpMirrorActivity : BaseDiMvpActivity<SignUpMirrorComponent, SignUpMirr
     }
 
     override fun onTunerConnected() {
-        val intent = Intent(context, MirrorDashboardActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
+        MirrorDashboardActivity.startRoot(context, true)
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".ui.activity.edit.mirror.EditMirrorActivity">
+
+    <include layout="@layout/partial_toolbar" />
+
+    <com.jenshen.smartmirror.ui.view.WidgetScaleLayout
+        android:id="@+id/widgetContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:widgetContainer_deletePanelGravity="right"
+        app:scale_textSize_multiplier="0.2"/>
+
+</LinearLayout>

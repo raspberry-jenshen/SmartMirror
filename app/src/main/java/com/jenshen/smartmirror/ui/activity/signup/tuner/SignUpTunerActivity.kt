@@ -19,17 +19,16 @@ import com.jenshen.smartmirror.ui.mvp.presenter.signup.tuner.SignUpTunerPresente
 import com.jenshen.smartmirror.ui.mvp.view.signup.tuner.SignUpTunerView
 import com.jenshen.smartmirror.util.asCircleBitmap
 import com.jenshen.smartmirror.util.getBitmap
-import com.jenshen.smartmirror.util.reactive.onEditorAction
-import com.jenshen.smartmirror.util.reactive.onTextChanged
+import com.jenshen.smartmirror.util.reactive.onEditorActionObservable
+import com.jenshen.smartmirror.util.reactive.onTextChangedObservable
 import com.jenshen.smartmirror.util.validation.ValidationResult
 import com.nguyenhoanglam.imagepicker.activity.ImagePicker
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES
 import com.nguyenhoanglam.imagepicker.model.Image
 import jp.wasabeef.glide.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.activity_sign_up_tuner.*
 import kotlinx.android.synthetic.main.partial_sign_up.*
+import kotlinx.android.synthetic.main.partial_toolbar.*
 import java.io.File
-
 
 class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerView, SignUpTunerPresenter>(), SignUpTunerView {
 
@@ -75,11 +74,11 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
         }
 
         presenter.initCreateAccountButtonStateListener(
-                nameEdit.onTextChanged(),
-                emailEdit.onTextChanged(),
-                passwordEdit.onTextChanged(),
-                confirmPasswordEdit.onTextChanged())
-        presenter.initEditableAction(confirmPasswordEdit.onEditorAction())
+                nameEdit.onTextChangedObservable(),
+                emailEdit.onTextChangedObservable(),
+                passwordEdit.onTextChangedObservable(),
+                confirmPasswordEdit.onTextChangedObservable())
+        presenter.initEditableAction(confirmPasswordEdit.onEditorActionObservable())
     }
 
     override fun onResume() {
@@ -191,8 +190,8 @@ class SignUpTunerActivity : BaseDiMvpActivity<SignUpTunerComponent, SignUpTunerV
     }
 
     private fun updateModel() {
-        userModel.name =  nameEdit.text.toString().trim()
-        userModel.email =  emailEdit.text.toString()
+        userModel.name = nameEdit.text.toString().trim()
+        userModel.email = emailEdit.text.toString()
     }
 
     private fun setupToolbar() {

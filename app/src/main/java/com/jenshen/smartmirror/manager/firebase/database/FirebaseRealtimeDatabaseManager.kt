@@ -40,7 +40,7 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
                 .map { it.child(FirebaseRealTimeDatabaseConstant.Mirror.CONFIGURATIONS) }
     }
 
-    override fun getMirrorConfigurationInfoRef(configurationKey: String, mirrorKey: String): Single<DatabaseReference> {
+    override fun getMirrorConfigurationInfoRef(mirrorKey: String, configurationKey: String): Single<DatabaseReference> {
         return getMirrorConfigurationsInfoRef(mirrorKey)
                 .map { it.child(configurationKey) }
     }
@@ -106,6 +106,11 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
                 .map { it.child(widgetKey) }
     }
 
+    override fun getMirrorConfigurationOrientationModeRef(configurationKey: String): Single<DatabaseReference> {
+        return getMirrorConfigurationRef(configurationKey)
+                .map { it.child(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.ORIENTATION_MODE) }
+    }
+
     override fun getMirrorConfigurationUserInfoKeyRef(configurationKey: String): Single<DatabaseReference> {
         return getMirrorConfigurationRef(configurationKey)
                 .map { it.child(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.USER_INFO_KEY) }
@@ -114,5 +119,17 @@ class FirebaseRealtimeDatabaseManager @Inject constructor(private val fireBaseDa
     override fun getMirrorConfigurationIsEnablePrecipitationRef(configurationKey: String): Single<DatabaseReference> {
         return getMirrorConfigurationRef(configurationKey)
                 .map { it.child(FirebaseRealTimeDatabaseConstant.MirrorConfiguration.IS_ENABLE_PRECIPITATION) }
+    }
+
+    /* calendar */
+
+    override fun getUserCalendarsRef(): Single<DatabaseReference> {
+        return Single.fromCallable { fireBaseDatabase.reference }
+                .map { it.child(FirebaseRealTimeDatabaseConstant.USER_CALENDARS) }
+    }
+
+    override fun getUserCalendarRef(tunerKey: String): Single<DatabaseReference> {
+        return getUserCalendarsRef()
+                .map { it.child(tunerKey) }
     }
 }

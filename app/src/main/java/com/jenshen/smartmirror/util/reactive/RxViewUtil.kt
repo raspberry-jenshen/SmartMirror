@@ -6,7 +6,7 @@ import android.widget.EditText
 import android.widget.TextView
 import io.reactivex.Observable
 
-fun EditText.onTextChanged(): Observable<String> {
+fun EditText.onTextChangedObservable(): Observable<String> {
     return Observable.create<String> {
         val textChangedListener = object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -26,7 +26,7 @@ fun EditText.onTextChanged(): Observable<String> {
     }
 }
 
-fun EditText.onEditorAction(): Observable<Int> {
+fun EditText.onEditorActionObservable(): Observable<Int> {
     return Observable.create<Int> {
         val onEditorActionListener = TextView.OnEditorActionListener { v, actionId, event ->
             if (!it.isDisposed) {

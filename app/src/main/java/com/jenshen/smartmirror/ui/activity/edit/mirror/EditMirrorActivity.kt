@@ -18,6 +18,9 @@ import com.jenshen.compat.base.view.impl.mvp.lce.component.BaseDiMvpActivity
 import com.jenshen.smartmirror.R
 import com.jenshen.smartmirror.app.SmartMirrorApp
 import com.jenshen.smartmirror.data.entity.widget.info.WidgetData
+import com.jenshen.smartmirror.data.event.OrientationModeSettings
+import com.jenshen.smartmirror.data.event.PrecipitationSettings
+import com.jenshen.smartmirror.data.event.UserInfoSettings
 import com.jenshen.smartmirror.data.model.mirror.EditMirrorModel
 import com.jenshen.smartmirror.data.model.widget.WidgetConfigurationModel
 import com.jenshen.smartmirror.data.model.widget.WidgetKey
@@ -31,6 +34,11 @@ import com.jenshen.smartmirror.util.widget.createWidget
 import com.jenshensoft.widgetview.WidgetView
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_edit_mirror.*
+import kotlinx.android.synthetic.main.partial_toolbar.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
 
 class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView, EditMirrorPresenter>(), EditMirrorView {
 
@@ -42,7 +50,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
         fun start(context: Context, mirrorKey: String, configurationKey: String? = null) {
             RxPermissions.getInstance(context)
-                    .request(Manifest.permission.ACCESS_FINE_LOCATION)
+                    .request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_CALENDAR)
                     .subscribe { granted ->
                         if (granted) {
                             val intent = Intent(context, EditMirrorActivity::class.java)
@@ -83,6 +91,9 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         setContentView(R.layout.activity_edit_mirror)
         setupToolbar()
         restoreExtra(savedInstanceState)
+
+        EventBus.getDefault().register(this)
+
         val mirrorId = intent.getStringExtra(EXTRA_MIRROR_KEY)
         val configurationKey = intent.getStringExtra(EXTRA_MIRROR_CONFIGURATION_KEY)
         if (configurationKey == null && editMirrorModel == null) {
@@ -128,6 +139,11 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 deletedWidgetModel.isDeleted = true
             }
         }
+    }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -177,6 +193,12 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        val menuItem = menu.getItem(2)
+        menuItem.isVisible = editMirrorModel != null && editMirrorModel!!.configurationKey != null
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.addWidget_item_menu -> {
@@ -201,6 +223,21 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     /* callbacks */
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onPrecipitationMessageEvent(event: PrecipitationSettings) {
+        editMirrorModel!!.isEnablePrecipitation = event.isEnable
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUserInfoMessageEvent(event: UserInfoSettings) {
+        editMirrorModel!!.userInfoKey = event.userInfoKey
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSetOrientationMessageEvent(event: OrientationModeSettings) {
+        editMirrorModel!!.orientationMode = event.orientationMode
+    }
+
     override fun onSavedConfiguration() {
         isSaved = true
         AlertDialog.Builder(context)
@@ -212,6 +249,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                 })
                 .create()
                 .show()
+        invalidateOptionsMenu()
     }
 
     override fun onMirrorConfigurationLoaded(model: EditMirrorModel) {
@@ -223,6 +261,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
         editMirrorModel?.widgets
                 ?.filter { !it.isDeleted }
                 ?.forEach { updateWidgetPosition(createWidgetView(it), it) }
+        invalidateOptionsMenu()
     }
 
     override fun onWidgetUpdate(infoData: WidgetData) {
@@ -268,10 +307,13 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
                                 val widgetKey = it.tag as WidgetKey
                                 (widgetKey.key == widgetModel.widgetKey.key) && widgetKey.number == widgetModel.widgetKey.number
                             }
-                    if (isSaved && widgetModel.widgetPosition != null) {
-                        isSaved = widgetModel.widgetPosition == view!!.widgetPosition
+
+                    if (view != null) {
+                        if (isSaved && widgetModel.widgetPosition != null) {
+                            isSaved = widgetModel.widgetPosition == view.widgetPosition
+                        }
+                        widgetModel.widgetPosition = view.widgetPosition
                     }
-                    widgetModel.widgetPosition = view!!.widgetPosition
                 }
     }
 
@@ -284,7 +326,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
     }
 
     private fun restoreExtra(savedInstanceState: Bundle?) {
-        isSaved = savedInstanceState?.getBoolean(IS_SAVED_KEY) ?: false
+        isSaved = savedInstanceState?.getBoolean(IS_SAVED_KEY) ?: true
         val model = savedInstanceState?.getParcelable<EditMirrorModel>(MODEL_KEY)
         if (model != null) {
             onMirrorConfigurationLoaded(model)
@@ -293,7 +335,7 @@ class EditMirrorActivity : BaseDiMvpActivity<EditMirrorComponent, EditMirrorView
 
     private fun createWidgetView(widgetModel: WidgetConfigurationModel): WidgetView {
         widgetModel.widgetKey.number = widgetContainer.widgets.filter { (it.tag as WidgetKey).key == widgetModel.widgetKey.key }.size
-        presenter.addWidgetUpdater(widgetModel.widgetKey)
+        presenter.addWidgetUpdater(widgetModel.widgetKey, widgetModel.tunerKey, widgetModel.phrase)
         val widget = createWidget(widgetModel.widgetKey.key, widgetModel.widgetInfo.defaultSize, context)
         widget.tag = widgetModel.widgetKey
         return widget

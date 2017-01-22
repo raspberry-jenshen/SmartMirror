@@ -10,6 +10,8 @@ import com.jenshen.smartmirror.di.component.activity.add.widget.AddWidgetCompone
 import com.jenshen.smartmirror.ui.mvp.presenter.add.widget.AddWidgetPresenter
 import com.jenshen.smartmirror.ui.mvp.view.add.widget.AddWidgetView
 import kotlinx.android.synthetic.main.activity_add_widget.*
+import kotlinx.android.synthetic.main.partial_toolbar.*
+
 
 class AddWidgetActivity : BaseDiMvpActivity<AddWidgetComponent, AddWidgetView, AddWidgetPresenter>(), AddWidgetView {
 
