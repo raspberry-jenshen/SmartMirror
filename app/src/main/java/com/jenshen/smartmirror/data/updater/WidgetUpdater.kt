@@ -19,7 +19,7 @@ abstract class WidgetUpdater<Info : WidgetData>(val widgetKey: WidgetKey) {
         if (period == -1L) {
             emitter = Flowable.timer(initialDelay, TimeUnit.MILLISECONDS, Schedulers.io())
         } else {
-            emitter = Flowable.interval(initialDelay, period * 100L * 1000L, TimeUnit.MILLISECONDS, Schedulers.io())
+            emitter = Flowable.interval(initialDelay, period * 1000L, TimeUnit.MILLISECONDS, Schedulers.io())
         }
         return emitter
                 .takeWhile { !isDisposed }

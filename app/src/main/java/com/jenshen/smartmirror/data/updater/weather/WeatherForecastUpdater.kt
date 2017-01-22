@@ -22,7 +22,7 @@ class WeatherForecastUpdater(widgetKey: WidgetKey,
                              private val findLocationManagerLazy: dagger.Lazy<IFindLocationManager>) : WidgetUpdater<WeatherForecastWidgetData>(widgetKey) {
 
     override val initialDelay: Long = 0
-    override val period: Long = MINUTES_BETWEEN_UPDATES
+    override val period: Long = MINUTES_BETWEEN_UPDATES * 60L
 
     companion object {
         const val MINUTES_BETWEEN_UPDATES = 3L * 60L

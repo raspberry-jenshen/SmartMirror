@@ -10,7 +10,7 @@ class CalendarEventsUpdater(widgetKey: WidgetKey,
                             private val calendarInteractor: ICalendarInteractor) : WidgetUpdater<CalendarEventsWidgetData>(widgetKey) {
 
     override val initialDelay: Long = 0
-    override val period: Long = MINUTES_BETWEEN_UPDATES
+    override val period: Long = MINUTES_BETWEEN_UPDATES * 60L
 
     companion object {
         const val MINUTES_BETWEEN_UPDATES = 2L * 60L
