@@ -13,7 +13,7 @@ import com.jenshen.smartmirror.di.component.AppComponent
 import com.jenshen.smartmirror.di.component.DaggerAppComponent
 import com.jenshen.smartmirror.di.component.SessionComponent
 import com.jenshen.smartmirror.di.module.AppModule
-import com.jenshen.smartmirror.manager.calendar.CalendarManager
+import com.jenshen.smartmirror.ui.activity.dashboard.mirror.MirrorDashboardActivity
 import com.jenshen.smartmirror.util.delegate.lazyValue
 import com.squareup.leakcanary.LeakCanary
 import io.fabric.sdk.android.Fabric
@@ -76,11 +76,6 @@ open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
         val lifecycleCallbacks = LifecycleCallbacks()
         registerActivityLifecycleCallbacks(lifecycleCallbacks)
 
-        Fabric.with(this, Crashlytics.Builder()
-                .core(CrashlyticsCore.Builder()
-                        .disabled(BuildConfig.DEBUG)
-                        .build())
-                .build())
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
@@ -88,5 +83,24 @@ open class SmartMirrorApp : BaseApp<SmartMirrorApp, AppComponent>() {
                 //.setDefaultFontPath("fonts/dinpro-medium.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build())
+
+
+        var defaultExceptionHandler: Thread.UncaughtExceptionHandler? = null
+        val caughtExceptionHandler  = Thread.UncaughtExceptionHandler { thread, ex ->
+            if (lifecycleCallbacks.isDashBoard) {
+                MirrorDashboardActivity.startRoot(this, true)
+            }
+            defaultExceptionHandler!!.uncaughtException(thread, ex)
+        }
+
+        Fabric.with(this, Crashlytics.Builder()
+                .core(CrashlyticsCore.Builder()
+                        .disabled(BuildConfig.DEBUG)
+                        .build())
+                .build())
+
+
+        defaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler(caughtExceptionHandler)
     }
 }
